@@ -1,0 +1,92 @@
+/* Page wrapper */
+.about {
+  width: 100%;
+}
+
+/* ================= HERO ================= */
+.about-hero {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 80px 20px 60px;
+  text-align: center;
+}
+
+.about-hero h1 {
+  font-size: 42px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 16px;
+  animation: fadeUp 0.5s ease;
+}
+
+.about-hero p {
+  font-size: 16px;
+  color: #475569;
+  line-height: 1.7;
+  animation: fadeUp 0.7s ease;
+}
+
+/* ================= CONTENT ================= */
+.about-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.about-card {
+  background-color: #ffffff;
+  padding: 32px 26px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  animation: fadeUp 0.9s ease;
+}
+
+.about-card h2 {
+  font-size: 20px;
+  margin-bottom: 14px;
+  color: #0f172a;
+}
+
+.about-card p {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.7;
+}
+
+.about-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.about-card li {
+  font-size: 14px;
+  color: #475569;
+  margin-bottom: 10px;
+}
+
+/* ================= ANIMATION ================= */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 900px) {
+  .about-content {
+    grid-template-columns: 1fr;
+  }
+
+  .about-hero h1 {
+    font-size: 34px;
+  }
+}
