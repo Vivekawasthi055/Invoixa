@@ -104,3 +104,12 @@ export const searchInvoices = async ({
 
   return await query;
 };
+
+export const generateInvoiceNumber = async (hotel_code) => {
+  const { data, error } = await supabase.rpc("generate_invoice_number", {
+    p_hotel_code: hotel_code,
+  });
+
+  if (error) throw error;
+  return data;
+};

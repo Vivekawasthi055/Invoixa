@@ -28,6 +28,10 @@ function Dashboard() {
       <button style={{ marginLeft: 10 }}>
         <Link to="/dashboard/invoices/list">📄 All Invoices</Link>
       </button>
+
+      <button style={{ marginLeft: 10 }}>
+        <Link to="/dashboard/rooms">Rooms</Link>
+      </button>
     </main>
   );
 }

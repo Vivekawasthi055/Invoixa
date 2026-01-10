@@ -16,6 +16,7 @@ function CreateInvoice() {
   const [guestName, setGuestName] = useState("");
   const [guestPhone, setGuestPhone] = useState("");
   const [guestEmail, setGuestEmail] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,8 +33,18 @@ function CreateInvoice() {
     if (user) loadHotel();
   }, [user]);
 
+  /* ================= CREATE INVOICE ================= */
+
   const handleCreateInvoice = async () => {
-    const invoiceNumber = `INV-${Date.now()}`;
+    // ✅ Generate invoice number from DB
+    const { data: invoiceNumber, error: invErr } = await supabase.rpc(
+      "generate_invoice_number"
+    );
+
+    if (invErr) {
+      alert("Invoice number generate failed");
+      return;
+    }
 
     const { data, error } = await createInvoice({
       hotel_id: hotel.id,
@@ -43,7 +54,10 @@ function CreateInvoice() {
       invoice_number: invoiceNumber,
     });
 
-    if (error) return alert("Invoice create failed");
+    if (error) {
+      alert("Invoice create failed");
+      return;
+    }
 
     setInvoice(data);
     setGuestName("");
@@ -51,17 +65,15 @@ function CreateInvoice() {
     setGuestEmail("");
   };
 
+  /* ================= SAVE & NEXT ================= */
+
   const handleSaveAndPrint = async () => {
     if (!guestName || !guestPhone) {
       alert("Please fill guest details");
       return;
     }
 
-    await updateInvoiceGuest(invoice.id, {
-      guest_name: guestName,
-      guest_phone: guestPhone,
-      guest_email: guestEmail,
-    });
+    await updateInvoiceGuest(invoice.id, guestName, guestPhone, guestEmail);
 
     navigate(`/dashboard/invoices/${invoice.id}`);
   };
@@ -133,7 +145,7 @@ function CreateInvoice() {
           {/* ================= ROOMS + FOOD ================= */}
           <InvoiceRooms invoice={invoice} />
 
-          {/* ================= SAVE & PRINT ================= */}
+          {/* ================= SAVE & NEXT ================= */}
           <button
             style={{
               marginTop: 30,
@@ -144,6 +156,7 @@ function CreateInvoice() {
           >
             Save & Next
           </button>
+
           <p>
             Note : You can't edit the invoice after click on Save & Next Button
           </p>
