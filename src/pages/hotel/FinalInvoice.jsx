@@ -70,16 +70,16 @@ function FinalInvoice() {
     setHotel(hotelData);
 
     /* ✅ GST % fetch */
-    if (hotelData?.has_gst && hotelData?.gst_percent) {
-      setGstPercent(Number(hotelData.gst_percent));
+    if (hotelData?.has_gst && hotelData?.gst_percentage) {
+      setGstPercent(Number(hotelData.gst_percentage));
     } else {
       const { data: profile } = await supabase
         .from("profiles")
-        .select("gst_percent")
+        .select("gst_percentage")
         .eq("user_id", hotelData.user_id)
         .single();
 
-      setGstPercent(Number(profile?.gst_percent || 0));
+      setGstPercent(Number(profile?.gst_percentage || 0));
     }
 
     const { data: roomData } = await supabase
@@ -170,17 +170,15 @@ function FinalInvoice() {
 
         <div>
           <p>
-            <strong>Guest:</strong> {invoice.guest_name || "—"}
+            <strong>Guest:</strong> {invoice.guest_name || "Guest"}
           </p>
-
           <p>
-            <strong>Phone:</strong> {invoice.guest_phone || "—"}
+            <strong>Phone:</strong> {invoice.guest_phone || "N/A"}
           </p>
-          {invoice.guest_email && (
-            <p>
-              <strong>Email:</strong> {invoice.guest_email || "—"}
-            </p>
-          )}
+          <p>
+            <strong>Email:</strong> {invoice.guest_email || "N/A"}{" "}
+            {/* ✅ FIX: always show */}
+          </p>
         </div>
       </div>
       <hr />

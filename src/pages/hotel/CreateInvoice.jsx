@@ -72,10 +72,13 @@ function CreateInvoice() {
       alert("Please fill guest details");
       return;
     }
+    await updateInvoiceGuest(invoice.id, {
+      guest_name: guestName,     // ✅ FIX: object format
+      guest_phone: guestPhone,   // ✅ FIX
+      guest_email: guestEmail,   // ✅ FIX
+    });
 
-    await updateInvoiceGuest(invoice.id, guestName, guestPhone, guestEmail);
-
-    navigate(`/dashboard/invoices/${invoice.id}`);
+    navigate(`/dashboard/invoices/${invoice.id}`); // unchanged
   };
 
   if (!hotel) return <p>Loading...</p>;
