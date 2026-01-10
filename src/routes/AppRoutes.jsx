@@ -23,7 +23,9 @@ import Hotels from "../pages/admin/Hotels";
 /* Hotel Pages */
 import Dashboard from "../pages/hotel/Dashboard";
 import Rooms from "../pages/hotel/Rooms";
-import Invoices from "../pages/hotel/Invoices";
+import CreateInvoice from "../pages/hotel/CreateInvoice";
+import AllInvoices from "../pages/hotel/AllInvoices";
+import FinalInvoice from "../pages/hotel/FinalInvoice";
 import CompleteProfile from "../pages/hotel/CompleteProfile";
 
 import RoleRedirect from "../components/common/RoleRedirect";
@@ -73,11 +75,31 @@ function AppRoutes() {
           />
 
           <Route
-            path="/dashboard/invoices"
+            path="/dashboard/invoices/new"
             element={
               <ProtectedRoute role="hotel">
                 <Header />
-                <Invoices />
+                <CreateInvoice />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/dashboard/invoices/list"
+            element={
+              <ProtectedRoute role="hotel">
+                <Header />
+                <AllInvoices />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/dashboard/invoices/:id"
+            element={
+              <ProtectedRoute role="hotel">
+                <Header />
+                <FinalInvoice />
               </ProtectedRoute>
             }
           />

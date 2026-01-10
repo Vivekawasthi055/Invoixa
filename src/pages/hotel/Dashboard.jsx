@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../components/common/AuthContext";
 import { getProfile } from "../../services/profileService";
 
@@ -14,11 +14,22 @@ function Dashboard() {
         navigate("/complete-profile", { replace: true });
       }
     };
-
     checkProfile();
   }, []);
 
-  return <h1>Hotel Dashboard</h1>;
+  return (
+    <main style={{ padding: 20 }}>
+      <h1>Hotel Dashboard</h1>
+
+      <button>
+        <Link to="/dashboard/invoices/new">➕ Create New Invoice</Link>
+      </button>
+
+      <button style={{ marginLeft: 10 }}>
+        <Link to="/dashboard/invoices/list">📄 All Invoices</Link>
+      </button>
+    </main>
+  );
 }
 
 export default Dashboard;
