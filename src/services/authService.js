@@ -13,7 +13,7 @@ export const logoutUser = async () => {
 
 export const forgotPassword = async (email) => {
   return await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: "RESET_PASSWORD_REDIRECT",
+    redirectTo: "https://invoixa-two.vercel.app/reset-password",
   });
 };
 
