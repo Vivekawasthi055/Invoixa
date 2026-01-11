@@ -4,6 +4,14 @@ import { supabase } from "./supabaseClient";
    CREATE INVOICE
 ========================= */
 export const createInvoice = async (payload) => {
+  // 🔒 STEP 2.3.2 — fetch current hotel signature (SNAPSHOT)
+  const { data: hotel } = await supabase
+    .from("hotels")
+    .select("signature_url")
+    .eq("id", payload.hotel_id)
+    .single();
+
+    
   return await supabase
     .from("invoices")
     .insert({
@@ -13,6 +21,13 @@ export const createInvoice = async (payload) => {
       logo_url: payload.logo_url,
 
       invoice_number: payload.invoice_number,
+
+      /* 🔒 GST SNAPSHOT */
+      has_gst: payload.has_gst,
+      gst_percentage: payload.gst_percentage,
+
+      // 🔒 Snapshot signature into invoice
+      signature_url: hotel?.signature_url || null,
 
       guest_name: "",
       guest_phone: "",

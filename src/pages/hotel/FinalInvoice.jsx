@@ -17,9 +17,6 @@ function FinalInvoice() {
   const [discountType, setDiscountType] = useState("flat");
   const [discountValue, setDiscountValue] = useState(0);
 
-  /* ================= GST ================= */
-  const [gstPercent, setGstPercent] = useState(0);
-
   const isPaid = invoice?.status === "Paid";
 
   useEffect(() => {
@@ -61,6 +58,10 @@ function FinalInvoice() {
 
     setInvoice(invoiceData);
 
+    /* ✅ Restore saved discount on reload */
+    setDiscountType(invoiceData.discount_type || "flat");
+    setDiscountValue(Number(invoiceData.discount_value || 0));
+
     const { data: hotelData } = await supabase
       .from("hotels")
       .select("*")
@@ -68,19 +69,6 @@ function FinalInvoice() {
       .single();
 
     setHotel(hotelData);
-
-    /* ✅ GST % fetch */
-    if (hotelData?.has_gst && hotelData?.gst_percentage) {
-      setGstPercent(Number(hotelData.gst_percentage));
-    } else {
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("gst_percentage")
-        .eq("user_id", hotelData.user_id)
-        .single();
-
-      setGstPercent(Number(profile?.gst_percentage || 0));
-    }
 
     const { data: roomData } = await supabase
       .from("invoice_rooms")
@@ -127,7 +115,9 @@ function FinalInvoice() {
 
   const taxableAmount = invoiceSubtotal - discountAmount;
 
-  const gstAmount = hotel?.has_gst ? (taxableAmount * gstPercent) / 100 : 0;
+  const gstAmount = invoice?.has_gst
+    ? (taxableAmount * Number(invoice.gst_percentage || 0)) / 100
+    : 0;
 
   const grandTotal = taxableAmount + gstAmount;
 
@@ -150,7 +140,7 @@ function FinalInvoice() {
           {hotel.phone} {hotel.email && ` | ${hotel.email}`}
         </p>
 
-        {hotel.has_gst && (
+        {invoice.has_gst && (
           <p>
             <strong>GSTIN:</strong> {hotel.gst_number}
           </p>
@@ -253,14 +243,14 @@ function FinalInvoice() {
             <td align="right">₹{discountAmount}</td>
           </tr>
 
-          {hotel.has_gst && (
+          {invoice.has_gst && (
             <>
               <tr>
                 <td>Taxable Amount</td>
                 <td align="right">₹{taxableAmount}</td>
               </tr>
               <tr>
-                <td>GST ({gstPercent}%)</td>
+                <td>GST ({invoice.gst_percentage}%)</td>
                 <td align="right">₹{gstAmount}</td>
               </tr>
             </>

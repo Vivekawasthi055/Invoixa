@@ -32,6 +32,10 @@ function Dashboard() {
       <button style={{ marginLeft: 10 }}>
         <Link to="/dashboard/rooms">Rooms</Link>
       </button>
+
+      <button style={{ marginLeft: 10 }}>
+        <Link to="/dashboard/profilesettings">Profile & Settings</Link>
+      </button>
     </main>
   );
 }

@@ -22,6 +22,7 @@ import Hotels from "../pages/admin/Hotels";
 
 /* Hotel Pages */
 import Dashboard from "../pages/hotel/Dashboard";
+import HotelProfileSettings from "../pages/hotel/HotelProfileSettings";
 import Rooms from "../pages/hotel/Rooms";
 import CreateInvoice from "../pages/hotel/CreateInvoice";
 import AllInvoices from "../pages/hotel/AllInvoices";
@@ -100,6 +101,15 @@ function AppRoutes() {
               <ProtectedRoute role="hotel">
                 <Header />
                 <FinalInvoice />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/profilesettings"
+            element={
+              <ProtectedRoute role="hotel">
+                <Header />
+                <HotelProfileSettings />
               </ProtectedRoute>
             }
           />

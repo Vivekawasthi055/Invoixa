@@ -13,7 +13,7 @@ export const logoutUser = async () => {
 
 export const forgotPassword = async (email) => {
   return await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: "http://localhost:5173/reset-password",
+    redirectTo: "RESET_PASSWORD_REDIRECT",
   });
 };
 

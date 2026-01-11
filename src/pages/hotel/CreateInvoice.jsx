@@ -23,7 +23,9 @@ function CreateInvoice() {
     const loadHotel = async () => {
       const { data } = await supabase
         .from("hotels")
-        .select("id, hotel_code, hotel_name, logo_url, address, email, phone")
+        .select(
+          "id, hotel_code, hotel_name, logo_url, address, email, phone, has_gst, gst_percentage"
+        ) // ✅ GST fields added
         .eq("user_id", user.id)
         .single();
 
@@ -52,6 +54,10 @@ function CreateInvoice() {
       hotel_name: hotel.hotel_name,
       logo_url: hotel.logo_url,
       invoice_number: invoiceNumber,
+
+      /* 🔒 GST SNAPSHOT */
+      has_gst: hotel.has_gst,
+      gst_percentage: hotel.gst_percentage,
     });
 
     if (error) {
@@ -73,9 +79,9 @@ function CreateInvoice() {
       return;
     }
     await updateInvoiceGuest(invoice.id, {
-      guest_name: guestName,     // ✅ FIX: object format
-      guest_phone: guestPhone,   // ✅ FIX
-      guest_email: guestEmail,   // ✅ FIX
+      guest_name: guestName, // ✅ FIX: object format
+      guest_phone: guestPhone, // ✅ FIX
+      guest_email: guestEmail, // ✅ FIX
     });
 
     navigate(`/dashboard/invoices/${invoice.id}`); // unchanged
