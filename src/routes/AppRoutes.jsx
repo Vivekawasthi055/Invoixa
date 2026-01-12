@@ -18,6 +18,7 @@ import Header from "../components/common/Header"; // Dashboard/Admin header
 
 /* Admin Pages */
 import AdminDashboard from "../pages/admin/AdminDashboard";
+import CreateHotel from "../pages/admin/CreateHotel";
 import Hotels from "../pages/admin/Hotels";
 
 /* Hotel Pages */
@@ -123,6 +124,15 @@ function AppRoutes() {
               <ProtectedRoute role="admin">
                 <Header />
                 <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/create-hotel"
+            element={
+              <ProtectedRoute role="admin">
+                <Header />
+                <CreateHotel />
               </ProtectedRoute>
             }
           />

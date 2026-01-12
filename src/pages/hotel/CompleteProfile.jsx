@@ -126,19 +126,6 @@ function CompleteProfile() {
     // 🖼 Upload logo (optional)
     const logoUrl = uploadLogoNow ? await uploadLogo() : null;
 
-    // 🏨 UPDATE HOTELS (SOURCE OF TRUTH)
-    // await supabase
-    //   .from("hotels")
-    //   .update({
-    //     hotel_name: form.hotel_name,
-    //     address: form.address,
-    //     has_gst: form.has_gst,
-    //     gst_number: form.has_gst ? form.gst_number : null,
-    //     gst_percentage: form.has_gst ? form.gst_percentage : null,
-    //     logo_url: logoUrl,
-    //   })
-    //   .eq("user_id", user.id);
-
     // 👤 UPDATE PROFILE
     await supabase
       .from("profiles")
@@ -153,21 +140,6 @@ function CompleteProfile() {
         password_set: true,
       })
       .eq("id", user.id);
-
-    // 🛏️ SYNC ROOMS
-    // await supabase
-    //   .from("rooms")
-    //   .update({ hotel_name: form.hotel_name })
-    //   .eq("hotel_code", hotelCode);
-
-    // 🧾 SYNC INVOICES
-    // await supabase
-    //   .from("invoices")
-    //   .update({
-    //     hotel_name: form.hotel_name,
-    //     logo_url: logoUrl,
-    //   })
-    //   .eq("hotel_code", hotelCode);
 
     navigate("/dashboard");
   };

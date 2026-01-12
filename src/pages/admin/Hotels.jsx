@@ -32,7 +32,7 @@ function Hotels() {
   return (
     <>
       <Helmet>
-        <title>Hotels – Admin | Invoixa</title>
+        <title>Hotels List – Admin | Invoixa</title>
       </Helmet>
 
       <main className="hotels-page">
