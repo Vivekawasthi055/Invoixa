@@ -4,30 +4,44 @@ import { supabase } from "./supabaseClient";
    CREATE INVOICE
 ========================= */
 export const createInvoice = async (payload) => {
-  // 🔒 STEP 2.3.2 — fetch current hotel signature (SNAPSHOT)
+  // 🔒 STEP-1: fetch full hotel snapshot
   const { data: hotel } = await supabase
     .from("hotels")
-    .select("signature_url")
+    .select(
+      `
+      hotel_name,
+      address,
+      email,
+      phone,
+      logo_url,
+      signature_url,
+      has_gst,
+      gst_number,
+      gst_percentage
+    `
+    )
     .eq("id", payload.hotel_id)
     .single();
 
-    
   return await supabase
     .from("invoices")
     .insert({
       hotel_id: payload.hotel_id,
       hotel_code: payload.hotel_code,
-      hotel_name: payload.hotel_name,
-      logo_url: payload.logo_url,
+
+      // 🔒 STEP-1 SNAPSHOT FIELDS
+      hotel_name: hotel.hotel_name,
+      hotel_address: hotel.address,
+      hotel_email: hotel.email,
+      hotel_phone: hotel.phone,
+      hotel_logo_url: hotel.logo_url,
+      hotel_signature_url: hotel.signature_url,
+
+      has_gst: hotel.has_gst,
+      gst_number: hotel.gst_number,
+      gst_percentage: hotel.gst_percentage,
 
       invoice_number: payload.invoice_number,
-
-      /* 🔒 GST SNAPSHOT */
-      has_gst: payload.has_gst,
-      gst_percentage: payload.gst_percentage,
-
-      // 🔒 Snapshot signature into invoice
-      signature_url: hotel?.signature_url || null,
 
       guest_name: "",
       guest_phone: "",

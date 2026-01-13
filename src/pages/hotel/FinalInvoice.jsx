@@ -7,7 +7,9 @@ function FinalInvoice() {
   const { id } = useParams();
 
   const [invoice, setInvoice] = useState(null);
-  const [hotel, setHotel] = useState(null);
+
+  // const [hotel, setHotel] = useState(null);
+
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -62,14 +64,6 @@ function FinalInvoice() {
     setDiscountType(invoiceData.discount_type || "flat");
     setDiscountValue(Number(invoiceData.discount_value || 0));
 
-    const { data: hotelData } = await supabase
-      .from("hotels")
-      .select("*")
-      .eq("id", invoiceData.hotel_id)
-      .single();
-
-    setHotel(hotelData);
-
     const { data: roomData } = await supabase
       .from("invoice_rooms")
       .select(
@@ -122,7 +116,7 @@ function FinalInvoice() {
   const grandTotal = taxableAmount + gstAmount;
 
   if (loading) return <p>Loading invoice...</p>;
-  if (!invoice || !hotel) return <p>Invoice not found</p>;
+  if (!invoice || !invoice) return <p>Invoice not found</p>;
 
   return (
     <main style={{ padding: 20, maxWidth: 900, margin: "auto" }}>
@@ -133,16 +127,20 @@ function FinalInvoice() {
       <hr />
       {/* ================= HEADER ================= */}
       <div style={{ textAlign: "center" }}>
-        {hotel.logo_url && <img src={hotel.logo_url} alt="Logo" height="80" />}
-        <h2>{hotel.hotel_name}</h2>
-        <p>{hotel.address}</p>
+        {invoice.hotel_logo_url && (
+          <img src={invoice.hotel_logo_url} alt="Logo" height="80" />
+        )}
+
+        <h2>{invoice.hotel_name}</h2>
+        <p>{invoice.hotel_address}</p>
         <p>
-          {hotel.phone} {hotel.email && ` | ${hotel.email}`}
+          {invoice.hotel_phone}{" "}
+          {invoice.hotel_email && ` | ${invoice.hotel_email}`}
         </p>
 
         {invoice.has_gst && (
           <p>
-            <strong>GSTIN:</strong> {hotel.gst_number}
+            <strong>GSTIN:</strong> {invoice.gst_number}
           </p>
         )}
       </div>
@@ -154,7 +152,14 @@ function FinalInvoice() {
             <strong>Invoice No:</strong> {invoice.invoice_number}
           </p>
           <p>
-            <strong>Date:</strong> {invoice.created_at?.split("T")[0]}
+            <strong>Date:</strong>{" "}
+            {invoice.created_at
+              ? new Date(invoice.created_at).toLocaleString("en-IN", {
+                  timeZone: "Asia/Kolkata",
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                })
+              : ""}
           </p>
         </div>
 
@@ -301,8 +306,8 @@ function FinalInvoice() {
                 subtotal: invoiceSubtotal,
                 discount_type: discountType,
                 discount_value: discountValue,
-                taxable_amount: hotel.has_gst ? taxableAmount : null,
-                gst_amount: hotel.has_gst ? gstAmount : null,
+                taxable_amount: invoice.has_gst ? taxableAmount : null,
+                gst_amount: invoice.has_gst ? gstAmount : null,
                 grand_total: grandTotal,
                 payment_mode: paymentModes.join(", "),
                 status: "Paid",

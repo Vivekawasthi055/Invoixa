@@ -48,14 +48,35 @@ function CreateInvoice() {
       return;
     }
 
+    // const { data, error } = await createInvoice({
+    //   hotel_id: hotel.id,
+    //   hotel_code: hotel.hotel_code,
+
+    //   hotel_name: hotel.hotel_name,
+    //   logo_url: hotel.logo_url,
+    //   invoice_number: invoiceNumber,
+
+    //   /* 🔒 GST SNAPSHOT */
+    //   has_gst: hotel.has_gst,
+    //   gst_percentage: hotel.gst_percentage,
+    // });
+
+    // 🔒 STEP-1: Added snapshot fields only
+
     const { data, error } = await createInvoice({
       hotel_id: hotel.id,
       hotel_code: hotel.hotel_code,
+
+      // 🔒 HOTEL SNAPSHOT (LOCKED)
       hotel_name: hotel.hotel_name,
-      logo_url: hotel.logo_url,
+      hotel_address: hotel.address,
+      hotel_email: hotel.email,
+      hotel_phone: hotel.phone,
+      hotel_logo_url: hotel.logo_url,
+
       invoice_number: invoiceNumber,
 
-      /* 🔒 GST SNAPSHOT */
+      // 🔒 GST SNAPSHOT
       has_gst: hotel.has_gst,
       gst_percentage: hotel.gst_percentage,
     });
@@ -120,8 +141,19 @@ function CreateInvoice() {
             <p>
               <strong>Invoice No:</strong> {invoice.invoice_number}
             </p>
-            <p>
+            {/* <p>
               <strong>Date:</strong> {invoice.created_at?.split("T")[0]}
+            </p> */}
+
+            <p>
+              <strong>Date:</strong>{" "}
+              {invoice.created_at
+                ? new Date(invoice.created_at).toLocaleString("en-IN", {
+                    timeZone: "Asia/Kolkata",
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                  })
+                : ""}
             </p>
           </div>
 
