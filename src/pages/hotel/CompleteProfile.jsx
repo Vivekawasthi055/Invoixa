@@ -12,6 +12,9 @@ function CompleteProfile() {
   const [hotelCode, setHotelCode] = useState(null);
   const [logoFile, setLogoFile] = useState(null);
 
+  const [uploadSignatureNow, setUploadSignatureNow] = useState(false);
+  const [signatureFile, setSignatureFile] = useState(null);
+
   const [form, setForm] = useState({
     hotel_name: "",
     email: "",
@@ -23,9 +26,11 @@ function CompleteProfile() {
     password: "",
     confirm_password: "",
     logo_url: "",
+    signature_url: "",
   });
 
-  // 🔹 Load profile + hotel_code
+  /* ================= LOAD PROFILE ================= */
+
   useEffect(() => {
     const loadData = async () => {
       const {
@@ -75,19 +80,39 @@ function CompleteProfile() {
     setForm({ ...form, [name]: type === "checkbox" ? checked : value });
   };
 
-  // 🔹 Upload logo (BY HOTEL CODE)
+  /* ================= LOGO → REAL PNG CONVERSION ================= */
+
+  const convertLogoToPng = (file) =>
+    new Promise((resolve) => {
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+
+        canvas.toBlob((blob) => {
+          resolve(new File([blob], "logo.png", { type: "image/png" }));
+        }, "image/png");
+      };
+    });
+
   const uploadLogo = async () => {
     if (!logoFile || !hotelCode) return null;
 
-    const ext = logoFile.name.split(".").pop();
-    const filePath = `${hotelCode}/logo.${ext}`;
+    const pngLogo = await convertLogoToPng(logoFile);
+    const filePath = `${hotelCode}/logo.png`;
 
-    const { error: uploadError } = await supabase.storage
+    const { error } = await supabase.storage
       .from("hotel-logos")
-      .upload(filePath, logoFile, { upsert: true });
+      .upload(filePath, pngLogo, { upsert: true });
 
-    if (uploadError) {
-      alert(uploadError.message);
+    if (error) {
+      alert(error.message);
       return null;
     }
 
@@ -98,14 +123,67 @@ function CompleteProfile() {
     return data.publicUrl;
   };
 
-  // 🔹 Submit
+  /* ================= SIGNATURE (UNCHANGED) ================= */
+
+  const removeBackground = (file) =>
+    new Promise((resolve) => {
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+
+        for (let i = 0; i < data.length; i += 4) {
+          if (data[i] > 240 && data[i + 1] > 240 && data[i + 2] > 240) {
+            data[i + 3] = 0;
+          }
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+
+        canvas.toBlob((blob) => {
+          resolve(new File([blob], "signature.png", { type: "image/png" }));
+        });
+      };
+    });
+
+  const uploadSignature = async () => {
+    if (!signatureFile || !hotelCode) return null;
+
+    const processedFile = await removeBackground(signatureFile);
+    const filePath = `${hotelCode}/signature.png`;
+
+    const { error } = await supabase.storage
+      .from("hotel-signatures")
+      .upload(filePath, processedFile, { upsert: true });
+
+    if (error) {
+      alert(error.message);
+      return null;
+    }
+
+    const { data } = supabase.storage
+      .from("hotel-signatures")
+      .getPublicUrl(filePath);
+
+    return data.publicUrl;
+  };
+
+  /* ================= SUBMIT ================= */
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!PASSWORD_REGEX.test(form.password)) {
-      alert(
-        "Password must be at least 8 characters and contain at least 1 letter and 1 number"
-      );
+      alert("Password must be at least 8 characters with letter & number");
       return;
     }
 
@@ -120,13 +198,11 @@ function CompleteProfile() {
       data: { user },
     } = await supabase.auth.getUser();
 
-    // 🔐 Update password
     await supabase.auth.updateUser({ password: form.password });
 
-    // 🖼 Upload logo (optional)
     const logoUrl = uploadLogoNow ? await uploadLogo() : null;
+    const signatureUrl = uploadSignatureNow ? await uploadSignature() : null;
 
-    // 👤 UPDATE PROFILE
     await supabase
       .from("profiles")
       .update({
@@ -136,6 +212,7 @@ function CompleteProfile() {
         gst_number: form.has_gst ? form.gst_number : null,
         gst_percentage: form.has_gst ? form.gst_percentage : null,
         logo_url: logoUrl,
+        signature_url: signatureUrl,
         profile_completed: true,
         password_set: true,
       })
@@ -217,6 +294,23 @@ function CompleteProfile() {
           />
         )}
 
+        <label>
+          <input
+            type="checkbox"
+            checked={uploadSignatureNow}
+            onChange={(e) => setUploadSignatureNow(e.target.checked)}
+          />
+          Want to upload your signature?
+        </label>
+
+        {uploadSignatureNow && (
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setSignatureFile(e.target.files[0])}
+          />
+        )}
+
         <hr />
 
         <input
@@ -233,14 +327,11 @@ function CompleteProfile() {
           onChange={handleChange}
           required
         />
-
         <p className="cp-password-hint">
+          {" "}
           Password must be at least 8 characters. <br /> Contain at least 1
-          letter (a–z / A–Z) and 1 number (0–9).
-          <br />
-          Special characters are optional (@ # $ % ! etc.).
+          letter and 1 number.{" "}
         </p>
-
         <button type="submit">Save & Continue</button>
       </form>
     </main>
