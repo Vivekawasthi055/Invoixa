@@ -115,7 +115,15 @@ function FinalInvoice() {
 
   const grandTotal = taxableAmount + gstAmount;
 
-  if (loading) return <p>Loading invoice...</p>;
+  if (loading)
+    return (
+      <main className="all-pages">
+        <div className="all-pages-loading-card">
+          <div className="all-pages-spinner"></div>
+          <p className="loading-title">Loading invoice…</p>
+        </div>
+      </main>
+    );
   if (!invoice || !invoice) return <p>Invoice not found</p>;
 
   return (
@@ -190,7 +198,20 @@ function FinalInvoice() {
           <table width="100%" border="1" cellPadding="8">
             <tbody>
               <tr>
-                <td>Room Charges</td>
+                <td>
+                  Room Charges
+                  {!room.same_rate_all_nights && (
+                    <div style={{ fontSize: 12, color: "#555", marginTop: 4 }}>
+                      {/* 🔒 SHOW PER-NIGHT RATES WHEN SAME RATE = NO */}
+                      {room.invoice_room_rates.map((r, idx) => (
+                        <div key={r.id}>
+                          Night {idx + 1} ₹{r.rate}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </td>
+
                 <td align="right">₹{roomCharges(room)}</td>
               </tr>
 

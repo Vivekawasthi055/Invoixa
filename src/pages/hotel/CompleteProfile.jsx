@@ -221,6 +221,8 @@ function CompleteProfile() {
     navigate("/dashboard");
   };
 
+   /* ================= LOADING ================= */
+
   if (loading)
     return (
       <main className="all-pages">

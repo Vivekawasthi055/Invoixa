@@ -85,7 +85,15 @@ function ProtectedRoute({ children, role }) {
     checkAccess();
   }, [user, loading, role]);
 
-  if (loading || checking) return <div>Checking access...</div>;
+  if (loading || checking)
+    return (
+      <main className="all-pages">
+        <div className="all-pages-loading-card">
+          <div className="all-pages-spinner"></div>
+          <p className="loading-title">Checking access…</p>
+        </div>
+      </main>
+    );
 
   if (!allowed) return <Navigate to="/login" replace />;
 

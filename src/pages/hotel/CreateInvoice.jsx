@@ -108,7 +108,16 @@ function CreateInvoice() {
     navigate(`/dashboard/invoices/${invoice.id}`); // unchanged
   };
 
-  if (!hotel) return <p>Loading...</p>;
+  if (!hotel)
+    return (
+      <main className="all-pages">
+        <div className="all-pages-loading-card">
+          <div className="all-pages-spinner"></div>
+          <p className="loading-title">Opening…</p>
+          <p className="loading-sub">Please wait a moment</p>
+        </div>
+      </main>
+    );
 
   return (
     <main style={{ padding: 20 }}>

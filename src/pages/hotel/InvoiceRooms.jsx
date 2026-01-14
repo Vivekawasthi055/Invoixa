@@ -56,10 +56,11 @@ function InvoiceRooms({ invoice }) {
 
     const room = rooms.find((r) => r.id === roomId);
 
-    const { error } = await addInvoiceRoom({
+    // 🔒 STEP-1: ADD ROOM & GET ID
+    const { data: invoiceRoom, error } = await addInvoiceRoom({
       invoice_id: invoice.id,
       room_id: room.id,
-      room_number: room.room_number, // ✅ FIX
+      room_number: room.room_number,
       room_name: room.room_name,
       checkin_date: checkin,
       checkout_date: checkout,
@@ -70,23 +71,26 @@ function InvoiceRooms({ invoice }) {
       hotel_code: invoice.hotel_code,
     });
 
-    if (error) {
+    if (error || !invoiceRoom) {
       alert("Failed to add room");
       return;
     }
 
+    // 🔒 STEP-2: ADD PER-NIGHT RATES (ONLY IF DIFFERENT)
     if (!sameRate) {
       let date = new Date(checkin);
+
       const rows = nightRates.map((r) => {
         const row = {
-          invoice_room_id: invoice.id,
+          invoice_room_id: invoiceRoom.id, // ✅ FIXED
+          hotel_code: invoice.hotel_code, // ✅ FIX: REQUIRED
           date: date.toISOString().split("T")[0],
-          rate: r,
-          // hotel_code: invoice.hotel_code,
+          rate: Number(r || 0),
         };
         date.setDate(date.getDate() + 1);
         return row;
       });
+
       await addInvoiceRoomRates(rows);
     }
 
