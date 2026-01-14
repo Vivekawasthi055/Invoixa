@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../services/supabaseClient";
 import { useNavigate } from "react-router-dom";
+import { logoutUser } from "../../services/authService";
+import "../../styles/HotelProfileSettings.css";
 
 const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
@@ -22,6 +24,9 @@ function HotelProfileSettings() {
     logo_url: "",
     signature_url: "",
   });
+
+  // ✅ FIX: original data backup for Cancel buttons
+  const [originalForm, setOriginalForm] = useState(null);
 
   /* ================= EDIT MODES ================= */
 
@@ -76,7 +81,8 @@ function HotelProfileSettings() {
 
       setHotelCode(hotel?.hotel_code || null);
 
-      setForm({
+      // ✅ FIX: store loaded data once & reuse
+      const loadedForm = {
         hotel_code: hotel.hotel_code,
         hotel_name: profile.hotel_name || "",
         email: profile.email || "",
@@ -87,7 +93,10 @@ function HotelProfileSettings() {
         gst_percentage: profile.gst_percentage || "",
         logo_url: profile.logo_url || "",
         signature_url: profile.signature_url || "",
-      });
+      };
+
+      setForm(loadedForm);
+      setOriginalForm(loadedForm); // ✅ FIX: backup original values
 
       setLoading(false);
     };
@@ -208,10 +217,14 @@ function HotelProfileSettings() {
     } = await supabase.auth.getUser();
 
     await supabase.from("profiles").update(data).eq("id", user.id);
+
     setMsg("Updated successfully");
     setEditName(false);
     setEditAddress(false);
     setEditGST(false);
+
+    // ✅ FIX: update original backup after successful update
+    setOriginalForm((prev) => ({ ...prev, ...data }));
   };
 
   /* ================= PASSWORD CHANGE ================= */
@@ -289,202 +302,359 @@ function HotelProfileSettings() {
     setShowDeleteConfirm(false);
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <main className="all-pages">
+        <div className="all-pages-loading-card">
+          <div className="all-pages-spinner"></div>
+          <p className="loading-title">Opening your Profile & Settings</p>
+          <p className="loading-sub">Please wait a moment</p>
+        </div>
+      </main>
+    );
 
   return (
-    <main style={{ maxWidth: 900, margin: "auto", padding: 20 }}>
-      <h2>Hotel Profile & Settings</h2>
+    <main className="settings-page">
+      <h2 className="settings-page-title">Hotel Profile & Settings</h2>
 
-      <h3>Hotel Information</h3>
-      <p>
-        <strong>Hotel Code:</strong> {form.hotel_code}
-      </p>
-      <p>
-        <strong>Hotel Name:</strong> {form.hotel_name}
-      </p>
-      {!editName ? (
-        <button onClick={() => setEditName(true)}>Update Name</button>
-      ) : (
-        <>
-          <input
-            name="hotel_name"
-            value={form.hotel_name}
-            onChange={handleChange}
-          />
-          <button
-            onClick={() => updateProfileField({ hotel_name: form.hotel_name })}
-          >
-            Update
-          </button>
-          <button onClick={() => setEditName(false)}>Cancel</button>
-        </>
-      )}
+      {/* HOTEL INFO */}
+      <section className="settings-card">
+        <h3 className="settings-card-title">Hotel Information</h3>
 
-      <p>
-        <strong>Email:</strong> {form.email}
-      </p>
-      <p>
-        <strong>Phone:</strong> {form.phone}
-      </p>
+        <div className="settings-info-row">
+          <span>Hotel Code</span>
+          <strong>{form.hotel_code}</strong>
+        </div>
 
-      <p>
-        <strong>Address:</strong> {form.address}
-      </p>
-      {!editAddress ? (
-        <button onClick={() => setEditAddress(true)}>Update Address</button>
-      ) : (
-        <>
-          <textarea
-            name="address"
-            value={form.address}
-            onChange={handleChange}
-          />
-          <button onClick={() => updateProfileField({ address: form.address })}>
-            Update
-          </button>
-          <button onClick={() => setEditAddress(false)}>Cancel</button>
-        </>
-      )}
-
-      <hr />
-
-      <h3>Brand Assets</h3>
-
-      {form.logo_url && <img src={form.logo_url} height="80" />}
-      <input type="file" onChange={(e) => setLogoFile(e.target.files[0])} />
-      <button disabled={uploading} onClick={uploadLogo}>
-        Upload Logo
-      </button>
-
-      {form.signature_url && <img src={form.signature_url} height="60" />}
-      <input
-        type="file"
-        onChange={(e) => setSignatureFile(e.target.files[0])}
-      />
-      <button disabled={uploading} onClick={uploadSignature}>
-        Upload Signature
-      </button>
-
-      <hr />
-
-      <h3>GST</h3>
-      {form.has_gst ? (
-        <p>
-          <strong>Yes</strong> | GST Number: {form.gst_number} | GST
-          Percentage(%): {form.gst_percentage}%
-        </p>
-      ) : (
-        <p>
-          <strong>No</strong>
-        </p>
-      )}
-
-      {!editGST ? (
-        <button onClick={() => setEditGST(true)}>Update GST Settings</button>
-      ) : (
-        <>
-          <label>
-            <input
-              type="checkbox"
-              checked={form.has_gst}
-              onChange={(e) => setForm({ ...form, has_gst: e.target.checked })}
-            />{" "}
-            GST Enabled
-          </label>
-
-          {form.has_gst && (
+        <div className="settings-info-row">
+          <span>Hotel Name</span>
+          {!editName ? (
+            <>
+              <strong>{form.hotel_name}</strong>
+              <button
+                className="settings-btn"
+                onClick={() => setEditName(true)}
+              >
+                Edit
+              </button>
+            </>
+          ) : (
             <>
               <input
-                placeholder="GST Number"
-                value={form.gst_number}
-                onChange={(e) =>
-                  setForm({ ...form, gst_number: e.target.value })
-                }
+                className="settings-input"
+                name="hotel_name"
+                value={form.hotel_name}
+                onChange={handleChange}
               />
-              <input
-                placeholder="GST %"
-                value={form.gst_percentage}
-                onChange={(e) =>
-                  setForm({ ...form, gst_percentage: e.target.value })
+              <button
+                className="settings-btn"
+                onClick={() =>
+                  updateProfileField({ hotel_name: form.hotel_name })
                 }
-              />
+              >
+                Save
+              </button>
+              <button
+                className="settings-btn secondary"
+                onClick={() => {
+                  setForm((p) => ({
+                    ...p,
+                    hotel_name: originalForm.hotel_name,
+                  }));
+                  setEditName(false);
+                }}
+              >
+                Cancel
+              </button>
             </>
           )}
+        </div>
 
+        <div className="settings-info-row">
+          <span>Email</span>
+          <strong>{form.email}</strong>
+        </div>
+
+        <div className="settings-info-row">
+          <span>Phone</span>
+          <strong>{form.phone}</strong>
+        </div>
+
+        <div className="settings-info-row column">
+          <span>Address</span>
+          {!editAddress ? (
+            <>
+              <p>{form.address || "—"}</p>
+              <button
+                className="settings-btn"
+                onClick={() => setEditAddress(true)}
+              >
+                Edit
+              </button>
+            </>
+          ) : (
+            <>
+              <textarea
+                className="settings-textarea"
+                name="address"
+                value={form.address}
+                onChange={handleChange}
+              />
+              <button
+                className="settings-btn"
+                onClick={() => updateProfileField({ address: form.address })}
+              >
+                Save
+              </button>
+              <button
+                className="settings-btn secondary"
+                onClick={() => {
+                  setForm((p) => ({
+                    ...p,
+                    address: originalForm.address,
+                  }));
+                  setEditAddress(false);
+                }}
+              >
+                Cancel
+              </button>
+            </>
+          )}
+        </div>
+      </section>
+
+      <hr className="settings-divider" />
+
+      {/* BRAND */}
+      <section className="settings-card">
+        <h3 className="settings-card-title">Brand Assets</h3>
+
+        <div className="settings-asset-row">
+          {form.logo_url && <img src={form.logo_url} alt="Logo" />}
+          <input type="file" onChange={(e) => setLogoFile(e.target.files[0])} />
           <button
-            onClick={() =>
-              updateProfileField({
-                has_gst: form.has_gst,
-                gst_number: form.has_gst ? form.gst_number : null,
-                gst_percentage: form.has_gst ? form.gst_percentage : null,
-              })
-            }
+            className="settings-btn"
+            disabled={uploading}
+            onClick={uploadLogo}
           >
-            Update
+            Upload Logo
           </button>
-          <button onClick={() => setEditGST(false)}>Cancel</button>
-        </>
-      )}
+        </div>
 
-      <hr />
-      <h3>Change Password</h3>
-      <input
-        type="password"
-        placeholder="Current Password"
-        onChange={(e) => setCurrentPassword(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="New Password"
-        onChange={(e) => setNewPassword(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Confirm New Password"
-        onChange={(e) => setConfirmPassword(e.target.value)}
-      />
-      <button onClick={changePassword}>Update Password</button>
+        <div className="settings-asset-row">
+          {form.signature_url && (
+            <img src={form.signature_url} alt="Signature" />
+          )}
+          <input
+            type="file"
+            onChange={(e) => setSignatureFile(e.target.files[0])}
+          />
+          <button
+            className="settings-btn"
+            disabled={uploading}
+            onClick={uploadSignature}
+          >
+            Upload Signature
+          </button>
+        </div>
+      </section>
 
-      <button onClick={forgotPassword}>Forgot Password</button>
+      <hr className="settings-divider" />
 
-      {passwordMsg && <p style={{ color: "green" }}>{passwordMsg}</p>}
-      {passwordErr && <p style={{ color: "red" }}>{passwordErr}</p>}
+      {/* GST */}
+      <section className="settings-card">
+        <h3 className="settings-card-title">GST Settings</h3>
 
-      <hr />
+        {!editGST ? (
+          <>
+            <p className="settings-muted-text">
+              {form.has_gst
+                ? `GST Enabled • ${form.gst_number} • ${form.gst_percentage}%`
+                : "GST Not Enabled"}
+            </p>
+            <button className="settings-btn" onClick={() => setEditGST(true)}>
+              Edit GST
+            </button>
+          </>
+        ) : (
+          <>
+            <label className="settings-checkbox">
+              <input
+                type="checkbox"
+                checked={form.has_gst}
+                onChange={(e) =>
+                  setForm({ ...form, has_gst: e.target.checked })
+                }
+              />
+              <span>Enable GST</span>
+            </label>
 
-      <h3>Delete Account</h3>
+            {form.has_gst && (
+              <>
+                <input
+                  className="settings-input"
+                  placeholder="GST Number"
+                  value={form.gst_number}
+                  onChange={(e) =>
+                    setForm({ ...form, gst_number: e.target.value })
+                  }
+                />
+                <input
+                  className="settings-input"
+                  placeholder="GST %"
+                  value={form.gst_percentage}
+                  onChange={(e) =>
+                    setForm({ ...form, gst_percentage: e.target.value })
+                  }
+                />
+              </>
+            )}
 
-      {!showDeleteStep1 && (
-        <button onClick={() => setShowDeleteStep1(true)}>
+            <button
+              className="settings-btn"
+              onClick={() =>
+                updateProfileField({
+                  has_gst: form.has_gst,
+                  gst_number: form.has_gst ? form.gst_number : null,
+                  gst_percentage: form.has_gst ? form.gst_percentage : null,
+                })
+              }
+            >
+              Save
+            </button>
+
+            <button
+              className="settings-btn secondary"
+              onClick={() => {
+                setForm((p) => ({
+                  ...p,
+                  has_gst: originalForm.has_gst,
+                  gst_number: originalForm.gst_number,
+                  gst_percentage: originalForm.gst_percentage,
+                }));
+                setEditGST(false);
+              }}
+            >
+              Cancel
+            </button>
+          </>
+        )}
+      </section>
+
+      {/* SECURITY */}
+      <section className="settings-card">
+        <h3 className="settings-card-title">Security</h3>
+
+        <input
+          className="settings-input"
+          type="password"
+          placeholder="Current Password"
+          onChange={(e) => setCurrentPassword(e.target.value)}
+        />
+        <input
+          className="settings-input"
+          type="password"
+          placeholder="New Password"
+          onChange={(e) => setNewPassword(e.target.value)}
+        />
+        <input
+          className="settings-input"
+          type="password"
+          placeholder="Confirm New Password"
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+
+        <button className="settings-btn" onClick={changePassword}>
+          Update Password
+        </button>
+        <button className="settings-btn secondary" onClick={forgotPassword}>
+          Forgot Password
+        </button>
+
+        {passwordMsg && <p className="settings-success">{passwordMsg}</p>}
+        {passwordErr && <p className="settings-error">{passwordErr}</p>}
+      </section>
+
+      <hr className="settings-divider" />
+
+      {/* DELETE */}
+      <section className="settings-card danger">
+        <h3 className="settings-card-title">Delete Account</h3>
+
+        <button
+          className="settings-btn danger-btn"
+          onClick={() => setShowDeleteStep1(true)}
+        >
           Request Delete Account
         </button>
-      )}
 
-      {showDeleteStep1 && !showDeleteConfirm && (
-        <>
-          <input
-            type="password"
-            placeholder="Enter Current Password"
-            onChange={(e) => setDeletePassword(e.target.value)}
-          />
-          <button onClick={verifyDeletePassword}>Next</button>
-        </>
-      )}
+        {showDeleteStep1 && (
+          <div className="settings-modal-overlay">
+            <div className="settings-modal-box">
+              {!showDeleteConfirm ? (
+                <>
+                  <h4>Confirm Your Password</h4>
+                  <input
+                    className="settings-input"
+                    type="password"
+                    placeholder="Enter Current Password"
+                    onChange={(e) => setDeletePassword(e.target.value)}
+                  />
+                  <button
+                    className="settings-btn"
+                    onClick={verifyDeletePassword}
+                  >
+                    Next
+                  </button>
+                  <button
+                    className="settings-btn secondary"
+                    onClick={() => {
+                      setShowDeleteStep1(false);
+                      setDeletePassword("");
+                      setDeleteMsg("");
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </>
+              ) : (
+                <>
+                  <h4>Confirm Delete Account</h4>
+                  <p>
+                    Are you sure you want to delete your account?
+                    <br />
+                    This action is irreversible.
+                  </p>
+                  <button
+                    className="settings-btn danger-btn"
+                    onClick={confirmDeleteRequest}
+                  >
+                    Confirm
+                  </button>
+                  <button
+                    className="settings-btn secondary"
+                    onClick={() => {
+                      setShowDeleteConfirm(false);
+                      setShowDeleteStep1(false);
+                      setDeletePassword("");
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </>
+              )}
 
-      {showDeleteConfirm && (
-        <>
-          <p>
-            Are you sure, you want delete your account?
-            <br />
-            You cannot change this after confirmation.
-          </p>
-          <button onClick={confirmDeleteRequest}>Confirm</button>
-          <button onClick={() => setShowDeleteConfirm(false)}>Cancel</button>
-        </>
-      )}
+              {deleteMsg && <p className="settings-error">{deleteMsg}</p>}
+            </div>
+          </div>
+        )}
+      </section>
 
-      {deleteMsg && <p>{deleteMsg}</p>}
-      {msg && <p style={{ color: "green" }}>{msg}</p>}
+      {msg && <p className="settings-success">{msg}</p>}
+
+      <button className="settings-btn secondary" onClick={logoutUser}>
+        Logout
+      </button>
     </main>
   );
 }

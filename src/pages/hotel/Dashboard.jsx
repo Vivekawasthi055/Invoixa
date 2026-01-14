@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../components/common/AuthContext";
 import { getProfile } from "../../services/profileService";
+import "../../styles/dashboard.css"; // ✅ UI only
 
 function Dashboard() {
   const { user } = useAuth();
@@ -18,24 +19,35 @@ function Dashboard() {
   }, []);
 
   return (
-    <main style={{ padding: 20 }}>
-      <h1>Hotel Dashboard</h1>
+    <main className="db-page">
+      {/* Header */}
+      <div className="db-header">
+        <h1>Hotel Dashboard</h1>
+        <p>Manage invoices, rooms & hotel settings from one place</p>
+      </div>
 
-      <button>
-        <Link to="/dashboard/invoices/new">➕ Create New Invoice</Link>
-      </button>
+      {/* Action Cards */}
+      <div className="db-grid">
+        <Link to="/dashboard/invoices/new" className="db-card db-card-primary">
+          <h3>➕ Create Invoice</h3>
+          <p>Generate a new bill for your guest</p>
+        </Link>
 
-      <button style={{ marginLeft: 10 }}>
-        <Link to="/dashboard/invoices/list">📄 All Invoices</Link>
-      </button>
+        <Link to="/dashboard/invoices/list" className="db-card">
+          <h3>📄 All Invoices</h3>
+          <p>View & manage all generated invoices</p>
+        </Link>
 
-      <button style={{ marginLeft: 10 }}>
-        <Link to="/dashboard/rooms">Rooms</Link>
-      </button>
+        <Link to="/dashboard/rooms" className="db-card">
+          <h3>🛏 Rooms</h3>
+          <p>Add rooms & manage availability</p>
+        </Link>
 
-      <button style={{ marginLeft: 10 }}>
-        <Link to="/dashboard/profilesettings">Profile & Settings</Link>
-      </button>
+        <Link to="/dashboard/profilesettings" className="db-card">
+          <h3>⚙️ Profile & Settings</h3>
+          <p>Hotel details, GST & preferences</p>
+        </Link>
+      </div>
     </main>
   );
 }

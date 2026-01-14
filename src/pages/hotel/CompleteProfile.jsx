@@ -221,119 +221,179 @@ function CompleteProfile() {
     navigate("/dashboard");
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <main className="all-pages">
+        <div className="all-pages-loading-card">
+          <div className="all-pages-spinner"></div>
+          <p className="loading-title">Preparing your profile setup…</p>
+          <p className="loading-sub">Please wait a moment</p>
+        </div>
+      </main>
+    );
 
   return (
-    <main className="cp-container">
-      <h1>Complete Hotel Profile</h1>
+    <main className="cp-page">
+      <div className="cp-container">
+        {/* Header */}
+        <div className="cp-header">
+          <h1>Complete Your Hotel Profile</h1>
+          <p>
+            Just a few more details to unlock your dashboard and start billing
+            🚀
+          </p>
+        </div>
 
-      <form onSubmit={handleSubmit} className="cp-form">
-        <input
-          name="hotel_name"
-          placeholder="Enter your hotel name"
-          value={form.hotel_name}
-          onChange={handleChange}
-          required
-        />
+        <form onSubmit={handleSubmit} className="cp-form">
+          {/* ================= HOTEL DETAILS ================= */}
+          <div className="cp-section">
+            <h3>🏨 Hotel Details</h3>
 
-        <input value={form.email} disabled />
-        <input value={form.phone} disabled />
-
-        <label>
-          <input
-            type="checkbox"
-            name="has_gst"
-            checked={form.has_gst}
-            onChange={handleChange}
-          />
-          Do you have GST?
-        </label>
-
-        {form.has_gst && (
-          <>
+            <h3 className="cp-section-title">Hotel Name</h3>
             <input
-              name="gst_number"
-              placeholder="GST number"
-              value={form.gst_number}
+              name="hotel_name"
+              placeholder="Hotel Name"
+              value={form.hotel_name}
               onChange={handleChange}
               required
             />
-            <input
-              name="gst_percentage"
-              type="number"
-              placeholder="Tax %"
-              value={form.gst_percentage}
+
+            <div className="cp-row">
+              <div>
+                <h3 className="cp-section-title">Email</h3>
+                <input value={form.email} disabled />
+              </div>
+
+              <div>
+                <h3 className="cp-section-title">Phone</h3>
+                <input value={form.phone} disabled />
+              </div>
+            </div>
+
+            <h3 className="cp-section-title">Your Full Address</h3>
+            <textarea
+              name="address"
+              placeholder="Full hotel address"
+              value={form.address}
               onChange={handleChange}
               required
             />
-          </>
-        )}
+          </div>
 
-        <textarea
-          name="address"
-          placeholder="Enter your full address"
-          value={form.address}
-          onChange={handleChange}
-          required
-        />
+          {/* ================= GST SETTINGS ================= */}
+          <div className="cp-section">
+            <h3>GST Settings</h3>
 
-        <label>
-          <input
-            type="checkbox"
-            checked={uploadLogoNow}
-            onChange={(e) => setUploadLogoNow(e.target.checked)}
-          />
-          Want to upload your logo now?
-        </label>
+            <label className="cp-checkbox">
+              <input
+                type="checkbox"
+                name="has_gst"
+                checked={form.has_gst}
+                onChange={handleChange}
+              />
+              I have GST registration
+            </label>
 
-        {uploadLogoNow && (
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setLogoFile(e.target.files[0])}
-          />
-        )}
+            {form.has_gst && (
+              <div className="cp-row">
+                <div>
+                  <h3 className="cp-section-title">GST Number</h3>
+                  <input
+                    name="gst_number"
+                    placeholder="GST Number"
+                    value={form.gst_number}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-        <label>
-          <input
-            type="checkbox"
-            checked={uploadSignatureNow}
-            onChange={(e) => setUploadSignatureNow(e.target.checked)}
-          />
-          Want to upload your signature?
-        </label>
+                <div>
+                  <h3 className="cp-section-title">GST Percentage (%)</h3>
+                  <input
+                    name="gst_percentage"
+                    type="number"
+                    placeholder="GST %"
+                    value={form.gst_percentage}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </div>
+            )}
+          </div>
 
-        {uploadSignatureNow && (
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setSignatureFile(e.target.files[0])}
-          />
-        )}
+          {/* ================= BRANDING ================= */}
+          <div className="cp-section">
+            <h3>🎨 Branding</h3>
 
-        <hr />
+            <label className="cp-checkbox">
+              <input
+                type="checkbox"
+                checked={uploadLogoNow}
+                onChange={(e) => setUploadLogoNow(e.target.checked)}
+              />
+              Upload hotel logo now
+            </label>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="New Password"
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          name="confirm_password"
-          placeholder="Confirm Password"
-          onChange={handleChange}
-          required
-        />
-        <p className="cp-password-hint">
-          {" "}
-          Password must be at least 8 characters. <br /> Contain at least 1
-          letter and 1 number.{" "}
-        </p>
-        <button type="submit">Save & Continue</button>
-      </form>
+            {uploadLogoNow && (
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setLogoFile(e.target.files[0])}
+              />
+            )}
+
+            <label className="cp-checkbox">
+              <input
+                type="checkbox"
+                checked={uploadSignatureNow}
+                onChange={(e) => setUploadSignatureNow(e.target.checked)}
+              />
+              Upload authorized signature
+            </label>
+
+            {uploadSignatureNow && (
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setSignatureFile(e.target.files[0])}
+              />
+            )}
+          </div>
+
+          {/* ================= SECURITY ================= */}
+          <div className="cp-section">
+            <h3>🔐 Secure Your Account</h3>
+
+            <h3 className="cp-section-title">New Password</h3>
+            <input
+              type="password"
+              name="password"
+              placeholder="Create new password"
+              onChange={handleChange}
+              required
+            />
+
+            <h3 className="cp-section-title">Confirm Password</h3>
+            <input
+              type="password"
+              name="confirm_password"
+              placeholder="Confirm password"
+              onChange={handleChange}
+              required
+            />
+
+            <p className="cp-password-hint">
+              • Minimum 8 characters <br />• At least 1 letter and 1 number
+            </p>
+          </div>
+
+          {/* ================= CTA ================= */}
+          <button type="submit" className="cp-submit-btn">
+            Save Profile & Enter Dashboard →
+          </button>
+        </form>
+      </div>
     </main>
   );
 }

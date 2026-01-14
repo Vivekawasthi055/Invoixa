@@ -323,6 +323,37 @@ function FinalInvoice() {
       {isPaid && (
         <p style={{ marginTop: 20, color: "green" }}>✅ This invoice is PAID</p>
       )}
+      {/* ================= SIGNATURE SECTION ================= */}
+      <hr />
+      <div style={{ marginTop: 40, textAlign: "right" }}>
+        <p>
+          <strong>Authorized Signature</strong>
+        </p>
+
+        {/* ✅ Show signature image only if uploaded */}
+        {invoice.hotel_signature_url && (
+          <img
+            src={invoice.hotel_signature_url}
+            alt="Hotel Signature"
+            height="60"
+            style={{ display: "block", marginLeft: "auto", marginBottom: -15 }}
+          />
+        )}
+
+        {/* ✅ Always show hotel name */}
+        <p>{invoice.hotel_name}</p>
+      </div>
+      <hr />
+      Powered by INVOIXA{" "}
+      <span>
+        <a
+          href="https://invoixa.qzz.io"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          www.invoixa.qzz.io
+        </a>
+      </span>
     </main>
   );
 }

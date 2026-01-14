@@ -141,9 +141,6 @@ function CreateInvoice() {
             <p>
               <strong>Invoice No:</strong> {invoice.invoice_number}
             </p>
-            {/* <p>
-              <strong>Date:</strong> {invoice.created_at?.split("T")[0]}
-            </p> */}
 
             <p>
               <strong>Date:</strong>{" "}

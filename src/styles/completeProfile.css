@@ -1,51 +1,239 @@
-.cp-container {
-  max-width: 420px;
-  margin: 40px auto;
-  padding: 20px;
+/* ===============================
+   🌟 COMPLETE PROFILE – PAGE SCOPE
+================================= */
+
+.cp-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc, #eef2ff);
+  padding: 32px 14px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
+
+
+
+/* ===============================
+   🧾 MAIN CARD
+================================= */
+
+.cp-container {
+  width: 100%;
+  max-width: 540px;
+  background: #ffffff;
+  padding: 34px;
+  border-radius: 22px;
+  box-shadow: 0 30px 75px rgba(0, 0, 0, 0.12);
+}
+
+/* ===============================
+   🏷 HEADER
+================================= */
+
+.cp-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.cp-header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.cp-header p {
+  font-size: 14px;
+  color: #64748b;
+  margin-top: 6px;
+}
+
+/* ===============================
+   📦 FORM
+================================= */
 
 .cp-form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 26px;
 }
+
+/* ===============================
+   📂 SECTIONS
+================================= */
+
+.cp-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cp-section > h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+/* Labels above inputs */
+.cp-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 4px;
+}
+
+/* ===============================
+   📐 ROWS
+================================= */
+
+.cp-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.cp-row > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ===============================
+   ✏️ INPUTS
+================================= */
 
 .cp-form input,
 .cp-form textarea {
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
   font-size: 14px;
+  background: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cp-form input:focus,
+.cp-form textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
 .cp-form textarea {
   resize: none;
-  height: 80px;
+  min-height: 100px;
 }
 
-.cp-form button {
-  padding: 12px;
-  background: #0f172a;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+.cp-form input:disabled {
+  background: #f1f5f9;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+/* File input */
+.cp-form input[type="file"] {
+  padding: 10px;
+  font-size: 13px;
+}
+
+/* ===============================
+   ☑️ CHECKBOX (FIXED)
+================================= */
+
+/* ❌ Checkbox ko normal input styling se alag rakha */
+.cp-form input[type="checkbox"] {
+  width: auto;
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
 }
 
 .cp-checkbox {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-size: 14px;
+  color: #334155;
+  line-height: 1.4;
 }
 
-.cp-loading {
-  text-align: center;
-  margin-top: 50px;
+.cp-checkbox input {
+  width: 16px;
+  height: 16px;
+  accent-color: #2563eb;
+  cursor: pointer;
 }
+
+.cp-checkbox label {
+  cursor: pointer;
+}
+
+/* ===============================
+   🔐 PASSWORD HINT
+================================= */
+
 .cp-password-hint {
   font-size: 12px;
-  color: #666;
-  margin-top: 5px;
-  margin-bottom: 12px;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+/* ===============================
+   🚀 SUBMIT BUTTON
+================================= */
+
+.cp-submit-btn {
+  margin-top: 6px;
+  padding: 15px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cp-submit-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 32px rgba(37, 99, 235, 0.4);
+}
+
+.cp-submit-btn:active {
+  transform: scale(0.98);
+}
+
+/* ===============================
+   📱 RESPONSIVE – MOBILE
+================================= */
+
+@media (max-width: 600px) {
+  .cp-container {
+    padding: 24px 18px;
+    border-radius: 18px;
+  }
+
+  .cp-header h1 {
+    font-size: 22px;
+  }
+
+  .cp-row {
+    grid-template-columns: 1fr;
+  }
+
+  .cp-form {
+    gap: 22px;
+  }
+}
+
+/* ===============================
+   🖥 LARGE SCREENS
+================================= */
+
+@media (min-width: 1024px) {
+  .cp-page {
+    padding-top: 50px;
+  }
 }
