@@ -1,132 +1,149 @@
-/* Page wrapper */
-.contact {
+/* ===============================
+   📞 CONTACT PAGE
+================================ */
+
+.contact-page {
   width: 100%;
 }
 
 /* ================= HERO ================= */
-.contact-hero {
+
+.contact-page-hero {
   max-width: 900px;
   margin: 0 auto;
-  padding: 80px 20px 60px;
+  padding: 90px 20px 60px;
   text-align: center;
 }
 
-.contact-hero h1 {
+.contact-page-hero h1 {
   font-size: 42px;
   font-weight: 800;
   color: #0f172a;
   margin-bottom: 16px;
-  animation: fadeUp 0.5s ease;
+  animation: contactFadeUp 0.5s ease;
 }
 
-.contact-hero p {
+.contact-page-hero p {
   font-size: 16px;
   color: #475569;
   line-height: 1.7;
-  animation: fadeUp 0.7s ease;
+  max-width: 680px;
+  margin: 0 auto;
+  animation: contactFadeUp 0.7s ease;
 }
 
 /* ================= CONTENT ================= */
-.contact-content {
+
+.contact-page-content {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 0 20px 80px;
+  padding: 0 20px 90px;
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
-  gap: 32px;
+  gap: 34px;
 }
 
-/* Cards */
-.contact-card {
-  background-color: #ffffff;
-  padding: 32px 26px;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-  animation: fadeUp 0.9s ease;
+/* ================= CARD ================= */
+
+.contact-page-card {
+  background: linear-gradient(180deg, #ffffff, #f8fafc);
+  padding: 34px 28px;
+  border-radius: 18px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05);
+  animation: contactFadeUp 0.9s ease;
 }
 
-.contact-card h2 {
+.contact-page-card h2 {
   font-size: 20px;
-  margin-bottom: 20px;
+  font-weight: 700;
+  margin-bottom: 22px;
   color: #0f172a;
 }
 
 /* ================= FORM ================= */
-.contact-form {
+
+.contact-page-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
 }
 
-.form-group {
+.contact-page-form-group {
   display: flex;
   flex-direction: column;
 }
 
-.form-group label {
+.contact-page-form-group label {
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: 6px;
   color: #334155;
 }
 
-.form-group input,
-.form-group textarea {
+.contact-page-form-group input,
+.contact-page-form-group textarea {
   padding: 12px 14px;
   border-radius: 10px;
   border: 1px solid #cbd5f5;
   font-size: 14px;
   outline: none;
-  transition: border 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.form-group input:focus,
-.form-group textarea:focus {
+.contact-page-form-group input:focus,
+.contact-page-form-group textarea:focus {
   border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
-/* Button */
-.btn-primary {
+/* ================= BUTTON ================= */
+
+.contact-page-btn {
   background-color: #2563eb;
   color: #ffffff;
   border: none;
   padding: 12px 20px;
-  border-radius: 10px;
+  border-radius: 12px;
   font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.25s ease;
-  margin-top: 10px;
+  margin-top: 8px;
+  align-self: flex-start;
 }
 
-.btn-primary:hover {
+.contact-page-btn:hover {
   background-color: #1e4ed8;
   transform: translateY(-2px);
 }
 
-/* ================= INFO CARD ================= */
-.info-card a {
+/* ================= INFO ================= */
+
+.contact-page-info a {
+  color: #2563eb;
   text-decoration: none;
 }
 
-.info-card a:hover {
+.contact-page-info a:hover {
   text-decoration: underline;
 }
 
-.info-card p {
+.contact-page-info p {
   font-size: 14px;
   color: #475569;
   margin-bottom: 14px;
   line-height: 1.6;
 }
 
-.response-note {
+.contact-page-note {
   font-size: 13px;
   color: #64748b;
-  margin-top: 20px;
+  margin-top: 22px;
 }
 
 /* ================= ANIMATION ================= */
-@keyframes fadeUp {
+
+@keyframes contactFadeUp {
   from {
     opacity: 0;
     transform: translateY(14px);
@@ -138,12 +155,18 @@
 }
 
 /* ================= RESPONSIVE ================= */
+
 @media (max-width: 900px) {
-  .contact-content {
+  .contact-page-content {
     grid-template-columns: 1fr;
   }
 
-  .contact-hero h1 {
+  .contact-page-hero h1 {
     font-size: 34px;
+  }
+
+  .contact-page-btn {
+    align-self: stretch;
+    text-align: center;
   }
 }

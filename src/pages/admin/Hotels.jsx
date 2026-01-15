@@ -28,24 +28,26 @@ function Hotels() {
       )
     );
   };
-
   return (
     <>
       <Helmet>
         <title>Hotels List – Admin | Invoixa</title>
       </Helmet>
 
-      <main className="hotels-page">
-        <div className="hotels-header">
-          <h1>Hotels</h1>
-          <p>Manage registered hotels & access status</p>
+      <main className="admin-hotels-page">
+        {/* Header */}
+        <div className="admin-hotels-header">
+          <h1 className="admin-hotels-title">Hotels</h1>
+          <p className="admin-hotels-subtitle">
+            Manage registered hotels & access status
+          </p>
         </div>
 
         {loading ? (
-          <div className="loading-box">Loading hotels...</div>
+          <div className="admin-hotels-loading">Loading hotels...</div>
         ) : (
-          <div className="table-wrapper">
-            <table className="hotels-table">
+          <div className="admin-hotels-table-wrapper">
+            <table className="admin-hotels-table">
               <thead>
                 <tr>
                   <th>Hotel Code</th>
@@ -62,7 +64,7 @@ function Hotels() {
               <tbody>
                 {hotels.map((hotel) => (
                   <tr key={hotel.id}>
-                    <td className="mono">{hotel.hotel_code}</td>
+                    <td className="admin-hotels-mono">{hotel.hotel_code}</td>
                     <td>
                       <strong>{hotel.hotel_name}</strong>
                     </td>
@@ -71,7 +73,9 @@ function Hotels() {
                     <td>
                       <span
                         className={
-                          hotel.is_active ? "badge active" : "badge disabled"
+                          hotel.is_active
+                            ? "admin-hotels-badge active"
+                            : "admin-hotels-badge disabled"
                         }
                       >
                         {hotel.is_active ? "Active" : "Disabled"}
@@ -79,7 +83,7 @@ function Hotels() {
                     </td>
                     <td>
                       {hotel.delete_requested ? (
-                        <span className="badge warning">Yes</span>
+                        <span className="admin-hotels-badge warning">Yes</span>
                       ) : (
                         "No"
                       )}
@@ -89,8 +93,8 @@ function Hotels() {
                       <button
                         className={
                           hotel.is_active
-                            ? "action-btn danger"
-                            : "action-btn success"
+                            ? "admin-hotels-action danger"
+                            : "admin-hotels-action success"
                         }
                         onClick={() => handleToggle(hotel)}
                       >
@@ -103,7 +107,7 @@ function Hotels() {
             </table>
 
             {hotels.length === 0 && (
-              <p className="empty-text">No hotels found</p>
+              <p className="admin-hotels-empty">No hotels found</p>
             )}
           </div>
         )}

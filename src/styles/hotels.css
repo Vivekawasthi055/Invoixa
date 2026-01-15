@@ -1,119 +1,154 @@
-.hotels-page {
+/* ===============================
+   🏨 ADMIN HOTELS PAGE
+================================ */
+
+.admin-hotels-page {
   padding: 30px;
   max-width: 1300px;
   margin: auto;
 }
 
 /* Header */
-.hotels-header h1 {
+.admin-hotels-header {
+  margin-bottom: 24px;
+}
+
+.admin-hotels-title {
   font-size: 28px;
   margin-bottom: 4px;
 }
 
-.hotels-header p {
+.admin-hotels-subtitle {
   font-size: 14px;
   color: #64748b;
 }
 
 /* Loading */
-.loading-box {
+.admin-hotels-loading {
   margin-top: 40px;
   text-align: center;
+  font-size: 14px;
   color: #64748b;
 }
 
-/* Table wrapper */
-.table-wrapper {
+/* ===============================
+   📊 TABLE
+================================ */
+
+.admin-hotels-table-wrapper {
   margin-top: 24px;
   background: #ffffff;
-  border-radius: 14px;
+  border-radius: 16px;
   overflow-x: auto;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
 }
 
-/* Table */
-.hotels-table {
+.admin-hotels-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
 }
 
-.hotels-table thead {
+.admin-hotels-table thead {
   background: #f1f5f9;
 }
 
-.hotels-table th,
-.hotels-table td {
+.admin-hotels-table th,
+.admin-hotels-table td {
   padding: 14px 16px;
   text-align: left;
   white-space: nowrap;
 }
 
-.hotels-table tbody tr {
+.admin-hotels-table tbody tr {
   border-top: 1px solid #e2e8f0;
 }
 
-.hotels-table tbody tr:hover {
+.admin-hotels-table tbody tr:hover {
   background: #f8fafc;
 }
 
-/* Badges */
-.badge {
+/* ===============================
+   🏷 BADGES
+================================ */
+
+.admin-hotels-badge {
   padding: 4px 10px;
   font-size: 12px;
   border-radius: 999px;
   font-weight: 600;
 }
 
-.badge.active {
+.admin-hotels-badge.active {
   background: #dcfce7;
   color: #166534;
 }
 
-.badge.disabled {
+.admin-hotels-badge.disabled {
   background: #fee2e2;
   color: #991b1b;
 }
 
-.badge.warning {
+.admin-hotels-badge.warning {
   background: #fef3c7;
   color: #92400e;
 }
 
-/* Buttons */
-.action-btn {
+/* ===============================
+   🔘 ACTION BUTTON
+================================ */
+
+.admin-hotels-action {
   border: none;
-  border-radius: 8px;
-  padding: 8px 14px;
+  border-radius: 10px;
+  padding: 8px 16px;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
 }
 
-.action-btn.danger {
+.admin-hotels-action.danger {
   background: #ef4444;
-  color: white;
+  color: #ffffff;
 }
 
-.action-btn.success {
+.admin-hotels-action.success {
   background: #22c55e;
-  color: white;
+  color: #ffffff;
 }
 
-/* Utilities */
-.mono {
+/* ===============================
+   🧰 UTILITIES
+================================ */
+
+.admin-hotels-mono {
   font-family: monospace;
+  font-size: 13px;
 }
 
-.empty-text {
+.admin-hotels-empty {
   text-align: center;
   padding: 30px;
+  font-size: 14px;
   color: #94a3b8;
 }
 
-/* Responsive */
+/* ===============================
+   📱 RESPONSIVE
+================================ */
+
 @media (max-width: 768px) {
-  .hotels-page {
+  .admin-hotels-page {
     padding: 20px;
+  }
+
+  .admin-hotels-title {
+    font-size: 24px;
+  }
+
+  .admin-hotels-table th,
+  .admin-hotels-table td {
+    padding: 12px;
+    font-size: 13px;
   }
 }

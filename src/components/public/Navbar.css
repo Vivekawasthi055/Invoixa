@@ -1,14 +1,17 @@
-/* Navbar Wrapper */
-.navbar {
+/* ===============================
+   🧭 NAVBAR (PAGE SCOPED)
+================================ */
+
+.nav-navbar {
   position: sticky;
   top: 0;
   z-index: 1000;
   background-color: #ffffff;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f1f5f9;
 }
 
 /* Container */
-.navbar-container {
+.nav-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 14px 20px;
@@ -18,15 +21,16 @@
 }
 
 /* Logo */
-.navbar-logo a {
+.nav-logo a {
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 800;
   color: #2563eb;
   text-decoration: none;
 }
 
-/* Links */
-.navbar-links {
+/* ================= LINKS ================= */
+
+.nav-links {
   display: flex;
   gap: 28px;
 }
@@ -44,7 +48,7 @@
   color: #2563eb;
 }
 
-/* Active link */
+/* Active */
 .nav-link.active {
   color: #2563eb;
 }
@@ -60,32 +64,149 @@
   border-radius: 4px;
 }
 
-/* Actions */
-.navbar-actions {
+/* ================= ACTIONS ================= */
+
+.nav-actions {
   display: flex;
+  align-items: center;
   gap: 12px;
 }
 
-/* Login Button */
-.btn-login {
-  background: transparent;
+/* Login */
+.nav-btn-login {
   border: 1px solid #d1d5db;
-  padding: 15px 16px;
+  padding: 10px 16px;
   border-radius: 8px;
   font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
   text-decoration: none;
+  color: #111827;
+  transition: all 0.2s ease;
 }
 
-.btn-login:hover {
+.nav-btn-login:hover {
   border-color: #2563eb;
   color: #2563eb;
 }
 
-/* Responsive (basic) */
-@media (max-width: 768px) {
-  .navbar-links {
+/* Primary */
+.nav-btn-primary {
+  background-color: #2563eb;
+  color: #ffffff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.nav-btn-primary:hover {
+  background-color: #1e4ed8;
+  transform: translateY(-1px);
+}
+
+/* ================= HAMBURGER ================= */
+
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 23px;
+  height: 30px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.nav-hamburger span {
+  width: 22px;
+  height: 2px;
+  background-color: #111827;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+.nav-hamburger:hover {
+  background: #eef2ff;
+}
+
+/* 🔥 OPEN STATE (cross animation) */
+.nav-hamburger.open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-hamburger.open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ================= MOBILE MENU ================= */
+
+.nav-mobile-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 20px;
+  gap: 6px;
+  z-index: 999;
+
+  /* animation */
+  transform: translateY(-10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+/* SHOW */
+.nav-mobile-menu.show {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.nav-mobile-menu a {
+  padding: 12px 8px;
+  font-size: 15px;
+  text-decoration: none;
+  color: #374151;
+  border-radius: 8px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.nav-mobile-menu a:hover {
+  background: #f1f5f9;
+}
+
+.nav-mobile-menu a.active {
+  color: #2563eb;
+  font-weight: 600;
+  background: #eef2ff;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 520px) {
+  .nav-links {
     display: none;
+  }
+
+  .nav-btn-primary {
+    display: none;
+  }
+
+  .nav-hamburger {
+    display: flex;
   }
 }

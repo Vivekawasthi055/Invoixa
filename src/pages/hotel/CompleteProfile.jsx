@@ -221,7 +221,7 @@ function CompleteProfile() {
     navigate("/dashboard");
   };
 
-   /* ================= LOADING ================= */
+  /* ================= LOADING ================= */
 
   if (loading)
     return (

@@ -1,7 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import "./Home.css";
-
 function Home() {
   return (
     <>
@@ -14,10 +13,10 @@ function Home() {
         />
       </Helmet>
 
-      <main className="home">
+      <main className="home-page">
         {/* ================= HERO SECTION ================= */}
-        <section className="hero">
-          <div className="hero-content">
+        <section className="home-hero">
+          <div className="home-hero-content">
             <h1>
               Smart Invoicing <br />
               <span>Made Simple</span>
@@ -28,44 +27,44 @@ function Home() {
               billing — all in one simple platform.
             </p>
 
-            <div className="hero-actions">
-              <Link to="/login" className="btn-primary">
+            <div className="home-hero-actions">
+              <Link to="/login" className="home-btn-primary">
                 Login
               </Link>
 
-              <Link to="/about" className="btn-secondary">
+              <Link to="/about" className="home-btn-secondary">
                 Learn More
               </Link>
             </div>
           </div>
 
-          {/* Illustration placeholder (NO heavy image) */}
-          <div className="hero-visual">
-            <div className="mockup-card">
+          {/* Illustration placeholder */}
+          <div className="home-hero-visual">
+            <div className="home-mockup-card">
               <p>Invoice Preview</p>
-              <div className="mockup-line"></div>
-              <div className="mockup-line small"></div>
-              <div className="mockup-line"></div>
+              <div className="home-mockup-line"></div>
+              <div className="home-mockup-line small"></div>
+              <div className="home-mockup-line"></div>
             </div>
           </div>
         </section>
 
         {/* ================= FEATURES ================= */}
-        <section className="features">
+        <section className="home-features">
           <h2>Why Choose Invoixa?</h2>
 
-          <div className="feature-grid">
-            <div className="feature-card">
+          <div className="home-feature-grid">
+            <div className="home-feature-card">
               <h3>⚡ Fast Billing</h3>
               <p>Create invoices in seconds with minimal steps.</p>
             </div>
 
-            <div className="feature-card">
+            <div className="home-feature-card">
               <h3>🧾 Food & Services</h3>
               <p>Breakfast, lunch, dinner and services billing built-in.</p>
             </div>
 
-            <div className="feature-card">
+            <div className="home-feature-card">
               <h3>🔒 Secure & Reliable</h3>
               <p>Your data is protected with modern security practices.</p>
             </div>
@@ -73,11 +72,11 @@ function Home() {
         </section>
 
         {/* ================= CTA ================= */}
-        <section className="cta">
+        <section className="home-cta">
           <h2>Start creating invoices today</h2>
           <p>No complicated setup. No learning curve.</p>
 
-          <Link to="/login" className="btn-primary">
+          <Link to="/login" className="home-btn-primary">
             Get Started
           </Link>
         </section>

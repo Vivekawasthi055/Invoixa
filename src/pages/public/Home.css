@@ -1,125 +1,133 @@
-/* Page wrapper */
-.home {
+/* ===============================
+   🏠 HOME PAGE
+================================ */
+
+.home-page {
   width: 100%;
 }
 
 /* ================= HERO ================= */
-.hero {
+
+.home-hero {
   max-width: 1200px;
   margin: 0 auto;
   padding: 80px 20px;
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
-  gap: 40px;
+  gap: 48px;
   align-items: center;
 }
 
 /* Text */
-.hero-content h1 {
+.home-hero-content h1 {
   font-size: 48px;
   font-weight: 800;
   color: #0f172a;
   line-height: 1.2;
-  animation: fadeUp 0.6s ease;
+  animation: homeFadeUp 0.6s ease;
 }
 
-.hero-content h1 span {
+.home-hero-content h1 span {
   color: #2563eb;
 }
 
-.hero-content p {
+.home-hero-content p {
   margin-top: 20px;
   font-size: 16px;
   color: #475569;
   max-width: 520px;
   line-height: 1.7;
-  animation: fadeUp 0.8s ease;
+  animation: homeFadeUp 0.8s ease;
 }
 
 /* Buttons */
-.hero-actions {
+.home-hero-actions {
   margin-top: 32px;
   display: flex;
   gap: 16px;
-  animation: fadeUp 1s ease;
+  animation: homeFadeUp 1s ease;
 }
 
-.btn-primary {
+.home-btn-primary {
   background-color: #2563eb;
   color: #ffffff;
-  padding: 12px 22px;
-  border-radius: 10px;
+  padding: 12px 24px;
+  border-radius: 12px;
   font-size: 15px;
+  font-weight: 600;
   text-decoration: none;
   transition: all 0.25s ease;
 }
 
-.btn-primary:hover {
+.home-btn-primary:hover {
   background-color: #1e4ed8;
   transform: translateY(-2px);
 }
 
-.btn-secondary {
+.home-btn-secondary {
   border: 1px solid #cbd5f5;
   color: #1e293b;
-  padding: 12px 22px;
-  border-radius: 10px;
+  padding: 12px 24px;
+  border-radius: 12px;
   font-size: 15px;
+  font-weight: 500;
   text-decoration: none;
   transition: all 0.25s ease;
 }
 
-.btn-secondary:hover {
+.home-btn-secondary:hover {
   border-color: #2563eb;
   color: #2563eb;
 }
 
 /* ================= HERO VISUAL ================= */
-.hero-visual {
+
+.home-hero-visual {
   display: flex;
   justify-content: center;
 }
 
-.mockup-card {
+.home-mockup-card {
   width: 280px;
   padding: 24px;
-  border-radius: 16px;
+  border-radius: 18px;
   background: linear-gradient(135deg, #eff6ff, #ffffff);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-  animation: float 3s ease-in-out infinite;
+  animation: homeFloat 3s ease-in-out infinite;
 }
 
-.mockup-card p {
+.home-mockup-card p {
   font-weight: 600;
   margin-bottom: 14px;
 }
 
-.mockup-line {
+.home-mockup-line {
   height: 10px;
   background-color: #c7d2fe;
   border-radius: 6px;
   margin-bottom: 10px;
 }
 
-.mockup-line.small {
+.home-mockup-line.small {
   width: 60%;
 }
 
 /* ================= FEATURES ================= */
-.features {
+
+.home-features {
   background-color: #f8fafc;
   padding: 70px 20px;
   text-align: center;
 }
 
-.features h2 {
+.home-features h2 {
   font-size: 32px;
   font-weight: 700;
   margin-bottom: 40px;
   color: #0f172a;
 }
 
-.feature-grid {
+.home-feature-grid {
   max-width: 1100px;
   margin: 0 auto;
   display: grid;
@@ -127,48 +135,52 @@
   gap: 28px;
 }
 
-.feature-card {
+.home-feature-card {
   background-color: #ffffff;
-  padding: 32px 24px;
-  border-radius: 16px;
+  padding: 32px 26px;
+  border-radius: 18px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-  transition: transform 0.25s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.feature-card:hover {
+.home-feature-card:hover {
   transform: translateY(-6px);
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.08);
 }
 
-.feature-card h3 {
+.home-feature-card h3 {
   font-size: 18px;
   margin-bottom: 12px;
 }
 
-.feature-card p {
+.home-feature-card p {
   font-size: 14px;
   color: #475569;
+  line-height: 1.6;
 }
 
 /* ================= CTA ================= */
-.cta {
+
+.home-cta {
   padding: 80px 20px;
   text-align: center;
 }
 
-.cta h2 {
+.home-cta h2 {
   font-size: 34px;
   font-weight: 700;
   margin-bottom: 12px;
 }
 
-.cta p {
+.home-cta p {
   font-size: 15px;
   color: #475569;
   margin-bottom: 28px;
 }
 
 /* ================= ANIMATIONS ================= */
-@keyframes fadeUp {
+
+@keyframes homeFadeUp {
   from {
     opacity: 0;
     transform: translateY(14px);
@@ -179,7 +191,7 @@
   }
 }
 
-@keyframes float {
+@keyframes homeFloat {
   0% {
     transform: translateY(0);
   }
@@ -192,23 +204,24 @@
 }
 
 /* ================= RESPONSIVE ================= */
+
 @media (max-width: 900px) {
-  .hero {
+  .home-hero {
     grid-template-columns: 1fr;
     text-align: center;
   }
 
-  .hero-actions {
+  .home-hero-actions {
     justify-content: center;
   }
 }
 
 @media (max-width: 600px) {
-  .hero-content h1 {
+  .home-hero-content h1 {
     font-size: 36px;
   }
 
-  .feature-grid {
+  .home-feature-grid {
     grid-template-columns: 1fr;
   }
 }

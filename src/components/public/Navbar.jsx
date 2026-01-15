@@ -1,17 +1,20 @@
 import { Link, NavLink } from "react-router-dom";
+import { useState } from "react";
 import "./Navbar.css";
 
 const Navbar = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <header className="navbar">
-      <div className="navbar-container">
+    <header className="nav-navbar">
+      <div className="nav-container">
         {/* Logo */}
-        <div className="navbar-logo">
+        <div className="nav-logo">
           <Link to="/">Invoixa</Link>
         </div>
 
-        {/* Links */}
-        <nav className="navbar-links">
+        {/* Desktop Links */}
+        <nav className="nav-links">
           <NavLink to="/" className="nav-link">
             Home
           </NavLink>
@@ -24,14 +27,34 @@ const Navbar = () => {
         </nav>
 
         {/* Actions */}
-        <div className="navbar-actions">
-          <Link to="/login" className="btn-login">
+        <div className="nav-actions">
+          <Link to="/login" className="nav-btn-login">
             Login
           </Link>
-          <Link to="/contact" className="btn-primary">
-            Get Started
-          </Link>
+          {/* Mobile Menu Button */}
+          <button
+            className={`nav-hamburger ${menuOpen ? "open" : ""}`}
+            onClick={() => setMenuOpen((p) => !p)}
+            aria-label="Toggle Menu"
+          >
+            <span />
+            <span />
+            <span />
+          </button>
         </div>
+      </div>
+
+      {/* Mobile Menu */}
+      <div className={`nav-mobile-menu ${menuOpen ? "show" : ""}`}>
+        <NavLink to="/" onClick={() => setMenuOpen(false)}>
+          Home
+        </NavLink>
+        <NavLink to="/about" onClick={() => setMenuOpen(false)}>
+          About
+        </NavLink>
+        <NavLink to="/contact" onClick={() => setMenuOpen(false)}>
+          Contact
+        </NavLink>
       </div>
     </header>
   );

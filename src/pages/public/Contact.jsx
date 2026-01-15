@@ -1,6 +1,5 @@
 import { Helmet } from "react-helmet-async";
 import "./Contact.css";
-
 function Contact() {
   return (
     <>
@@ -13,9 +12,9 @@ function Contact() {
         />
       </Helmet>
 
-      <main className="contact">
+      <main className="contact-page">
         {/* ================= HERO ================= */}
-        <section className="contact-hero">
+        <section className="contact-page-hero">
           <h1>Contact Us</h1>
           <p>
             Have a question or need help? Reach out to us and we’ll get back to
@@ -24,23 +23,23 @@ function Contact() {
         </section>
 
         {/* ================= CONTENT ================= */}
-        <section className="contact-content">
+        <section className="contact-page-content">
           {/* Contact Form */}
-          <div className="contact-card">
+          <div className="contact-page-card">
             <h2>Send us a message</h2>
 
-            <form className="contact-form">
-              <div className="form-group">
+            <form className="contact-page-form">
+              <div className="contact-page-form-group">
                 <label>Name</label>
                 <input type="text" placeholder="Your name" />
               </div>
 
-              <div className="form-group">
+              <div className="contact-page-form-group">
                 <label>Email</label>
                 <input type="email" placeholder="you@example.com" />
               </div>
 
-              <div className="form-group">
+              <div className="contact-page-form-group">
                 <label>Message</label>
                 <textarea
                   rows="4"
@@ -48,14 +47,14 @@ function Contact() {
                 ></textarea>
               </div>
 
-              <button type="submit" className="btn-primary">
+              <button type="submit" className="contact-page-btn">
                 Send Message
               </button>
             </form>
           </div>
 
           {/* Contact Info */}
-          <div className="contact-card info-card">
+          <div className="contact-page-card contact-page-info">
             <h2>Contact Information</h2>
 
             <p>
@@ -68,7 +67,9 @@ function Contact() {
               <a href="tel:+918827573086">+91 8827573086</a>
             </p>
 
-            <p className="response-note">We usually respond within 24 hours.</p>
+            <p className="contact-page-note">
+              We usually respond within 24 hours.
+            </p>
           </div>
         </section>
       </main>

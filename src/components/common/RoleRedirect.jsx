@@ -44,7 +44,15 @@ function RoleRedirect() {
     redirectUser();
   }, [user, loading, navigate]);
 
-  if (loading || checking) return <div>Setting things up...</div>;
+  if (loading || checking)
+    return (
+      <main className="all-pages">
+        <div className="all-pages-loading-card">
+          <div className="all-pages-spinner"></div>
+          <p className="loading-title">Setting things up...</p>
+        </div>
+      </main>
+    );
 
   return null;
 }

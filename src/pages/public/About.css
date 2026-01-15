@@ -1,75 +1,94 @@
-/* Page wrapper */
-.about {
+/* ===============================
+   📘 ABOUT PAGE
+================================ */
+
+.about-page {
   width: 100%;
 }
 
 /* ================= HERO ================= */
-.about-hero {
+
+.about-page-hero {
   max-width: 900px;
   margin: 0 auto;
-  padding: 80px 20px 60px;
+  padding: 90px 20px 70px;
   text-align: center;
 }
 
-.about-hero h1 {
-  font-size: 42px;
+.about-page-hero h1 {
+  font-size: 44px;
   font-weight: 800;
   color: #0f172a;
-  margin-bottom: 16px;
-  animation: fadeUp 0.5s ease;
+  margin-bottom: 18px;
+  animation: aboutFadeUp 0.5s ease;
 }
 
-.about-hero p {
+.about-page-hero p {
   font-size: 16px;
   color: #475569;
   line-height: 1.7;
-  animation: fadeUp 0.7s ease;
+  max-width: 680px;
+  margin: 0 auto;
+  animation: aboutFadeUp 0.7s ease;
 }
 
 /* ================= CONTENT ================= */
-.about-content {
+
+.about-page-content {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 0 20px 80px;
+  padding: 0 20px 90px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+  gap: 32px;
 }
 
-.about-card {
-  background-color: #ffffff;
-  padding: 32px 26px;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-  animation: fadeUp 0.9s ease;
+.about-page-card {
+  background: linear-gradient(180deg, #ffffff, #f8fafc);
+  padding: 34px 28px;
+  border-radius: 18px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05);
+  animation: aboutFadeUp 0.9s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.about-card h2 {
+.about-page-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+}
+
+.about-page-card h2 {
   font-size: 20px;
+  font-weight: 700;
   margin-bottom: 14px;
   color: #0f172a;
 }
 
-.about-card p {
+.about-page-card p {
   font-size: 14px;
   color: #475569;
   line-height: 1.7;
 }
 
-.about-card ul {
+/* List */
+.about-page-card ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.about-card li {
+.about-page-card li {
   font-size: 14px;
   color: #475569;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
 }
 
 /* ================= ANIMATION ================= */
-@keyframes fadeUp {
+
+@keyframes aboutFadeUp {
   from {
     opacity: 0;
     transform: translateY(14px);
@@ -81,12 +100,23 @@
 }
 
 /* ================= RESPONSIVE ================= */
+
 @media (max-width: 900px) {
-  .about-content {
+  .about-page-content {
     grid-template-columns: 1fr;
   }
 
-  .about-hero h1 {
+  .about-page-hero h1 {
     font-size: 34px;
+  }
+}
+
+@media (max-width: 500px) {
+  .about-page-hero {
+    padding: 70px 16px 50px;
+  }
+
+  .about-page-content {
+    padding-bottom: 70px;
   }
 }

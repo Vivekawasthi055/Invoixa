@@ -13,9 +13,9 @@ function About() {
         />
       </Helmet>
 
-      <main className="about">
+      <main className="about-page">
         {/* ================= HERO ================= */}
-        <section className="about-hero">
+        <section className="about-page-hero">
           <h1>About Invoixa</h1>
           <p>
             Invoixa is built to simplify invoicing and billing for hotels and
@@ -24,8 +24,8 @@ function About() {
         </section>
 
         {/* ================= CONTENT ================= */}
-        <section className="about-content">
-          <div className="about-card">
+        <section className="about-page-content">
+          <div className="about-page-card">
             <h2>Why Invoixa?</h2>
             <p>
               Many hotels and businesses still rely on manual billing or
@@ -35,7 +35,7 @@ function About() {
             </p>
           </div>
 
-          <div className="about-card">
+          <div className="about-page-card">
             <h2>What We Offer</h2>
             <ul>
               <li>✔ Simple and fast invoice generation</li>
@@ -45,7 +45,7 @@ function About() {
             </ul>
           </div>
 
-          <div className="about-card">
+          <div className="about-page-card">
             <h2>Our Vision</h2>
             <p>
               Our vision is to empower hotels and businesses with a billing

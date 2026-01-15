@@ -1,20 +1,19 @@
 import { Link } from "react-router-dom";
 import "./Footer.css";
-
 const Footer = () => {
   return (
-    <footer className="footer">
-      <div className="footer-container">
+    <footer className="app-footer">
+      <div className="app-footer-container">
         {/* Brand */}
-        <div className="footer-brand">
-          <h2 className="footer-logo">Invoixa</h2>
-          <p className="footer-tagline">
+        <div className="app-footer-brand">
+          <h2 className="app-footer-logo">Invoixa</h2>
+          <p className="app-footer-tagline">
             Simple & smart invoicing for modern businesses.
           </p>
         </div>
 
         {/* Quick Links */}
-        <div className="footer-links">
+        <div className="app-footer-links">
           <h4>Quick Links</h4>
           <ul>
             <li>
@@ -29,8 +28,8 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* ✅ UPDATED Contact */}
-        <div className="footer-contact">
+        {/* Contact */}
+        <div className="app-footer-contact">
           <h4>Contact</h4>
           <p>
             Email: <a href="mailto:invoixa@gmail.com">invoixa@gmail.com</a>
@@ -42,7 +41,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="footer-bottom">
+      <div className="app-footer-bottom">
         <p>© {new Date().getFullYear()} Invoixa. All rights reserved.</p>
       </div>
     </footer>

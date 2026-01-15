@@ -60,54 +60,55 @@ function Rooms() {
     await updateRoom(room.id, { is_active: !room.is_active });
     loadRooms();
   };
-
   return (
     <main className="rooms-page">
       <div className="rooms-header">
-        <h1>Rooms</h1>
-        <p>Manage hotel rooms & availability</p>
+        <h1 className="rooms-title">Rooms</h1>
+        <p className="rooms-subtitle">Manage hotel rooms & availability</p>
       </div>
 
       {/* Add Room Card */}
-      <div className="room-card">
-        <h3>Add New Room</h3>
+      <div className="rooms-card">
+        <h3 className="rooms-card-title">Add New Room</h3>
 
-        <div className="room-form">
+        <div className="rooms-form">
           <input
+            className="rooms-input"
             placeholder="Room Number *"
             value={roomNumber}
             onChange={(e) => setRoomNumber(e.target.value)}
           />
           <input
+            className="rooms-input"
             placeholder="Room Name (optional)"
             value={roomName}
             onChange={(e) => setRoomName(e.target.value)}
           />
-          <button onClick={handleAdd} disabled={loading}>
+          <button className="rooms-btn" onClick={handleAdd} disabled={loading}>
             {loading ? "Adding..." : "Add Room"}
           </button>
         </div>
       </div>
 
       {/* Rooms List */}
-      <div className="room-list">
+      <div className="rooms-list">
         {rooms.length === 0 ? (
-          <p className="empty-text">No rooms added yet</p>
+          <p className="rooms-empty-text">No rooms added yet</p>
         ) : (
           rooms.map((room) => (
-            <div key={room.id} className="room-item">
-              <div>
+            <div key={room.id} className="rooms-item">
+              <div className="rooms-item-info">
                 <strong>Room {room.room_number}</strong>
                 <span>{room.room_name || "—"}</span>
               </div>
 
-              <label className="switch">
+              <label className="rooms-switch">
                 <input
                   type="checkbox"
                   checked={room.is_active}
                   onChange={() => toggleRoom(room)}
                 />
-                <span className="slider"></span>
+                <span className="rooms-slider"></span>
               </label>
             </div>
           ))
