@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { supabase } from "../../services/supabaseClient";
 import { finalizeInvoice } from "../../services/invoiceService";
+import "../../styles/FinalInvoice.css";
 
 function FinalInvoice() {
   const { id } = useParams();
@@ -18,8 +19,11 @@ function FinalInvoice() {
   /* ================= DISCOUNT ================= */
   const [discountType, setDiscountType] = useState("flat");
   const [discountValue, setDiscountValue] = useState(0);
+  const [showDraftPopup, setShowDraftPopup] = useState(false);
 
   const isPaid = invoice?.status === "Paid";
+  const isVoid = invoice?.status === "Void";
+  const isDraft = invoice?.status === "Draft";
 
   useEffect(() => {
     loadInvoice();
@@ -38,7 +42,7 @@ function FinalInvoice() {
 
   const togglePaymentMode = (mode) => {
     setPaymentModes((prev) =>
-      prev.includes(mode) ? prev.filter((m) => m !== mode) : [...prev, mode]
+      prev.includes(mode) ? prev.filter((m) => m !== mode) : [...prev, mode],
     );
   };
 
@@ -71,7 +75,7 @@ function FinalInvoice() {
         *,
         invoice_room_rates(*),
         invoice_food_services(*)
-      `
+      `,
       )
       .eq("invoice_id", invoiceData.id)
       .order("id");
@@ -88,14 +92,14 @@ function FinalInvoice() {
     }
     return room.invoice_room_rates.reduce(
       (sum, r) => sum + Number(r.rate || 0),
-      0
+      0,
     );
   };
 
   const roomFoodTotal = (room) =>
     room.invoice_food_services.reduce(
       (sum, f) => sum + Number(f.total_amount || 0),
-      0
+      0,
     );
 
   const roomSubtotal = (room) => roomCharges(room) + roomFoodTotal(room);
@@ -128,22 +132,95 @@ function FinalInvoice() {
 
   return (
     <main style={{ padding: 20, maxWidth: 900, margin: "auto" }}>
+      {/* ✅ DRAFT POPUP */}
+      {showDraftPopup && (
+        <div
+          style={{
+            position: "fixed",
+            top: "20%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            background: "#fef3c7",
+            color: "#92400e",
+            padding: "15px 25px",
+            borderRadius: 10,
+            fontWeight: "bold",
+            zIndex: 9999,
+            boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
+          }}
+        >
+          📝 Invoice saved as Draft. Redirecting…
+        </div>
+      )}
+      {isVoid && (
+        <div
+          style={{
+            position: "fixed",
+            top: "40%",
+            left: "50%",
+            transform: "translate(-50%, -50%) rotate(-30deg)",
+            fontSize: "120px",
+            color: "rgba(200,0,0,0.15)",
+            fontWeight: "bold",
+            zIndex: 999,
+            pointerEvents: "none",
+          }}
+        >
+          VOID
+        </div>
+      )}
       <Link to="/dashboard/invoices/list">← Back to Invoices</Link>{" "}
       <button onClick={() => window.print()}>🖨️ Print / Download PDF</button>
       <style>{printStyles}</style>
+      {!isVoid && (
+        <button
+          style={{ marginLeft: 10, background: "#c0392b", color: "#fff" }}
+          onClick={async () => {
+            const confirmVoid = window.confirm(
+              "Are you sure you want to VOID this invoice? This action cannot be undone.",
+            );
+            if (!confirmVoid) return;
+
+            await supabase
+              .from("invoices")
+              .update({ status: "Void" })
+              .eq("id", invoice.id);
+
+            await loadInvoice();
+            alert("Invoice has been VOIDED");
+          }}
+        >
+          🚫 Void Invoice
+        </button>
+      )}
       <h2 style={{ textAlign: "center", marginTop: 20 }}>Invoice</h2>
       <hr />
       {/* ================= HEADER ================= */}
-      <div style={{ textAlign: "center" }}>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <p>
+          <strong>Invoice No:</strong> {invoice.invoice_number}
+        </p>
+        <p>
+          <strong>Date:</strong>{" "}
+          {invoice.created_at
+            ? new Date(invoice.created_at).toLocaleString("en-IN", {
+                timeZone: "Asia/Kolkata",
+                dateStyle: "medium",
+                timeStyle: "short",
+              })
+            : ""}
+        </p>
+      </div>
+      <div style={{ textAlign: "center", marginTop: "-16px" }}>
         {invoice.hotel_logo_url && (
           <img src={invoice.hotel_logo_url} alt="Logo" height="80" />
         )}
 
         <h2>{invoice.hotel_name}</h2>
-        <p>{invoice.hotel_address}</p>
+
         <p>
-          {invoice.hotel_phone}{" "}
-          {invoice.hotel_email && ` | ${invoice.hotel_email}`}
+          {invoice.hotel_address} | {invoice.hotel_phone} |{" "}
+          {invoice.hotel_email}
         </p>
 
         {invoice.has_gst && (
@@ -154,26 +231,11 @@ function FinalInvoice() {
       </div>
       <hr />
       {/* ================= INVOICE INFO ================= */}
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div>
+      <div style={{ textAlign: "center" }}>
+        <strong style={{ marginBottom: "10px" }}>Guest Details</strong>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
           <p>
-            <strong>Invoice No:</strong> {invoice.invoice_number}
-          </p>
-          <p>
-            <strong>Date:</strong>{" "}
-            {invoice.created_at
-              ? new Date(invoice.created_at).toLocaleString("en-IN", {
-                  timeZone: "Asia/Kolkata",
-                  dateStyle: "medium",
-                  timeStyle: "short",
-                })
-              : ""}
-          </p>
-        </div>
-
-        <div>
-          <p>
-            <strong>Guest:</strong> {invoice.guest_name || "Guest"}
+            <strong>Name:</strong> {invoice.guest_name || "Guest"}
           </p>
           <p>
             <strong>Phone:</strong> {invoice.guest_phone || "N/A"}
@@ -248,7 +310,7 @@ function FinalInvoice() {
               Discount
               <select
                 value={discountType}
-                disabled={isPaid}
+                disabled={isPaid || isVoid}
                 onChange={(e) => setDiscountType(e.target.value)}
                 style={{ marginLeft: 10 }}
               >
@@ -258,7 +320,7 @@ function FinalInvoice() {
               <input
                 type="number"
                 value={discountValue}
-                disabled={isPaid}
+                disabled={isPaid || isVoid}
                 onChange={(e) => setDiscountValue(e.target.value)}
                 style={{
                   width: 80,
@@ -300,7 +362,7 @@ function FinalInvoice() {
         </tbody>
       </table>
       {/* ================= PAYMENT ================= */}
-      {!isPaid && (
+      {!isPaid && !isVoid && (
         <>
           <hr />
           <h3>Payment</h3>
@@ -315,7 +377,7 @@ function FinalInvoice() {
                 />{" "}
                 {mode}
               </label>
-            )
+            ),
           )}
 
           <button
@@ -344,6 +406,35 @@ function FinalInvoice() {
       {isPaid && (
         <p style={{ marginTop: 20, color: "green" }}>✅ This invoice is PAID</p>
       )}
+      {isDraft && (
+        <p style={{ marginTop: 20, color: "#d97706", fontWeight: "bold" }}>
+          📝 This invoice is currently DRAFT / UNPAID
+        </p>
+      )}
+      {isVoid && (
+        <p style={{ marginTop: 20, color: "red", fontWeight: "bold" }}>
+          🚫 This invoice has been VOIDED
+        </p>
+      )}
+      {/* ✅ DRAFT / UNPAID BUTTON */}
+      {!isPaid && !isVoid && (
+        <button
+          style={{
+            marginLeft: 10,
+            background: "#f39c12",
+            color: "#fff",
+          }}
+          onClick={() => {
+            setShowDraftPopup(true);
+
+            setTimeout(() => {
+              window.location.href = "/dashboard/invoices/list";
+            }, 2500);
+          }}
+        >
+          📝 Leave as Draft / Unpaid
+        </button>
+      )}
       {/* ================= SIGNATURE SECTION ================= */}
       <hr />
       <div style={{ marginTop: 40, textAlign: "right" }}>
@@ -364,8 +455,10 @@ function FinalInvoice() {
         {/* ✅ Always show hotel name */}
         <p>{invoice.hotel_name}</p>
       </div>
+      {/* Invoixa Company Footer */}
       <hr />
-      Powered by INVOIXA{" "}
+      Powered by INVOIXA - a complete invoice creation and invoices management
+      plateform{" "}
       <span>
         <a
           href="https://invoixa.qzz.io"

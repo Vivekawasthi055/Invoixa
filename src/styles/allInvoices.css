@@ -127,6 +127,11 @@
   background: #fef3c7;
   color: #92400e;
 }
+.allinvoices-void {
+  background: #fdecea;
+  color: #c0392b;
+  font-weight: 600;
+}
 
 /* Open link */
 .allinvoices-open-link {

@@ -96,6 +96,7 @@ function AllInvoices() {
             <option value="">Status</option>
             <option value="Draft">Draft</option>
             <option value="Paid">Paid</option>
+            <option value="Void">Void</option>
           </select>
 
           <input
@@ -168,7 +169,9 @@ function AllInvoices() {
                       className={`allinvoices-status ${
                         inv.status === "Paid"
                           ? "allinvoices-paid"
-                          : "allinvoices-draft"
+                          : inv.status === "Void"
+                            ? "allinvoices-void"
+                            : "allinvoices-draft"
                       }`}
                     >
                       {inv.status}
