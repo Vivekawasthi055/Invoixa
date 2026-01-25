@@ -80,53 +80,82 @@ function AllInvoices() {
       {/* 🔍 FILTERS */}
       <div className="allinvoices-filter-card">
         <div className="allinvoices-filters-grid">
-          <input
-            name="invoice_number"
-            placeholder="Invoice No"
-            value={filters.invoice_number}
-            onChange={handleChange}
-          />
-          <input
-            name="guest_name"
-            placeholder="Guest Name"
-            value={filters.guest_name}
-            onChange={handleChange}
-          />
-          <select name="status" value={filters.status} onChange={handleChange}>
-            <option value="">Status</option>
-            <option value="Draft">Draft</option>
-            <option value="Paid">Paid</option>
-            <option value="Void">Void</option>
-          </select>
+          <div className="allinvoices-filter-field">
+            <label>Invoice No</label>
+            <input
+              name="invoice_number"
+              placeholder="e.g. INV-1023"
+              value={filters.invoice_number}
+              onChange={handleChange}
+            />
+          </div>
 
-          <input
-            name="from_date"
-            type="date"
-            value={filters.from_date}
-            onChange={handleChange}
-          />
-          <input
-            name="to_date"
-            type="date"
-            value={filters.to_date}
-            onChange={handleChange}
-          />
+          <div className="allinvoices-filter-field">
+            <label>Guest Name</label>
+            <input
+              name="guest_name"
+              placeholder="Guest name"
+              value={filters.guest_name}
+              onChange={handleChange}
+            />
+          </div>
 
-          <input
-            name="min_amount"
-            placeholder="Min Amount"
-            value={filters.min_amount}
-            onChange={handleChange}
-          />
-          <input
-            name="max_amount"
-            placeholder="Max Amount"
-            value={filters.max_amount}
-            onChange={handleChange}
-          />
+          <div className="allinvoices-filter-field">
+            <label>Status</label>
+            <select
+              name="status"
+              value={filters.status}
+              onChange={handleChange}
+            >
+              <option value="">All</option>
+              <option value="Draft">Draft</option>
+              <option value="Paid">Paid</option>
+              <option value="Void">Void</option>
+            </select>
+          </div>
+
+          <div className="allinvoices-filter-field">
+            <label>From Date</label>
+            <input
+              type="date"
+              name="from_date"
+              value={filters.from_date}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="allinvoices-filter-field">
+            <label>To Date</label>
+            <input
+              type="date"
+              name="to_date"
+              value={filters.to_date}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="allinvoices-filter-field">
+            <label>Min Amount</label>
+            <input
+              name="min_amount"
+              placeholder="₹ Min"
+              value={filters.min_amount}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="allinvoices-filter-field">
+            <label>Max Amount</label>
+            <input
+              name="max_amount"
+              placeholder="₹ Max"
+              value={filters.max_amount}
+              onChange={handleChange}
+            />
+          </div>
         </div>
 
-        {/* ✅ UPDATED: scoped buttons */}
+        {/* Actions */}
         <div className="allinvoices-filter-actions">
           <button className="allinvoices-search-btn" onClick={loadInvoices}>
             🔍 Search

@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { getRooms } from "../../services/roomService";
+import { supabase } from "../../services/supabaseClient";
+import "../../styles/CreateInvoice.css";
+
 import {
   addInvoiceRoom,
   addInvoiceRoomRates,
@@ -7,9 +10,10 @@ import {
 } from "../../services/invoiceRoomService";
 import InvoiceRoomFood from "./InvoiceRoomFood";
 
-function InvoiceRooms({ invoice }) {
+function InvoiceRooms({ invoice, onValidationChange }) {
   const [rooms, setRooms] = useState([]);
   const [invoiceRooms, setInvoiceRooms] = useState([]);
+  const [roomTouched, setRoomTouched] = useState(false);
 
   const [roomId, setRoomId] = useState("");
   const [checkin, setCheckin] = useState("");
@@ -33,6 +37,19 @@ function InvoiceRooms({ invoice }) {
     const { data } = await getInvoiceRooms(invoice.id);
     setInvoiceRooms(data || []);
   };
+
+  useEffect(() => {
+    // ✅ Check if rooms are added
+    const roomsOk = invoiceRooms.length > 0;
+
+    // ✅ Food initially assume ok (we will improve later)
+    const foodOk = true;
+
+    // 🔹 Call parent callback to tell if Save & Next can proceed
+    if (typeof onValidationChange === "function") {
+      onValidationChange(roomsOk && foodOk);
+    }
+  }, [invoiceRooms, onValidationChange]);
 
   const nightsBetween = (start, end) => {
     if (!start || !end) return 0;
@@ -98,85 +115,168 @@ function InvoiceRooms({ invoice }) {
     setRate("");
     setNightRates([]);
     loadInvoiceRooms();
+    setCheckin("");
+    setCheckout("");
+    setSameRate(true);
+    setRoomTouched(false);
+  };
+  const handleDeleteRoom = async (invoiceRoomId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this room? All food & services will also be removed.",
+    );
+
+    if (!confirmDelete) return;
+
+    // 1️⃣ Delete food & services first
+    await supabase
+      .from("invoice_food_services")
+      .delete()
+      .eq("invoice_room_id", invoiceRoomId);
+
+    // 2️⃣ Delete room rates (if any)
+    await supabase
+      .from("invoice_room_rates")
+      .delete()
+      .eq("invoice_room_id", invoiceRoomId);
+
+    // 3️⃣ Delete the room itself
+    await supabase.from("invoice_rooms").delete().eq("id", invoiceRoomId);
+
+    // 4️⃣ Refresh UI
+    loadInvoiceRooms();
   };
 
   return (
-    <div style={{ marginTop: 20 }}>
-      <h3>Add Rooms</h3>
+    <section className="ci-card ci-room-card">
+      <h3 className="ci-section-title">Add Rooms</h3>
 
-      <select value={roomId} onChange={(e) => setRoomId(e.target.value)}>
-        <option value="">Select Room</option>
-        {rooms.map((r) => (
-          <option key={r.id} value={r.id}>
-            {r.room_number} {r.room_name}
-          </option>
-        ))}
-      </select>
+      <div className="ci-form-grid">
+        <div>
+          <label>Select Room</label>
+          <select
+            value={roomId}
+            onChange={(e) => {
+              setRoomId(e.target.value);
+              setRoomTouched(true);
+            }}
+          >
+            <option value="">Select Room</option>
+            {rooms.map((r) => (
+              <option key={r.id} value={r.id}>
+                {r.room_number} {r.room_name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <input
-        type="date"
-        value={checkin}
-        onChange={(e) => setCheckin(e.target.value)}
-      />
-      <input
-        type="date"
-        value={checkout}
-        onChange={(e) => setCheckout(e.target.value)}
-      />
+        <div>
+          <label>Check-in</label>
+          <input
+            type="date"
+            value={checkin}
+            onChange={(e) => {
+              setCheckin(e.target.value);
+              setRoomTouched(true);
+            }}
+          />
+        </div>
 
-      <p>Total Nights: {nights}</p>
+        <div>
+          <label>Check-out</label>
+          <input
+            type="date"
+            value={checkout}
+            onChange={(e) => {
+              setCheckout(e.target.value);
+              setRoomTouched(true);
+            }}
+          />
+        </div>
+      </div>
 
-      <label>
+      <p className="ci-info-text">Total Nights: {nights}</p>
+
+      <label className="ci-checkbox">
         <input
           type="checkbox"
           checked={sameRate}
           onChange={() => setSameRate(!sameRate)}
         />
-        Same rate all nights
+        Same rate for all nights
       </label>
 
-      {sameRate ? (
-        <input
-          type="number"
-          placeholder="Per night rate"
-          value={rate}
-          onChange={(e) => setRate(e.target.value)}
-        />
-      ) : (
-        nightRates.map((r, i) => (
+      <div className="ci-rate-box">
+        {sameRate ? (
           <input
-            key={i}
             type="number"
-            placeholder={`Night ${i + 1} rate`}
-            onChange={(e) => {
-              const copy = [...nightRates];
-              copy[i] = e.target.value;
-              setNightRates(copy);
-            }}
+            placeholder="Per night rate"
+            value={rate}
+            onChange={(e) => setRate(e.target.value)}
           />
-        ))
-      )}
+        ) : (
+          nightRates.map((r, i) => (
+            <input
+              key={i}
+              type="number"
+              placeholder={`Night ${i + 1} rate`}
+              onChange={(e) => {
+                const copy = [...nightRates];
+                copy[i] = e.target.value;
+                setNightRates(copy);
+              }}
+            />
+          ))
+        )}
+      </div>
 
-      <p>
-        <strong>Total: ₹{totalAmount}</strong>
-      </p>
-      <button onClick={handleAddRoom}>Add Room</button>
+      <p className="ci-total">Total: ₹{totalAmount}</p>
 
-      <hr />
+      <div className="ci-btn-row">
+        <button onClick={handleAddRoom} className="ci-primary-btn">
+          + Add Room
+        </button>
 
-      <h4>Rooms in Invoice</h4>
-      <ul>
+        <button
+          type="button"
+          className="ci-secondary-btn"
+          onClick={() => {
+            setRoomId("");
+            setCheckin("");
+            setCheckout("");
+            setRate("");
+            setNightRates([]);
+            setSameRate(true);
+            setRoomTouched(false);
+          }}
+        >
+          Clear
+        </button>
+      </div>
+
+      <h4 className="ci-sub-title">Rooms in Invoice</h4>
+
+      <ul className="ci-room-list">
         {invoiceRooms.map((r) => (
-          <li key={r.id}>
-            <strong>
-              {r.room_number} {r.room_name}
-            </strong>{" "}
-            | ₹{r.total_room_amount}
+          <li key={r.id} className="ci-room-item">
+            <div className="ci-room-head">
+              <strong>
+                {r.room_number} {r.room_name}
+              </strong>
+              <span>₹{r.total_room_amount}</span>
+            </div>
+
+            <button
+              className="ci-danger-btn"
+              onClick={() => handleDeleteRoom(r.id)}
+            >
+              ❌ Remove Room
+            </button>
+
             <InvoiceRoomFood room={r} />
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   );
 }
 

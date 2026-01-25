@@ -1,49 +1,193 @@
 @media print {
+  /* ================= RESET ================= */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
   body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    background: #ffffff !important;
+    font-family: "Inter", Arial, sans-serif;
+    color: #000;
   }
 
+  /* ================= HIDE UI ================= */
   button,
   select,
   input,
-  a {
+  a,
+  header,
+  nav {
     display: none !important;
   }
 
-  main {
+  /* ================= MAIN ================= */
+  main,
+  .final-inv-main {
     max-width: 100% !important;
     padding: 0 !important;
+    margin: 0 !important;
   }
 
-  table {
-    border-collapse: collapse;
-    width: 100%;
-  }
-
-  table,
-  th,
-  td {
-    border: 1px solid #000;
-  }
-
+  /* ================= HEADINGS (TIGHT) ================= */
+  h1,
   h2,
   h3,
   h4 {
-    margin: 4px 0;
+    margin: 3px 0;
+    line-height: 1.2;
+    page-break-after: avoid;
   }
 
+  h2 {
+    font-size: 18px;
+    font-weight: 800;
+    text-align: center;
+  }
+
+  h3 {
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  h4 {
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  /* ================= TEXT (🔥 FIX HERE) ================= */
+  p,
+  td {
+    font-size: 11.5px;
+    line-height: 1.3; /* 🔥 reduced */
+    margin: 2px 0; /* 🔥 reduced */
+  }
+
+  strong {
+    font-weight: 700;
+  }
+
+  /* ================= HR ================= */
   hr {
     border: none;
     border-top: 1px solid #000;
-    margin: 10px 0;
+    margin: 6px 0; /* 🔥 reduced */
   }
 
-  img {
-    max-height: 80px;
+  /* ================= HOTEL HEADER ================= */
+  .final-inv-hotel {
+    text-align: center;
+    margin-bottom: 6px;
   }
-  header {
-    display: none;
+
+  .final-inv-hotel img {
+    max-height: 65px;
+    margin-bottom: 4px;
+  }
+
+  .final-inv-hotel p {
+    font-size: 11px;
+    line-height: 1.25;
+  }
+
+  /* ================= HEADER ROW ================= */
+  .final-inv-header-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11.5px;
+    margin-bottom: 4px;
+  }
+
+  /* ================= GUEST DETAILS ================= */
+  .final-inv-guest > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 4px 0; /* 🔥 reduced */
+  }
+
+  /* ================= TABLES ================= */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    page-break-inside: avoid;
+  }
+
+  table th,
+  table td {
+    border: 1px solid #000;
+    padding: 5px 6px; /* 🔥 reduced */
+    font-size: 11.5px;
+    line-height: 1.3;
+  }
+
+  table th {
+    font-weight: 700;
+    background: #f3f4f6 !important;
+  }
+
+  .right {
+    text-align: right;
+  }
+
+  /* ================= ROOMS ================= */
+  .final-inv-room {
+    margin-bottom: 10px; /* 🔥 reduced */
+    page-break-inside: avoid;
+  }
+
+  .final-inv-night-rates {
+    font-size: 10.5px;
+    margin-top: 2px;
+  }
+
+  /* ================= TOTALS ================= */
+  .final-inv-totals td {
+    padding: 5px 6px;
+  }
+
+  .final-inv-grand {
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  /* ================= STATUS ================= */
+  .final-inv-paid,
+  .final-inv-draft,
+  .final-inv-void {
+    font-size: 11.5px;
+    font-weight: 700;
+  }
+
+  /* ================= VOID WATERMARK ================= */
+  .final-inv-void-watermark {
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-size: 100px; /* 🔥 slightly reduced */
+    font-weight: 900;
+    color: rgba(0, 0, 0, 0.15);
+    pointer-events: none;
+  }
+
+  /* ================= SIGNATURE ================= */
+  .final-inv-signature {
+    text-align: right;
+    margin-top: 22px; /* 🔥 reduced */
+  }
+
+  .final-inv-signature img {
+    max-height: 50px;
+    margin-bottom: 2px;
+  }
+
+  /* ================= FOOTER ================= */
+  .final-inv-footer {
+    text-align: center;
+    font-size: 10.5px;
+    margin-top: 10px;
   }
 }

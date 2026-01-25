@@ -5,7 +5,7 @@
   margin: auto;
 }
 
-/* Header */
+/* ================= HEADER ================= */
 .allinvoices-header h2 {
   font-size: 26px;
   margin-bottom: 4px;
@@ -16,67 +16,104 @@
   color: #64748b;
 }
 
-/* Filter card */
+/* ================= FILTER CARD ================= */
 .allinvoices-filter-card {
   margin-top: 20px;
   background: #ffffff;
-  padding: 20px;
-  border-radius: 12px;
+  padding: 22px;
+  border-radius: 14px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
 }
 
+/* Filters Grid */
 .allinvoices-filters-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
 }
 
-.allinvoices-filters-grid input,
-.allinvoices-filters-grid select {
-  padding: 10px 12px;
+/* Each Field */
+.allinvoices-filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Label */
+.allinvoices-filter-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+}
+
+/* Input & Select */
+.allinvoices-filter-field input,
+.allinvoices-filter-field select {
+  padding: 11px 12px;
   font-size: 14px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid #cbd5e1;
+  background: #ffffff;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.allinvoices-filters-grid input:focus,
-.allinvoices-filters-grid select:focus {
+.allinvoices-filter-field input::placeholder {
+  color: #94a3b8;
+}
+
+.allinvoices-filter-field input:focus,
+.allinvoices-filter-field select:focus {
   outline: none;
   border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
-/* Buttons */
+/* ================= FILTER ACTIONS ================= */
 .allinvoices-filter-actions {
   display: flex;
   gap: 12px;
-  margin-top: 14px;
+  margin-top: 18px;
+  flex-wrap: wrap;
 }
 
+/* Search Button */
 .allinvoices-search-btn {
   background: #2563eb;
-  color: #fff;
+  color: #ffffff;
   border: none;
-  padding: 10px 18px;
-  border-radius: 8px;
+  padding: 10px 22px;
+  border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.15s ease;
 }
 
+.allinvoices-search-btn:hover {
+  background: #1e4ed8;
+  transform: translateY(-1px);
+}
+
+/* Clear Button */
 .allinvoices-clear-btn {
   background: #e5e7eb;
   color: #0f172a;
   border: none;
-  padding: 10px 18px;
-  border-radius: 8px;
+  padding: 10px 22px;
+  border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
+  transition: background 0.2s ease;
 }
 
 .allinvoices-clear-btn:hover {
   background: #d1d5db;
 }
 
-/* Table */
+/* ================= TABLE ================= */
 .allinvoices-table-wrapper {
   margin-top: 30px;
   overflow-x: auto;
@@ -86,7 +123,7 @@
   width: 100%;
   border-collapse: collapse;
   background: #ffffff;
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
 }
 
@@ -100,6 +137,7 @@
   padding: 12px 14px;
   font-size: 14px;
   text-align: left;
+  white-space: nowrap;
 }
 
 .allinvoices-table tbody tr {
@@ -110,7 +148,7 @@
   background: #f8fafc;
 }
 
-/* Status badge */
+/* ================= STATUS BADGE ================= */
 .allinvoices-status {
   padding: 4px 10px;
   border-radius: 999px;
@@ -127,13 +165,14 @@
   background: #fef3c7;
   color: #92400e;
 }
+
 .allinvoices-void {
   background: #fdecea;
   color: #c0392b;
   font-weight: 600;
 }
 
-/* Open link */
+/* ================= LINKS ================= */
 .allinvoices-open-link {
   color: #2563eb;
   font-weight: 600;
@@ -144,16 +183,25 @@
   text-decoration: underline;
 }
 
-/* Empty */
+/* ================= EMPTY STATE ================= */
 .allinvoices-empty-row {
   text-align: center;
   color: #94a3b8;
   padding: 30px;
 }
 
-/* Responsive */
+/* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
   .allinvoices-header h2 {
     font-size: 22px;
+  }
+
+  .allinvoices-filter-actions {
+    flex-direction: column;
+  }
+
+  .allinvoices-search-btn,
+  .allinvoices-clear-btn {
+    width: 100%;
   }
 }

@@ -29,21 +29,49 @@ function FinalInvoice() {
     loadInvoice();
   }, [id]);
 
-  const printStyles = `
-@media print {
-  button, select, a, input {
-    display: none !important;
-  }
-  body {
-    background: #fff;
-  }
-}
-`;
-
   const togglePaymentMode = (mode) => {
     setPaymentModes((prev) =>
       prev.includes(mode) ? prev.filter((m) => m !== mode) : [...prev, mode],
     );
+  };
+
+  const handleDeleteInvoice = async () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to DELETE this invoice?\nThis will permanently remove all rooms and food services.",
+    );
+
+    if (!confirmDelete) return;
+
+    // 1️⃣ get all room ids
+    const { data: roomsData } = await supabase
+      .from("invoice_rooms")
+      .select("id")
+      .eq("invoice_id", invoice.id);
+
+    const roomIds = roomsData?.map((r) => r.id) || [];
+
+    // 2️⃣ delete food services & room rates
+    if (roomIds.length > 0) {
+      await supabase
+        .from("invoice_food_services")
+        .delete()
+        .in("invoice_room_id", roomIds);
+
+      await supabase
+        .from("invoice_room_rates")
+        .delete()
+        .in("invoice_room_id", roomIds);
+    }
+
+    // 3️⃣ delete rooms
+    await supabase.from("invoice_rooms").delete().eq("invoice_id", invoice.id);
+
+    // 4️⃣ delete invoice
+    await supabase.from("invoices").delete().eq("id", invoice.id);
+
+    alert("Invoice deleted successfully");
+
+    window.location.href = "/dashboard/invoices/list";
   };
 
   /* ================= LOAD INVOICE ================= */
@@ -129,74 +157,80 @@ function FinalInvoice() {
       </main>
     );
   if (!invoice || !invoice) return <p>Invoice not found</p>;
-
   return (
-    <main style={{ padding: 20, maxWidth: 900, margin: "auto" }}>
+    <main className="final-inv-main">
       {/* ✅ DRAFT POPUP */}
       {showDraftPopup && (
-        <div
-          style={{
-            position: "fixed",
-            top: "20%",
-            left: "50%",
-            transform: "translateX(-50%)",
-            background: "#fef3c7",
-            color: "#92400e",
-            padding: "15px 25px",
-            borderRadius: 10,
-            fontWeight: "bold",
-            zIndex: 9999,
-            boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
-          }}
-        >
+        <div className="final-inv-draft-popup">
           📝 Invoice saved as Draft. Redirecting…
         </div>
       )}
-      {isVoid && (
-        <div
-          style={{
-            position: "fixed",
-            top: "40%",
-            left: "50%",
-            transform: "translate(-50%, -50%) rotate(-30deg)",
-            fontSize: "120px",
-            color: "rgba(200,0,0,0.15)",
-            fontWeight: "bold",
-            zIndex: 999,
-            pointerEvents: "none",
-          }}
-        >
-          VOID
+
+      {isDraft && (
+        <div className="final-inv-draft-watermark">DRAFT</div>
+      )}
+      {isVoid && <div className="final-inv-void-watermark">VOID</div>}
+
+      <div className="final-inv-top-actions">
+        <Link to="/dashboard/invoices/list">← Back to Invoices</Link>
+
+        <div>
+          <button
+            onClick={() => {
+              const guestName =
+                invoice.guest_name?.trim().replace(/\s+/g, "_") || "invoice";
+
+              const originalTitle = document.title;
+              document.title = `${guestName}_invoice`;
+
+              window.print();
+
+              setTimeout(() => {
+                document.title = originalTitle;
+              }, 1000);
+            }}
+          >
+            🖨️ Print / Download PDF
+          </button>
+
+          {isDraft && (
+            <button
+              className="final-inv-delete-btn"
+              onClick={handleDeleteInvoice}
+            >
+              🗑️ Delete Invoice
+            </button>
+          )}
+
+          {!isVoid && (
+            <button
+              className="final-inv-void-btn"
+              onClick={async () => {
+                const confirmVoid = window.confirm(
+                  "Are you sure you want to VOID this invoice? This action cannot be undone.",
+                );
+                if (!confirmVoid) return;
+
+                await supabase
+                  .from("invoices")
+                  .update({ status: "Void" })
+                  .eq("id", invoice.id);
+
+                await loadInvoice();
+                alert("Invoice has been VOIDED");
+              }}
+            >
+              🚫 Void Invoice
+            </button>
+          )}
         </div>
-      )}
-      <Link to="/dashboard/invoices/list">← Back to Invoices</Link>{" "}
-      <button onClick={() => window.print()}>🖨️ Print / Download PDF</button>
-      <style>{printStyles}</style>
-      {!isVoid && (
-        <button
-          style={{ marginLeft: 10, background: "#c0392b", color: "#fff" }}
-          onClick={async () => {
-            const confirmVoid = window.confirm(
-              "Are you sure you want to VOID this invoice? This action cannot be undone.",
-            );
-            if (!confirmVoid) return;
+      </div>
 
-            await supabase
-              .from("invoices")
-              .update({ status: "Void" })
-              .eq("id", invoice.id);
-
-            await loadInvoice();
-            alert("Invoice has been VOIDED");
-          }}
-        >
-          🚫 Void Invoice
-        </button>
-      )}
-      <h2 style={{ textAlign: "center", marginTop: 20 }}>Invoice</h2>
+      <h2 className="final-inv-title">Invoice</h2>
       <hr />
-      {/* ================= HEADER ================= */}
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+
+      {/* HEADER */}
+      <div className="final-inv-header-row">
         <p>
           <strong>Invoice No:</strong> {invoice.invoice_number}
         </p>
@@ -211,13 +245,12 @@ function FinalInvoice() {
             : ""}
         </p>
       </div>
-      <div style={{ textAlign: "center", marginTop: "-16px" }}>
+
+      <div className="final-inv-hotel">
         {invoice.hotel_logo_url && (
-          <img src={invoice.hotel_logo_url} alt="Logo" height="80" />
+          <img src={invoice.hotel_logo_url} alt="Logo" />
         )}
-
         <h2>{invoice.hotel_name}</h2>
-
         <p>
           {invoice.hotel_address} | {invoice.hotel_phone} |{" "}
           {invoice.hotel_email}
@@ -229,11 +262,13 @@ function FinalInvoice() {
           </p>
         )}
       </div>
+
       <hr />
-      {/* ================= INVOICE INFO ================= */}
-      <div style={{ textAlign: "center" }}>
-        <strong style={{ marginBottom: "10px" }}>Guest Details</strong>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+
+      {/* GUEST */}
+      <div className="final-inv-guest">
+        <strong>Guest Details</strong>
+        <div>
           <p>
             <strong>Name:</strong> {invoice.guest_name || "Guest"}
           </p>
@@ -241,15 +276,16 @@ function FinalInvoice() {
             <strong>Phone:</strong> {invoice.guest_phone || "N/A"}
           </p>
           <p>
-            <strong>Email:</strong> {invoice.guest_email || "N/A"}{" "}
-            {/* ✅ FIX: always show */}
+            <strong>Email:</strong> {invoice.guest_email || "N/A"}
           </p>
         </div>
       </div>
+
       <hr />
-      {/* ================= ROOMS ================= */}
+
+      {/* ROOMS */}
       {rooms.map((room, idx) => (
-        <div key={room.id} style={{ marginBottom: 25 }}>
+        <div key={room.id} className="final-inv-room">
           <h4>
             Room {idx + 1}: {room.room_number} {room.room_name}
           </h4>
@@ -257,52 +293,46 @@ function FinalInvoice() {
             {room.checkin_date} → {room.checkout_date}
           </p>
 
-          <table width="100%" border="1" cellPadding="8">
+          <table>
             <tbody>
               <tr>
                 <td>
                   Room Charges
                   {!room.same_rate_all_nights && (
-                    <div style={{ fontSize: 12, color: "#555", marginTop: 4 }}>
-                      {/* 🔒 SHOW PER-NIGHT RATES WHEN SAME RATE = NO */}
-                      {room.invoice_room_rates.map((r, idx) => (
-                        <div key={r.id}>
-                          Night {idx + 1} ₹{r.rate}
-                        </div>
-                      ))}
+                    <div className="final-inv-night-rates">
+                      {room.invoice_room_rates
+                        .map((r, idx) => `Night ${idx + 1} ₹${r.rate}`)
+                        .join(", ")}
                     </div>
                   )}
                 </td>
-
-                <td align="right">₹{roomCharges(room)}</td>
+                <td className="right">₹{roomCharges(room)}</td>
               </tr>
 
               {room.invoice_food_services.map((f) => (
                 <tr key={f.id}>
                   <td>{f.name}</td>
-                  <td align="right">₹{f.total_amount}</td>
+                  <td className="right">₹{f.total_amount}</td>
                 </tr>
               ))}
 
-              <tr>
-                <td>
-                  <strong>Room Subtotal</strong>
-                </td>
-                <td align="right">
-                  <strong>₹{roomSubtotal(room)}</strong>
-                </td>
+              <tr className="final-inv-subtotal">
+                <td>Room Subtotal</td>
+                <td className="right">₹{roomSubtotal(room)}</td>
               </tr>
             </tbody>
           </table>
         </div>
       ))}
-      {/* ================= TOTALS ================= */}
+
       <hr />
-      <table width="100%" cellPadding="8">
+
+      {/* TOTALS */}
+      <table className="final-inv-totals">
         <tbody>
           <tr>
             <td>Subtotal</td>
-            <td align="right">₹{invoiceSubtotal}</td>
+            <td className="right">₹{invoiceSubtotal}</td>
           </tr>
 
           <tr>
@@ -312,7 +342,6 @@ function FinalInvoice() {
                 value={discountType}
                 disabled={isPaid || isVoid}
                 onChange={(e) => setDiscountType(e.target.value)}
-                style={{ marginLeft: 10 }}
               >
                 <option value="flat">₹</option>
                 <option value="percent">%</option>
@@ -322,46 +351,36 @@ function FinalInvoice() {
                 value={discountValue}
                 disabled={isPaid || isVoid}
                 onChange={(e) => setDiscountValue(e.target.value)}
-                style={{
-                  width: 80,
-                  marginLeft: 10,
-                }}
               />
             </td>
-            <td align="right">₹{discountAmount}</td>
+            <td className="right">₹{discountAmount}</td>
           </tr>
 
           {invoice.has_gst && (
             <>
               <tr>
                 <td>Taxable Amount</td>
-                <td align="right">₹{taxableAmount}</td>
+                <td className="right">₹{taxableAmount}</td>
               </tr>
               <tr>
                 <td>GST ({invoice.gst_percentage}%)</td>
-                <td align="right">₹{gstAmount}</td>
+                <td className="right">₹{gstAmount}</td>
               </tr>
             </>
           )}
 
-          <tr>
-            <td>
-              <strong>Grand Total</strong>
-            </td>
-            <td align="right">
-              <strong>₹{grandTotal}</strong>
-            </td>
+          <tr className="final-inv-grand">
+            <td>Grand Total</td>
+            <td className="right">₹{grandTotal}</td>
           </tr>
 
           <tr>
-            <td>
-              <strong>Payment Mode</strong>
-            </td>
-            <td align="right">{invoice.payment_mode}</td>
+            <td>Payment Mode</td>
+            <td className="right">{invoice.payment_mode}</td>
           </tr>
         </tbody>
       </table>
-      {/* ================= PAYMENT ================= */}
+
       {!isPaid && !isVoid && (
         <>
           <hr />
@@ -369,19 +388,21 @@ function FinalInvoice() {
 
           {["Cash", "UPI", "Card", "Bank Transfer", "Online Booking (OTA)"].map(
             (mode) => (
-              <label key={mode} style={{ display: "block" }}>
+              <label key={mode} className="final-inv-payment-option">
                 <input
                   type="checkbox"
                   checked={paymentModes.includes(mode)}
                   onChange={() => togglePaymentMode(mode)}
-                />{" "}
+                />
                 {mode}
               </label>
             ),
           )}
 
           <button
-            style={{ marginTop: 20 }}
+            className={`final-inv-paid-btn ${
+              paymentModes.length === 0 ? "btn-disabled" : "btn-active"
+            }`}
             disabled={paymentModes.length === 0}
             onClick={async () => {
               await finalizeInvoice({
@@ -403,30 +424,22 @@ function FinalInvoice() {
           </button>
         </>
       )}
-      {isPaid && (
-        <p style={{ marginTop: 20, color: "green" }}>✅ This invoice is PAID</p>
-      )}
+
+      {isPaid && <p className="final-inv-paid">✅ This invoice is PAID</p>}
       {isDraft && (
-        <p style={{ marginTop: 20, color: "#d97706", fontWeight: "bold" }}>
+        <p className="final-inv-draft">
           📝 This invoice is currently DRAFT / UNPAID
         </p>
       )}
       {isVoid && (
-        <p style={{ marginTop: 20, color: "red", fontWeight: "bold" }}>
-          🚫 This invoice has been VOIDED
-        </p>
+        <p className="final-inv-void">🚫 This invoice has been VOIDED</p>
       )}
-      {/* ✅ DRAFT / UNPAID BUTTON */}
+
       {!isPaid && !isVoid && (
         <button
-          style={{
-            marginLeft: 10,
-            background: "#f39c12",
-            color: "#fff",
-          }}
+          className="final-inv-draft-btn"
           onClick={() => {
             setShowDraftPopup(true);
-
             setTimeout(() => {
               window.location.href = "/dashboard/invoices/list";
             }, 2500);
@@ -435,39 +448,27 @@ function FinalInvoice() {
           📝 Leave as Draft / Unpaid
         </button>
       )}
-      {/* ================= SIGNATURE SECTION ================= */}
-      <hr />
-      <div style={{ marginTop: 40, textAlign: "right" }}>
-        <p>
-          <strong>Authorized Signature</strong>
-        </p>
 
-        {/* ✅ Show signature image only if uploaded */}
+      <hr />
+
+      {/* SIGNATURE */}
+      <div className="final-inv-signature">
+        <strong>Authorized Signature</strong>
+
         {invoice.hotel_signature_url && (
-          <img
-            src={invoice.hotel_signature_url}
-            alt="Hotel Signature"
-            height="60"
-            style={{ display: "block", marginLeft: "auto", marginBottom: -15 }}
-          />
+          <img src={invoice.hotel_signature_url} alt="Hotel Signature" />
         )}
 
-        {/* ✅ Always show hotel name */}
         <p>{invoice.hotel_name}</p>
       </div>
-      {/* Invoixa Company Footer */}
+
       <hr />
-      Powered by INVOIXA - a complete invoice creation and invoices management
-      plateform{" "}
-      <span>
-        <a
-          href="https://invoixa.qzz.io"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+      <footer className="final-inv-footer">
+        Powered by INVOIXA – complete invoice management platform{" "}
+        <a href="https://invoixa.qzz.io" target="_blank" rel="noreferrer">
           www.invoixa.qzz.io
         </a>
-      </span>
+      </footer>
     </main>
   );
 }
