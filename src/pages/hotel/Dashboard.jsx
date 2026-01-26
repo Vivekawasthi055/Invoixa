@@ -1,22 +1,47 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../components/common/AuthContext";
 import { getProfile } from "../../services/profileService";
-import "../../styles/dashboard.css"; // ✅ UI only
+import { supabase } from "../../services/supabaseClient";
+import "../../styles/dashboard.css";
 
 function Dashboard() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
+  const [hotelName, setHotelName] = useState("");
+  const [hotelCode, setHotelCode] = useState("");
+  const [hotelLogo, setHotelLogo] = useState(null);
+  const [loadingHotel, setLoadingHotel] = useState(true);
+
   useEffect(() => {
-    const checkProfile = async () => {
-      const { data } = await getProfile(user.id);
-      if (!data.profile_completed) {
+    const init = async () => {
+      // ✅ profile check
+      const { data: profile } = await getProfile(user.id);
+
+      if (!profile?.profile_completed) {
         navigate("/complete-profile", { replace: true });
+        return;
       }
+
+      // ✅ fetch hotel data
+      const { data: hotel } = await supabase
+        .from("hotels")
+        .select("hotel_name, hotel_code, logo_url")
+        .eq("user_id", user.id)
+        .single();
+
+      if (hotel) {
+        setHotelName(hotel.hotel_name);
+        setHotelCode(hotel.hotel_code);
+        setHotelLogo(hotel.logo_url || null);
+      }
+
+      setLoadingHotel(false);
     };
-    checkProfile();
-  }, []);
+
+    if (user?.id) init();
+  }, [user, navigate]);
 
   return (
     <main className="db-page">
@@ -24,6 +49,61 @@ function Dashboard() {
       <div className="db-header">
         <h1>Hotel Dashboard</h1>
         <p>Manage invoices, rooms & hotel settings from one place</p>
+      </div>
+
+      {/* ✅ Hotel Info (DB header ke just neeche) */}
+      <div style={{ marginBottom: "28px", display: "flex", gap: 14 }}>
+        {loadingHotel ? (
+          <>
+            <div
+              style={{
+                width: 56,
+                height: 56,
+                background: "#e5e7eb",
+                borderRadius: 8,
+              }}
+            />
+            <div>
+              <div
+                style={{
+                  width: 220,
+                  height: 18,
+                  background: "#e5e7eb",
+                  borderRadius: 4,
+                  marginBottom: 6,
+                }}
+              />
+              <div
+                style={{
+                  width: 80,
+                  height: 12,
+                  background: "#e5e7eb",
+                  borderRadius: 4,
+                }}
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            {hotelLogo && (
+              <img
+                src={hotelLogo}
+                alt="Hotel Logo"
+                style={{
+                  width: 56, // ✅ fixed width
+                  height: 56,
+                  objectFit: "contain",
+                  borderRadius: 8,
+                }}
+              />
+            )}
+
+            <div>
+              <strong style={{ fontSize: 18 }}>{hotelName}</strong>
+              <div style={{ fontSize: 14, opacity: 0.7 }}>{hotelCode}</div>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Action Cards */}
