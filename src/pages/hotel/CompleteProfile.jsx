@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../services/supabaseClient";
+import Logo from "../../components/common/Logo";
+import Signature from "../../components/common/Signature";
 import "../../styles/completeProfile.css";
 
 const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
@@ -8,12 +10,12 @@ const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 function CompleteProfile() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [uploadLogoNow, setUploadLogoNow] = useState(false);
-  const [hotelCode, setHotelCode] = useState(null);
-  const [logoFile, setLogoFile] = useState(null);
 
+  const [hotelCode, setHotelCode] = useState(null);
+  const [uploadLogoNow, setUploadLogoNow] = useState(false);
   const [uploadSignatureNow, setUploadSignatureNow] = useState(false);
-  const [signatureFile, setSignatureFile] = useState(null);
+  const [logoUrl, setLogoUrl] = useState(null);
+  const [signatureUrl, setSignatureUrl] = useState(null);
 
   const [form, setForm] = useState({
     hotel_name: "",
@@ -68,6 +70,11 @@ function CompleteProfile() {
         gst_number: profile?.gst_number || "",
         gst_percentage: profile?.gst_percentage || "",
       }));
+      setLogoUrl(profile?.logo_url || null);
+      setSignatureUrl(profile?.signature_url || null);
+
+      setUploadLogoNow(!!profile?.logo_url);
+      setUploadSignatureNow(!!profile?.signature_url);
 
       setLoading(false);
     };
@@ -78,103 +85,6 @@ function CompleteProfile() {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setForm({ ...form, [name]: type === "checkbox" ? checked : value });
-  };
-
-  /* ================= LOGO → REAL PNG CONVERSION ================= */
-
-  const convertLogoToPng = (file) =>
-    new Promise((resolve) => {
-      const img = new Image();
-      img.src = URL.createObjectURL(file);
-
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
-
-        canvas.toBlob((blob) => {
-          resolve(new File([blob], "logo.png", { type: "image/png" }));
-        }, "image/png");
-      };
-    });
-
-  const uploadLogo = async () => {
-    if (!logoFile || !hotelCode) return null;
-
-    const pngLogo = await convertLogoToPng(logoFile);
-    const filePath = `${hotelCode}/logo.png`;
-
-    const { error } = await supabase.storage
-      .from("hotel-logos")
-      .upload(filePath, pngLogo, { upsert: true });
-
-    if (error) {
-      alert(error.message);
-      return null;
-    }
-
-    const { data } = supabase.storage
-      .from("hotel-logos")
-      .getPublicUrl(filePath);
-
-    return data.publicUrl;
-  };
-
-  /* ================= SIGNATURE (UNCHANGED) ================= */
-
-  const removeBackground = (file) =>
-    new Promise((resolve) => {
-      const img = new Image();
-      img.src = URL.createObjectURL(file);
-
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
-
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const data = imageData.data;
-
-        for (let i = 0; i < data.length; i += 4) {
-          if (data[i] > 240 && data[i + 1] > 240 && data[i + 2] > 240) {
-            data[i + 3] = 0;
-          }
-        }
-
-        ctx.putImageData(imageData, 0, 0);
-
-        canvas.toBlob((blob) => {
-          resolve(new File([blob], "signature.png", { type: "image/png" }));
-        });
-      };
-    });
-
-  const uploadSignature = async () => {
-    if (!signatureFile || !hotelCode) return null;
-
-    const processedFile = await removeBackground(signatureFile);
-    const filePath = `${hotelCode}/signature.png`;
-
-    const { error } = await supabase.storage
-      .from("hotel-signatures")
-      .upload(filePath, processedFile, { upsert: true });
-
-    if (error) {
-      alert(error.message);
-      return null;
-    }
-
-    const { data } = supabase.storage
-      .from("hotel-signatures")
-      .getPublicUrl(filePath);
-
-    return data.publicUrl;
   };
 
   /* ================= SUBMIT ================= */
@@ -200,9 +110,6 @@ function CompleteProfile() {
 
     await supabase.auth.updateUser({ password: form.password });
 
-    const logoUrl = uploadLogoNow ? await uploadLogo() : null;
-    const signatureUrl = uploadSignatureNow ? await uploadSignature() : null;
-
     await supabase
       .from("profiles")
       .update({
@@ -211,8 +118,6 @@ function CompleteProfile() {
         has_gst: form.has_gst,
         gst_number: form.has_gst ? form.gst_number : null,
         gst_percentage: form.has_gst ? form.gst_percentage : null,
-        logo_url: logoUrl,
-        signature_url: signatureUrl,
         profile_completed: true,
         password_set: true,
       })
@@ -338,10 +243,10 @@ function CompleteProfile() {
             </label>
 
             {uploadLogoNow && (
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => setLogoFile(e.target.files[0])}
+              <Logo
+                hotelCode={hotelCode}
+                logoUrl={logoUrl}
+                onUploaded={setLogoUrl}
               />
             )}
 
@@ -355,10 +260,10 @@ function CompleteProfile() {
             </label>
 
             {uploadSignatureNow && (
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => setSignatureFile(e.target.files[0])}
+              <Signature
+                hotelCode={hotelCode}
+                signatureUrl={signatureUrl}
+                onUploaded={setSignatureUrl}
               />
             )}
           </div>

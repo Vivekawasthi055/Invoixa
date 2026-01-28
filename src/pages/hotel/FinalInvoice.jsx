@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { supabase } from "../../services/supabaseClient";
 import { finalizeInvoice } from "../../services/invoiceService";
 import "../../styles/FinalInvoice.css";
@@ -166,13 +166,18 @@ function FinalInvoice() {
         </div>
       )}
 
-      {isDraft && (
-        <div className="final-inv-draft-watermark">DRAFT</div>
-      )}
+      {isDraft && <div className="final-inv-draft-watermark">DRAFT</div>}
       {isVoid && <div className="final-inv-void-watermark">VOID</div>}
 
       <div className="final-inv-top-actions">
-        <Link to="/dashboard/invoices/list">← Back to Invoices</Link>
+        <button
+          className="final-inv-back-btn"
+          onClick={() => {
+            window.location.href = "/dashboard/invoices/list";
+          }}
+        >
+          ← Back to Invoices
+        </button>
 
         <div>
           <button

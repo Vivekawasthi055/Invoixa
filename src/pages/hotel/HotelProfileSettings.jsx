@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { supabase } from "../../services/supabaseClient";
 import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../../services/authService";
+import Logo from "../../components/common/Logo";
+import Signature from "../../components/common/Signature";
+
 import "../../styles/HotelProfileSettings.css";
 
 const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
@@ -35,12 +38,6 @@ function HotelProfileSettings() {
   const [editGST, setEditGST] = useState(false);
 
   const [msg, setMsg] = useState("");
-
-  /* ================= UPLOADS ================= */
-
-  const [logoFile, setLogoFile] = useState(null);
-  const [signatureFile, setSignatureFile] = useState(null);
-  const [uploading, setUploading] = useState(false);
 
   /* ================= PASSWORD ================= */
 
@@ -109,104 +106,6 @@ function HotelProfileSettings() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
-  };
-
-  /* ================= LOGO → ALL FORMAT TO PNG ================= */
-
-  const convertToPng = (file, outputName) =>
-    new Promise((resolve) => {
-      const img = new Image();
-      img.src = URL.createObjectURL(file);
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        canvas.width = img.width;
-        canvas.height = img.height;
-        canvas.getContext("2d").drawImage(img, 0, 0);
-        canvas.toBlob((blob) => {
-          resolve(new File([blob], outputName, { type: "image/png" }));
-        });
-      };
-    });
-
-  const uploadLogo = async () => {
-    if (!logoFile || !hotelCode) return;
-    setUploading(true);
-
-    const pngFile = await convertToPng(logoFile, "logo.png");
-    const path = `${hotelCode}/logo.png`;
-
-    await supabase.storage.from("hotel-logos").upload(path, pngFile, {
-      upsert: true,
-    });
-
-    const { data } = supabase.storage.from("hotel-logos").getPublicUrl(path);
-
-    await supabase
-      .from("profiles")
-      .update({ logo_url: `${data.publicUrl}?v=${Date.now()}` })
-      .eq("id", (await supabase.auth.getUser()).data.user.id);
-
-    setForm((p) => ({ ...p, logo_url: `${data.publicUrl}?v=${Date.now()}` }));
-    setUploading(false);
-  };
-
-  /* ================= SIGNATURE ================= */
-
-  const removeBackground = (file) =>
-    new Promise((resolve) => {
-      const img = new Image();
-      img.src = URL.createObjectURL(file);
-
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
-
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const data = imageData.data;
-
-        for (let i = 0; i < data.length; i += 4) {
-          if (data[i] > 240 && data[i + 1] > 240 && data[i + 2] > 240) {
-            data[i + 3] = 0;
-          }
-        }
-
-        ctx.putImageData(imageData, 0, 0);
-
-        canvas.toBlob((blob) => {
-          resolve(new File([blob], "signature.png", { type: "image/png" }));
-        });
-      };
-    });
-
-  const uploadSignature = async () => {
-    if (!signatureFile || !hotelCode) return;
-    setUploading(true);
-
-    const processedFile = await removeBackground(signatureFile);
-    const path = `${hotelCode}/signature.png`;
-
-    await supabase.storage
-      .from("hotel-signatures")
-      .upload(path, processedFile, { upsert: true });
-
-    const { data } = supabase.storage
-      .from("hotel-signatures")
-      .getPublicUrl(path);
-
-    await supabase
-      .from("profiles")
-      .update({ signature_url: `${data.publicUrl}?v=${Date.now()}` })
-      .eq("id", (await supabase.auth.getUser()).data.user.id);
-
-    setForm((p) => ({
-      ...p,
-      signature_url: `${data.publicUrl}?v=${Date.now()}`,
-    }));
-    setUploading(false);
   };
 
   /* ================= UPDATE FIELDS ================= */
@@ -428,35 +327,17 @@ function HotelProfileSettings() {
       {/* BRAND */}
       <section className="settings-card">
         <h3 className="settings-card-title">Brand Assets</h3>
+        <Logo
+          hotelCode={hotelCode}
+          logoUrl={form.logo_url}
+          onUploaded={(url) => setForm((p) => ({ ...p, logo_url: url }))}
+        />
 
-        <div className="settings-asset-row">
-          {form.logo_url && <img src={form.logo_url} alt="Logo" />}
-          <input type="file" onChange={(e) => setLogoFile(e.target.files[0])} />
-          <button
-            className="settings-btn"
-            disabled={uploading}
-            onClick={uploadLogo}
-          >
-            Upload Logo
-          </button>
-        </div>
-
-        <div className="settings-asset-row">
-          {form.signature_url && (
-            <img src={form.signature_url} alt="Signature" />
-          )}
-          <input
-            type="file"
-            onChange={(e) => setSignatureFile(e.target.files[0])}
-          />
-          <button
-            className="settings-btn"
-            disabled={uploading}
-            onClick={uploadSignature}
-          >
-            Upload Signature
-          </button>
-        </div>
+        <Signature
+          hotelCode={hotelCode}
+          signatureUrl={form.signature_url}
+          onUploaded={(url) => setForm((p) => ({ ...p, signature_url: url }))}
+        />
       </section>
 
       <hr className="settings-divider" />

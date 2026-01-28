@@ -1,0 +1,36 @@
+/* ================= BRAND ASSETS (LOGO & SIGNATURE) ================= */
+
+.asset-row {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.asset-row img {
+  width: 150px;
+  padding: 6px;
+  border-radius: 8px;
+  background: #f1f5f9;
+}
+
+.asset-btn {
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.asset-btn.danger-btn {
+  background: #dc2626;
+}
+
+/* Responsive – assets only */
+@media (max-width: 768px) {
+  .settings-asset-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

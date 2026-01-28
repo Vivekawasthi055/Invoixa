@@ -1,0 +1,99 @@
+/* =====================================================
+   CREATE HOTEL PAGE
+===================================================== */
+.ch-main {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 30px 24px;
+  background: #f8fafc;
+  border-radius: 14px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+  font-family: "Inter", sans-serif;
+}
+
+.ch-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 30px;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.ch-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ch-input {
+  padding: 12px 14px;
+  font-size: 15px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  transition: all 0.25s ease;
+}
+
+.ch-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.2);
+}
+
+.ch-btn {
+  padding: 14px 18px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border: none;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.ch-primary-btn {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  color: #fff;
+}
+
+.ch-primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.35);
+}
+
+.ch-btn:disabled {
+  background: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.ch-result {
+  margin-top: 20px;
+  text-align: center;
+  font-weight: 600;
+  color: #2563eb;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .ch-main {
+    margin: 20px 16px;
+    padding: 24px 16px;
+  }
+
+  .ch-title {
+    font-size: 22px;
+  }
+
+  .ch-btn {
+    font-size: 15px;
+    padding: 12px 16px;
+  }
+
+  .ch-input {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+}

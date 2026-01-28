@@ -1,0 +1,85 @@
+/* =====================================================
+   ADMIN DASHBOARD PAGE
+===================================================== */
+.adm-main {
+  max-width: 1000px;
+  margin: auto;
+  padding: 40px 24px;
+  background: #f8fafc;
+  min-height: 80vh;
+  font-family: "Inter", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* PAGE TITLE */
+.adm-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 40px;
+  color: #0f172a;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+/* ACTION BUTTONS CONTAINER */
+.adm-actions {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* COMMON BUTTON STYLE */
+.adm-btn {
+  display: inline-block;
+  padding: 14px 24px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.25s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  min-width: 180px;
+}
+
+/* PRIMARY BUTTON */
+.adm-primary-btn {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  color: #fff;
+}
+
+.adm-primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.35);
+}
+
+/* SECONDARY BUTTON */
+.adm-secondary-btn {
+  background: #e5e7eb;
+  color: #0f172a;
+}
+
+.adm-secondary-btn:hover {
+  background: #d1d5db;
+  transform: translateY(-1px);
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .adm-title {
+    font-size: 24px;
+  }
+
+  .adm-actions {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .adm-btn {
+    width: 100%;
+    min-width: unset;
+  }
+}

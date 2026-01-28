@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
+import "../../styles/AdminDashboard.css";
 
 function AdminDashboard() {
   return (
@@ -8,15 +9,18 @@ function AdminDashboard() {
         <title>Admin Dashboard – Invoixa</title>
       </Helmet>
 
-      <main>
-        <h1>Admin Dashboard</h1>
-        <button>
-          <Link to="/admin/create-hotel">Create New Hotel</Link>
-        </button>
-<span> </span>
-        <button>
-          <Link to="/admin/hotels">Hotels List</Link>
-        </button>
+      <main className="adm-main">
+        <h1 className="adm-title">Admin Dashboard</h1>
+
+        <div className="adm-actions">
+          <Link to="/admin/create-hotel" className="adm-btn adm-primary-btn">
+            Create New Hotel
+          </Link>
+
+          <Link to="/admin/hotels" className="adm-btn adm-secondary-btn">
+            Hotels List
+          </Link>
+        </div>
       </main>
     </>
   );

@@ -56,6 +56,15 @@ function AppRoutes() {
           {/* 🏨 HOTEL DASHBOARD ROUTES */}
           {/* ❌ Yahan Navbar/Footer nahi aayenge */}
           {/* ✅ Sirf Header (dashboard header) dikhega */}
+          {/* 👤 COMPLETE PROFILE */}
+          <Route
+            path="/complete-profile"
+            element={
+              <ProtectedRoute role="hotel">
+                <CompleteProfile />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/dashboard"
             element={
@@ -143,17 +152,6 @@ function AppRoutes() {
               <ProtectedRoute role="admin">
                 <Header />
                 <Hotels />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* 👤 COMPLETE PROFILE */}
-          <Route
-            path="/complete-profile"
-            element={
-              <ProtectedRoute role="hotel">
-                <Header />
-                <CompleteProfile />
               </ProtectedRoute>
             }
           />

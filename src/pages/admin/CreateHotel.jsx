@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { createHotel } from "../../services/adminService";
-import { Link } from "react-router-dom";
+import "../../styles/CreateHotel.css";
 
 function CreateHotel() {
   const [email, setEmail] = useState("");
@@ -27,7 +27,8 @@ function CreateHotel() {
       setResult(error.message);
     } else {
       setResult(
-        `Hotel created successfully. Temporary Password: ${data.tempPassword}`
+        `Hotel created successfully.
+         Temporary Password: ${data.tempPassword}`,
       );
       setEmail("");
       setHotelName("");
@@ -41,16 +42,17 @@ function CreateHotel() {
         <title>Create New Hotel – Invoixa</title>
       </Helmet>
 
-      <main>
-        <h1>Create New Hotel</h1>
+      <main className="ch-main">
+        <h1 className="ch-title">Create New Hotel</h1>
 
-        <form onSubmit={handleCreateHotel}>
+        <form onSubmit={handleCreateHotel} className="ch-form">
           <input
             type="text"
             placeholder="Hotel Name"
             value={hotelName}
             onChange={(e) => setHotelName(e.target.value)}
             required
+            className="ch-input"
           />
 
           <input
@@ -59,6 +61,7 @@ function CreateHotel() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            className="ch-input"
           />
 
           <input
@@ -66,16 +69,19 @@ function CreateHotel() {
             placeholder="Phone"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
+            className="ch-input"
           />
 
-          <button type="submit" disabled={loading}>
+          <button
+            type="submit"
+            disabled={loading}
+            className="ch-btn ch-primary-btn"
+          >
             {loading ? "Creating..." : "Create Hotel"}
           </button>
         </form>
 
-        {result && <p>{result}</p>}
-        <br />
-        
+        {result && <p className="ch-result">{result}</p>}
       </main>
     </>
   );

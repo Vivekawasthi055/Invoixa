@@ -17,12 +17,16 @@
   button,
   select,
   input,
-  a,
   header,
   nav {
     display: none !important;
   }
 
+  a {
+    -webkit-print-color-adjust: exact;
+    color: blue;
+    text-decoration: underline;
+  }
   /* ================= MAIN ================= */
   main,
   .final-inv-main {
