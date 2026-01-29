@@ -52,55 +52,25 @@ function Dashboard() {
       </div>
 
       {/* ✅ Hotel Info (DB header ke just neeche) */}
-      <div style={{ marginBottom: "28px", display: "flex", gap: 14 }}>
+      <div className="db-hotel-header">
         {loadingHotel ? (
           <>
-            <div
-              style={{
-                width: 56,
-                height: 56,
-                background: "#e5e7eb",
-                borderRadius: 8,
-              }}
-            />
-            <div>
-              <div
-                style={{
-                  width: 220,
-                  height: 18,
-                  background: "#e5e7eb",
-                  borderRadius: 4,
-                  marginBottom: 6,
-                }}
-              />
-              <div
-                style={{
-                  width: 80,
-                  height: 12,
-                  background: "#e5e7eb",
-                  borderRadius: 4,
-                }}
-              />
+            <div className="db-hotel-logo-skeleton" />
+
+            <div className="db-hotel-text-skeleton">
+              <div className="db-hotel-name-skeleton" />
+              <div className="db-hotel-code-skeleton" />
             </div>
           </>
         ) : (
           <>
             {hotelLogo && (
-              <img
-                src={hotelLogo}
-                alt="Hotel Logo"
-                style={{
-                  width: 56, // ✅ fixed width
-                  height: 56,
-                  objectFit: "contain",
-                  borderRadius: 8,
-                }}
-              />
+              <img src={hotelLogo} alt="Hotel Logo" className="db-hotel-logo" />
             )}
 
-            <div>
-              <strong style={{ fontSize: 18 }}>{hotelName}</strong>
-              <div style={{ fontSize: 14, opacity: 0.7 }}>{hotelCode}</div>
+            <div className="db-hotel-text">
+              <strong className="db-hotel-name">{hotelName}</strong>
+              <div className="db-hotel-code">Hotel Code: {hotelCode}</div>
             </div>
           </>
         )}

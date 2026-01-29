@@ -30,6 +30,106 @@
 }
 
 /* ===============================
+   🏷 HOTEL HEADER
+================================= */
+
+.db-hotel-header {
+  margin-bottom: 28px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+/* ===== Logo ===== */
+.db-hotel-logo {
+  width: 90px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* ===== Text ===== */
+.db-hotel-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.db-hotel-name {
+  font-size: 18px;
+}
+
+.db-hotel-code {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+/* ===== Skeletons ===== */
+.db-hotel-logo-skeleton {
+  width: 56px;
+  height: 56px;
+  background: #e5e7eb;
+  border-radius: 8px;
+}
+
+.db-hotel-text-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.db-hotel-name-skeleton {
+  width: 220px;
+  height: 18px;
+  background: #e5e7eb;
+  border-radius: 4px;
+}
+
+.db-hotel-code-skeleton {
+  width: 80px;
+  height: 12px;
+  background: #e5e7eb;
+  border-radius: 4px;
+}
+
+/* SHIMMER EFFECT */
+
+/* ===== Shimmer Skeleton Effect ===== */
+.db-hotel-logo-skeleton,
+.db-hotel-name-skeleton,
+.db-hotel-code-skeleton {
+  position: relative;
+  overflow: hidden;
+  background: #e5e7eb;
+}
+
+/* Shimmer overlay */
+.db-hotel-logo-skeleton::after,
+.db-hotel-name-skeleton::after,
+.db-hotel-code-skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  animation: db-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes db-shimmer {
+  0% {
+    left: -150%;
+  }
+  100% {
+    left: 150%;
+  }
+}
+
+/* ===============================
    🧩 GRID
 ================================= */
 
@@ -50,7 +150,9 @@
   text-decoration: none;
   color: #0f172a;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
   display: flex;
   flex-direction: column;
   gap: 6px;
