@@ -209,7 +209,7 @@ function AllInvoices() {
                   <td>₹{inv.grand_total}</td>
                   <td>
                     <Link
-                      to={`/dashboard/invoices/${inv.id}`}
+                      to={`/hotel/invoices/${inv.id}`}
                       className="allinvoices-open-link"
                     >
                       Open

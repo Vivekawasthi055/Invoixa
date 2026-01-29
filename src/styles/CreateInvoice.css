@@ -346,27 +346,24 @@ label {
 /* =====================================================
    RESPONSIVE
 ===================================================== */
-@media (max-width: 768px) {
+@media (max-width: 707px) {
   .ci-header {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column; /* ek ke neeche ek */
+    justify-content: center; /* top-bottom center */
+    align-items: center; /* left-right center */
     text-align: center;
   }
 
   .ci-invoice-meta {
+    margin-top: -15px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
   }
 
   .ci-btn-row {
     justify-content: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .ci-page-title {
-    font-size: 22px;
-  }
-
-  .ci-card {
-    padding: 16px;
   }
 }

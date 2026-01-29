@@ -15,6 +15,7 @@ import ResetPassword from "../pages/auth/ResetPassword";
 /* Protected / Common */
 import ProtectedRoute from "../components/common/ProtectedRoute";
 import Header from "../components/common/Header"; // Dashboard/Admin header
+import NotFound from "../components/common/NotFound";
 
 /* Admin Pages */
 import AdminDashboard from "../pages/admin/AdminDashboard";
@@ -66,7 +67,7 @@ function AppRoutes() {
             }
           />
           <Route
-            path="/dashboard"
+            path="/hotel/dashboard"
             element={
               <ProtectedRoute role="hotel">
                 <Header /> {/* Dashboard Header */}
@@ -76,7 +77,7 @@ function AppRoutes() {
           />
 
           <Route
-            path="/dashboard/rooms"
+            path="/hotel/rooms"
             element={
               <ProtectedRoute role="hotel">
                 <Header />
@@ -86,7 +87,7 @@ function AppRoutes() {
           />
 
           <Route
-            path="/dashboard/invoices/new"
+            path="/hotel/invoices/new"
             element={
               <ProtectedRoute role="hotel">
                 <Header />
@@ -96,7 +97,7 @@ function AppRoutes() {
           />
 
           <Route
-            path="/dashboard/invoices/list"
+            path="/hotel/invoices/list"
             element={
               <ProtectedRoute role="hotel">
                 <Header />
@@ -106,7 +107,7 @@ function AppRoutes() {
           />
 
           <Route
-            path="/dashboard/invoices/:id"
+            path="/hotel/invoices/:id"
             element={
               <ProtectedRoute role="hotel">
                 <Header />
@@ -115,7 +116,7 @@ function AppRoutes() {
             }
           />
           <Route
-            path="/dashboard/profilesettings"
+            path="/hotel/profilesettings"
             element={
               <ProtectedRoute role="hotel">
                 <Header />
@@ -128,7 +129,7 @@ function AppRoutes() {
           {/* ❌ Public Navbar/Footer yahan nahi honge */}
           {/* ✅ Admin bhi same Header use karega */}
           <Route
-            path="/admin"
+            path="/admin/dashboard"
             element={
               <ProtectedRoute role="admin">
                 <Header />
@@ -160,7 +161,7 @@ function AppRoutes() {
           <Route path="/redirect" element={<RoleRedirect />} />
 
           {/* ❌ 404 */}
-          <Route path="*" element={<div>Page Not Found</div>} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </HelmetProvider>

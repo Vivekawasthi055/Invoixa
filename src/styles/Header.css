@@ -24,6 +24,10 @@
   color: #2563eb;
 }
 
+a {
+  text-decoration: none;
+}
+
 /* Desktop Links */
 .hdr-links {
   display: flex;
@@ -39,6 +43,10 @@
 }
 
 .hdr-links a.active {
+  color: #2563eb;
+}
+
+.hdr-links a:hover {
   color: #2563eb;
 }
 

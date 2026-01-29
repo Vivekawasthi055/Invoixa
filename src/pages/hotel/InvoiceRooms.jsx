@@ -22,6 +22,8 @@ function InvoiceRooms({ invoice, onValidationChange }) {
   const [sameRate, setSameRate] = useState(true);
   const [rate, setRate] = useState("");
   const [nightRates, setNightRates] = useState([]);
+  const [resetFood, setResetFood] = useState(false);
+  const [foodPending, setFoodPending] = useState(false);
 
   useEffect(() => {
     loadRooms();
@@ -39,17 +41,13 @@ function InvoiceRooms({ invoice, onValidationChange }) {
   };
 
   useEffect(() => {
-    // ✅ Check if rooms are added
     const roomsOk = invoiceRooms.length > 0;
+    const foodOk = !foodPending;
 
-    // ✅ Food initially assume ok (we will improve later)
-    const foodOk = true;
-
-    // 🔹 Call parent callback to tell if Save & Next can proceed
     if (typeof onValidationChange === "function") {
       onValidationChange(roomsOk && foodOk);
     }
-  }, [invoiceRooms, onValidationChange]);
+  }, [invoiceRooms, foodPending, onValidationChange]);
 
   const nightsBetween = (start, end) => {
     if (!start || !end) return 0;
@@ -247,6 +245,8 @@ function InvoiceRooms({ invoice, onValidationChange }) {
             setNightRates([]);
             setSameRate(true);
             setRoomTouched(false);
+
+            setResetFood((prev) => !prev); // ✅ FORCE reset food checkboxes
           }}
         >
           Clear
@@ -272,7 +272,13 @@ function InvoiceRooms({ invoice, onValidationChange }) {
               ❌ Remove Room
             </button>
 
-            <InvoiceRoomFood room={r} />
+            <InvoiceRoomFood
+              room={r}
+              resetTrigger={resetFood}
+              onFoodValidationChange={(hasPending) =>
+                setFoodPending(hasPending)
+              }
+            />
           </li>
         ))}
       </ul>

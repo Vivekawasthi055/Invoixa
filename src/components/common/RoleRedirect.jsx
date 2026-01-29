@@ -27,11 +27,11 @@ function RoleRedirect() {
       }
 
       if (data.role === "admin") {
-        navigate("/admin", { replace: true });
+        navigate("/admin/dashboard", { replace: true });
       } else if (!data.profile_completed) {
         navigate("/complete-profile", { replace: true });
       } else {
-        navigate("/dashboard", { replace: true });
+        navigate("/hotel/dashboard", { replace: true });
       }
       if (data.role !== "admin" && data.role !== "hotel") {
         navigate("/login", { replace: true });

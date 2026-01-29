@@ -74,7 +74,7 @@ function ProtectedRoute({ children, role }) {
         profile.profile_completed &&
         window.location.pathname === "/complete-profile"
       ) {
-        window.location.href = "/dashboard";
+        window.location.href = "/hotel/dashboard";
         return;
       }
       // ✅ All checks passed

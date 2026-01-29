@@ -27,25 +27,33 @@ function Header() {
     <header className="hdr-navbar">
       <div className="hdr-container">
         {/* Logo */}
-        <h2 className="hdr-logo">Invoixa</h2>
+        {role == "hotel" && (
+          <Link to="/hotel/dashboard">
+            <h2 className="hdr-logo">Invoixa</h2>
+          </Link>
+        )}
+
+        {role == "admin" && (
+          <Link to="/admin/dashboard">
+            <h2 className="hdr-logo">Invoixa</h2>
+          </Link>
+        )}
 
         {/* ================= DESKTOP NAV ================= */}
         <nav className="hdr-links">
           {role === "hotel" && (
             <>
-              <Link to="/dashboard">Dashboard</Link>
-              <NavLink to="/dashboard/invoices/new">Create Invoice</NavLink>
-              <NavLink to="/dashboard/invoices/list">All Invoices</NavLink>
-              <NavLink to="/dashboard/rooms">Rooms</NavLink>
-              <NavLink to="/dashboard/profilesettings">
-                Profile & Settings
-              </NavLink>
+              <NavLink to="/hotel/dashboard">Dashboard</NavLink>
+              <NavLink to="/hotel/invoices/new">Create Invoice</NavLink>
+              <NavLink to="/hotel/invoices/list">All Invoices</NavLink>
+              <NavLink to="/hotel/rooms">Rooms</NavLink>
+              <NavLink to="/hotel/profilesettings">Profile & Settings</NavLink>
             </>
           )}
 
           {role === "admin" && (
             <>
-              <Link to="/admin">Dashboard</Link>
+              <NavLink to="/admin/dashboard">Dashboard</NavLink>
               <NavLink to="/admin/create-hotel">Create Hotel</NavLink>
               <NavLink to="/admin/hotels">Hotels</NavLink>
             </>
@@ -75,26 +83,26 @@ function Header() {
       <div className={`hdr-mobile-menu ${menuOpen ? "show" : ""}`}>
         {role === "hotel" && (
           <>
-            <Link to="/dashboard" onClick={() => setMenuOpen(false)}>
+            <NavLink to="/hotel/dashboard" onClick={() => setMenuOpen(false)}>
               Dashboard
-            </Link>
+            </NavLink>
             <NavLink
-              to="/dashboard/invoices/new"
+              to="/hotel/invoices/new"
               onClick={() => setMenuOpen(false)}
             >
               Create Invoice
             </NavLink>
             <NavLink
-              to="/dashboard/invoices/list"
+              to="/hotel/invoices/list"
               onClick={() => setMenuOpen(false)}
             >
               All Invoices
             </NavLink>
-            <NavLink to="/dashboard/rooms" onClick={() => setMenuOpen(false)}>
+            <NavLink to="/hotel/rooms" onClick={() => setMenuOpen(false)}>
               Rooms
             </NavLink>
             <NavLink
-              to="/dashboard/profilesettings"
+              to="/hotel/profilesettings"
               onClick={() => setMenuOpen(false)}
             >
               Profile & Settings
@@ -104,7 +112,7 @@ function Header() {
 
         {role === "admin" && (
           <>
-            <Link to="/admin" onClick={() => setMenuOpen(false)}>
+            <Link to="/admin/dashboard" onClick={() => setMenuOpen(false)}>
               Dashboard
             </Link>
             <NavLink

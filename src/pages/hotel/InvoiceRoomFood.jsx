@@ -3,7 +3,7 @@ import { supabase } from "../../services/supabaseClient";
 import { addInvoiceFoodServices } from "../../services/invoiceFoodService";
 import "../../styles/CreateInvoice.css";
 
-function InvoiceRoomFood({ room }) {
+function InvoiceRoomFood({ room, resetTrigger, onFoodValidationChange }) {
   const [food, setFood] = useState({});
   const [values, setValues] = useState({});
   const [items, setItems] = useState([]);
@@ -27,6 +27,34 @@ function InvoiceRoomFood({ room }) {
   useEffect(() => {
     loadItems();
   }, [room.id]);
+
+  useEffect(() => {
+    setFood({});
+    setValues({});
+    setFoodTouched(false);
+  }, [resetTrigger]);
+
+  useEffect(() => {
+    const hasCheckboxSelected = Object.values(food).some(Boolean);
+    const hasAnyInput =
+      values.bQty ||
+      values.bRate ||
+      values.lQty ||
+      values.lRate ||
+      values.dQty ||
+      values.dRate ||
+      values.sName ||
+      values.sRate ||
+      values.oName ||
+      values.oRate;
+
+    const hasSavedItems = items.length > 0;
+
+    const pending = hasCheckboxSelected;
+    if (typeof onFoodValidationChange === "function") {
+      onFoodValidationChange(pending);
+    }
+  }, [food, values, items, onFoodValidationChange]);
 
   const saveFood = async () => {
     const rows = [];
@@ -71,7 +99,12 @@ function InvoiceRoomFood({ room }) {
       {["breakfast", "lunch", "dinner"].map((f) => (
         <div key={f} className="ci-food-row">
           <label className="ci-checkbox">
-            <input type="checkbox" onChange={() => toggle(f)} /> {f}
+            <input
+              type="checkbox"
+              checked={!!food[f]}
+              onChange={() => toggle(f)}
+            />{" "}
+            {f}
           </label>
 
           {food[f] && (
@@ -95,7 +128,12 @@ function InvoiceRoomFood({ room }) {
 
       <div className="ci-food-row">
         <label className="ci-checkbox">
-          <input type="checkbox" onChange={() => toggle("service")} /> Service
+          <input
+            type="checkbox"
+            checked={!!food.service}
+            onChange={() => toggle("service")}
+          />{" "}
+          Service
         </label>
         {food.service && (
           <div className="ci-food-inputs">
@@ -113,7 +151,12 @@ function InvoiceRoomFood({ room }) {
 
       <div className="ci-food-row">
         <label className="ci-checkbox">
-          <input type="checkbox" onChange={() => toggle("other")} /> Other
+          <input
+            type="checkbox"
+            checked={!!food.other}
+            onChange={() => toggle("other")}
+          />{" "}
+          Other
         </label>
         {food.other && (
           <div className="ci-food-inputs">

@@ -108,22 +108,22 @@ function Dashboard() {
 
       {/* Action Cards */}
       <div className="db-grid">
-        <Link to="/dashboard/invoices/new" className="db-card db-card-primary">
+        <Link to="/hotel/invoices/new" className="db-card db-card-primary">
           <h3>➕ Create Invoice</h3>
           <p>Generate a new bill for your guest</p>
         </Link>
 
-        <Link to="/dashboard/invoices/list" className="db-card">
+        <Link to="/hotel/invoices/list" className="db-card">
           <h3>📄 All Invoices</h3>
           <p>View & manage all generated invoices</p>
         </Link>
 
-        <Link to="/dashboard/rooms" className="db-card">
+        <Link to="/hotel/rooms" className="db-card">
           <h3>🛏 Rooms</h3>
           <p>Add rooms & manage availability</p>
         </Link>
 
-        <Link to="/dashboard/profilesettings" className="db-card">
+        <Link to="/hotel/profilesettings" className="db-card">
           <h3>⚙️ Profile & Settings</h3>
           <p>Hotel details, GST & preferences</p>
         </Link>
