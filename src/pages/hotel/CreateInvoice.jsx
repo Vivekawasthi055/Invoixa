@@ -98,7 +98,7 @@ function CreateInvoice() {
       guest_email: guestEmail, // ✅ FIX
     });
 
-    navigate(`/dashboard/invoices/${invoice.id}`); // unchanged
+    navigate(`/hotel/invoices/${invoice.id}`); // unchanged
   };
 
   if (!hotel)

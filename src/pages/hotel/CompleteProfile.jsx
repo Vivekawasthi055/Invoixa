@@ -16,6 +16,7 @@ function CompleteProfile() {
   const [uploadSignatureNow, setUploadSignatureNow] = useState(false);
   const [logoUrl, setLogoUrl] = useState(null);
   const [signatureUrl, setSignatureUrl] = useState(null);
+  const [formError, setFormError] = useState("");
 
   const [form, setForm] = useState({
     hotel_name: "",
@@ -93,16 +94,29 @@ function CompleteProfile() {
     e.preventDefault();
 
     if (!PASSWORD_REGEX.test(form.password)) {
-      alert("Password must be at least 8 characters with letter & number");
+      setFormError(
+        "Password must be at least 8 characters and include a letter and a number.",
+      );
+
+      setTimeout(() => {
+        setFormError("");
+      }, 3000);
+
       return;
     }
 
     if (form.password !== form.confirm_password) {
-      alert("Passwords do not match");
+      setFormError("Passwords do not match.");
+
+      setTimeout(() => {
+        setFormError("");
+      }, 3000);
+
       return;
     }
 
     setLoading(true);
+    setFormError("");
 
     const {
       data: { user },
@@ -289,7 +303,7 @@ function CompleteProfile() {
               onChange={handleChange}
               required
             />
-
+            {formError && <p className="rooms-error-text">{formError}</p>}
             <p className="cp-password-hint">
               • Minimum 8 characters <br />• At least 1 letter and 1 number
             </p>

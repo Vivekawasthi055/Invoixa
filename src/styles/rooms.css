@@ -1,11 +1,11 @@
-/* Page */
+/* ================= PAGE ================= */
 .rooms-page {
   padding: 30px;
   max-width: 1100px;
   margin: auto;
 }
 
-/* Header */
+/* ================= HEADER ================= */
 .rooms-header {
   margin-bottom: 24px;
 }
@@ -20,7 +20,7 @@
   color: #64748b;
 }
 
-/* Card */
+/* ================= CARD ================= */
 .rooms-card {
   background: #ffffff;
   padding: 22px;
@@ -29,11 +29,11 @@
 }
 
 .rooms-card-title {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   font-size: 18px;
 }
 
-/* Form */
+/* ================= FORM ================= */
 .rooms-form {
   display: grid;
   grid-template-columns: 1fr 1fr auto;
@@ -50,9 +50,10 @@
 .rooms-input:focus {
   outline: none;
   border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }
 
-/* Button */
+/* ================= BUTTONS ================= */
 .rooms-btn {
   background: #2563eb;
   color: #ffffff;
@@ -61,6 +62,32 @@
   padding: 10px 20px;
   font-weight: 600;
   cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.1s ease;
+}
+
+.rooms-btn:hover {
+  background: #1e4fd8;
+}
+
+.rooms-btn:active {
+  transform: scale(0.98);
+}
+
+.rooms-btn.small {
+  padding: 8px 14px;
+  font-size: 13px;
+}
+
+.rooms-btn.ghost {
+  background: transparent;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.rooms-btn.ghost:hover {
+  background: #f1f5f9;
 }
 
 .rooms-btn:disabled {
@@ -68,21 +95,38 @@
   cursor: not-allowed;
 }
 
-/* List */
+/* ================= LIST ================= */
 .rooms-list {
   margin-top: 32px;
   display: grid;
   gap: 14px;
 }
 
-/* Item */
+/* ================= ITEM ================= */
 .rooms-item {
   background: #f8fafc;
   padding: 16px 18px;
   border-radius: 14px;
+  border: 1px solid #e5e7eb;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.rooms-item:hover {
+  background: #f1f5f9;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+/* Error highlight */
+.rooms-item.has-error {
+  border-color: #fecaca;
+  background: #fffafa;
 }
 
 .rooms-item-info strong {
@@ -96,15 +140,87 @@
   margin-top: 2px;
 }
 
-/* Empty */
+/* ================= ACTIONS ================= */
+.rooms-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Edit button */
+.rooms-edit-btn {
+  background: transparent;
+  border: none;
+  color: #2563eb;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 6px;
+}
+
+.rooms-edit-btn:hover {
+  text-decoration: underline;
+}
+
+/* ================= EDIT MODE ================= */
+.rooms-edit-box {
+  width: 100%;
+  display: grid;
+  gap: 10px;
+  background: #ffffff;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.rooms-edit-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* ================= EMPTY ================= */
 .rooms-empty-text {
   text-align: center;
   margin-top: 40px;
-  color: #94a3b8;
+  color: #64748b;
   font-size: 14px;
+  position: relative;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px dashed #e2e8f0;
 }
 
-/* Toggle Switch */
+.rooms-empty-text.loading {
+  color: #2563eb;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+}
+
+/* shimmer line */
+.rooms-empty-text.loading::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(37, 99, 235, 0.15),
+    transparent
+  );
+  animation: shimmer 1.2s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    left: 100%;
+  }
+}
+
+/* ================= SWITCH ================= */
 .rooms-switch {
   position: relative;
   width: 44px;
@@ -144,7 +260,30 @@
   transform: translateX(20px);
 }
 
-/* Responsive */
+/* ================= ERROR MESSAGES ================= */
+.rooms-error-text {
+  width: 100%;
+  margin-top: 10px;
+  font-size: 13px;
+  color: #dc2626;
+  background: #fef2f2;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #fecaca;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.rooms-error-text.small {
+  font-size: 12px;
+  padding: 6px 10px;
+}
+
+/* Form error spacing */
+.rooms-card .rooms-error-text {
+  margin-bottom: 10px;
+}
+
+/* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
   .rooms-form {
     grid-template-columns: 1fr;
@@ -157,6 +296,22 @@
   .rooms-item {
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+  }
+
+  .rooms-item-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* ================= ANIMATION ================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

@@ -1,40 +1,50 @@
-/* Page background */
+/* ================= PAGE ================= */
 .auth-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f172a, #020617);
+  background:
+    radial-gradient(
+      1200px 600px at top right,
+      rgba(37, 99, 235, 0.25),
+      transparent
+    ),
+    linear-gradient(135deg, #020617, #0f172a);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
 }
 
-/* Card */
+/* ================= CARD ================= */
 .auth-card {
   background: #ffffff;
   width: 100%;
   max-width: 420px;
-  padding: 36px;
-  border-radius: 14px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-  animation: fadeUp 0.4s ease;
+  padding: 38px 34px;
+  border-radius: 18px;
+  box-shadow:
+    0 30px 60px rgba(2, 6, 23, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  animation: fadeUp 0.45s ease;
 }
 
-/* Headings */
+/* ================= HEADINGS ================= */
 .auth-title {
-  font-size: 26px;
-  font-weight: 700;
+  font-size: 28px;
+  font-weight: 800;
   text-align: center;
   margin-bottom: 6px;
+  color: #020617;
 }
 
 .auth-subtitle {
   text-align: center;
   font-size: 14px;
   color: #64748b;
-  margin-bottom: 26px;
+  margin-bottom: 28px;
+  line-height: 1.6;
 }
 
-/* Form */
+/* ================= FORM ================= */
 .auth-form {
   display: flex;
   flex-direction: column;
@@ -42,57 +52,117 @@
 }
 
 .auth-form input {
-  padding: 12px 14px;
+  width: 100%;
+  padding: 13px 14px;
   font-size: 14px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid #cbd5e1;
+  background: #ffffff;
   outline: none;
+  transition: all 0.2s ease;
+}
+
+.auth-form input::placeholder {
+  color: #94a3b8;
 }
 
 .auth-form input:focus {
   border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
-/* Buttons */
+/* ================= PASSWORD ================= */
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  padding-right: 42px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #f1f5f9;
+  border: none;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.password-toggle:hover {
+  background: #e2e8f0;
+}
+
+/* ================= PRIMARY BUTTON ================= */
 .primary-btn {
-  margin-top: 6px;
-  padding: 12px;
-  background: #2563eb;
-  color: #fff;
+  margin-top: 8px;
+  padding: 13px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff;
   font-size: 15px;
   font-weight: 600;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.primary-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
 }
 
 .primary-btn:disabled {
-  background: #93c5fd;
+  background: linear-gradient(135deg, #93c5fd, #60a5fa);
   cursor: not-allowed;
+  box-shadow: none;
 }
 
-/* Link button */
+/* ================= LINK BUTTON ================= */
 .link-btn {
-  margin-top: 10px;
+  margin-top: 12px;
   background: none;
   border: none;
   color: #2563eb;
   font-size: 13px;
   cursor: pointer;
   text-align: center;
+  transition: color 0.2s ease;
 }
 
-/* Messages */
+.link-btn:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+/* ================= MESSAGES ================= */
 .error-text {
+  background: #fef2f2;
   color: #dc2626;
   font-size: 13px;
+  padding: 10px 12px;
+  border-radius: 8px;
   text-align: center;
+  border: 1px solid #fecaca;
 }
 
 .success-text {
+  background: #f0fdf4;
   color: #16a34a;
   font-size: 13px;
+  padding: 10px 12px;
+  border-radius: 8px;
   text-align: center;
+  border: 1px solid #bbf7d0;
 }
 
 .password-hint {
@@ -101,14 +171,25 @@
   text-align: center;
 }
 
-/* Animation */
+/* ================= ANIMATION ================= */
 @keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(18px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 32px 26px;
+  }
+
+  .auth-title {
+    font-size: 24px;
   }
 }

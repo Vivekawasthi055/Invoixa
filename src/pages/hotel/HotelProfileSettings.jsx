@@ -13,6 +13,9 @@ function HotelProfileSettings() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [hotelCode, setHotelCode] = useState(null);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   /* ================= PROFILE DATA ================= */
 
@@ -118,6 +121,9 @@ function HotelProfileSettings() {
     await supabase.from("profiles").update(data).eq("id", user.id);
 
     setMsg("Updated successfully");
+    setTimeout(() => {
+      setMsg("");
+    }, 2000);
     setEditName(false);
     setEditAddress(false);
     setEditGST(false);
@@ -134,11 +140,19 @@ function HotelProfileSettings() {
 
     if (!PASSWORD_REGEX.test(newPassword)) {
       setPasswordErr("Password must be at least 8 chars with letter & number.");
+
+      setTimeout(() => {
+        setPasswordErr("");
+      }, 2000);
       return;
     }
 
     if (newPassword !== confirmPassword) {
       setPasswordErr("Passwords do not match.");
+
+      setTimeout(() => {
+        setPasswordErr("");
+      }, 2000);
       return;
     }
 
@@ -149,11 +163,22 @@ function HotelProfileSettings() {
 
     if (error) {
       setPasswordErr("Current password is incorrect.");
+
+      setTimeout(() => {
+        setPasswordErr("");
+      }, 2000);
       return;
     }
 
     await supabase.auth.updateUser({ password: newPassword });
     setPasswordMsg("Password updated successfully.");
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+
+    setTimeout(() => {
+      setPasswordMsg("");
+    }, 2000);
   };
 
   /* ================= FORGOT PASSWORD ================= */
@@ -166,8 +191,14 @@ function HotelProfileSettings() {
 
     if (error) {
       setPasswordErr("Something went wrong. Try again later.");
+      setTimeout(() => {
+        setPasswordErr("");
+      }, 2000);
     } else {
       setPasswordMsg("Password reset link sent to your email.");
+      setTimeout(() => {
+        setPasswordMsg("");
+      }, 2000);
     }
   };
 
@@ -181,6 +212,9 @@ function HotelProfileSettings() {
 
     if (error) {
       setDeleteMsg("Please enter your correct password");
+      setTimeout(() => {
+        setDeleteMsg("");
+      }, 2000);
       return;
     }
 
@@ -198,6 +232,10 @@ function HotelProfileSettings() {
       .eq("id", user.id);
 
     setDeleteMsg("Delete request sent to admin.");
+
+    setTimeout(() => {
+      setDeleteMsg("");
+    }, 2000);
     setShowDeleteConfirm(false);
   };
 
@@ -426,24 +464,65 @@ function HotelProfileSettings() {
       <section className="settings-card">
         <h3 className="settings-card-title">Security</h3>
 
-        <input
-          className="settings-input"
-          type="password"
-          placeholder="Current Password"
-          onChange={(e) => setCurrentPassword(e.target.value)}
-        />
-        <input
-          className="settings-input"
-          type="password"
-          placeholder="New Password"
-          onChange={(e) => setNewPassword(e.target.value)}
-        />
-        <input
-          className="settings-input"
-          type="password"
-          placeholder="Confirm New Password"
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
+        <div className="settings-password-field">
+          <input
+            className="settings-input"
+            type={showCurrentPassword ? "text" : "password"}
+            placeholder="Current Password"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            minLength={8}
+            required
+          />
+
+          <button
+            type="button"
+            className="settings-password-toggle"
+            onClick={() => setShowCurrentPassword((p) => !p)}
+          >
+            {showCurrentPassword ? "🙈" : "👁️"}
+          </button>
+        </div>
+
+        <div className="settings-password-field">
+          <input
+            className="settings-input"
+            type={showNewPassword ? "text" : "password"}
+            placeholder="New Password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            minLength={8}
+            required
+          />
+
+          <button
+            type="button"
+            className="settings-password-toggle"
+            onClick={() => setShowNewPassword((p) => !p)}
+          >
+            {showNewPassword ? "🙈" : "👁️"}
+          </button>
+        </div>
+
+        <div className="settings-password-field">
+          <input
+            className="settings-input"
+            type={showConfirmPassword ? "text" : "password"}
+            placeholder="Confirm New Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            minLength={8}
+            required
+          />
+
+          <button
+            type="button"
+            className="settings-password-toggle"
+            onClick={() => setShowConfirmPassword((p) => !p)}
+          >
+            {showConfirmPassword ? "🙈" : "👁️"}
+          </button>
+        </div>
 
         <button className="settings-btn" onClick={changePassword}>
           Update Password

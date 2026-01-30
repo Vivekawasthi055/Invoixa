@@ -7,11 +7,20 @@ import "../../styles/rooms.css";
 function Rooms() {
   const { user } = useAuth();
   const [rooms, setRooms] = useState([]);
+  const [roomsLoading, setRoomsLoading] = useState(true);
+
   const [roomNumber, setRoomNumber] = useState("");
   const [roomName, setRoomName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [editRoomId, setEditRoomId] = useState(null);
+  const [editRoomNumber, setEditRoomNumber] = useState("");
+  const [editRoomName, setEditRoomName] = useState("");
+  const [formError, setFormError] = useState("");
+  const [roomErrors, setRoomErrors] = useState({});
 
   const loadRooms = async () => {
+    setRoomsLoading(true); // ✅ ADD (start)
+
     const { data: hotel } = await supabase
       .from("hotels")
       .select("hotel_code")
@@ -20,6 +29,8 @@ function Rooms() {
 
     const { data } = await getRooms(hotel.hotel_code, false);
     setRooms(data || []);
+
+    setRoomsLoading(false); // ✅ ADD (end)
   };
 
   useEffect(() => {
@@ -27,7 +38,28 @@ function Rooms() {
   }, []);
 
   const handleAdd = async () => {
-    if (!roomNumber) return;
+    if (!roomNumber) {
+      setFormError("Room number is required.");
+      setTimeout(() => {
+        setFormError("");
+      }, 2000);
+      return;
+    }
+
+    // 🔒 Check active room number conflict
+    const activeRoomExists = rooms.find(
+      (r) => r.room_number === roomNumber && r.is_active === true,
+    );
+
+    if (activeRoomExists) {
+      setFormError(
+        "Room number already exists. Please use a different room number.",
+      );
+      setTimeout(() => {
+        setFormError("");
+      }, 3000);
+      return;
+    }
 
     setLoading(true);
 
@@ -50,6 +82,8 @@ function Rooms() {
       room_name: roomName,
     });
 
+    setFormError("");
+
     setRoomNumber("");
     setRoomName("");
     await loadRooms();
@@ -57,9 +91,112 @@ function Rooms() {
   };
 
   const toggleRoom = async (room) => {
+    // If enabling → check conflict
+    if (!room.is_active) {
+      const conflict = rooms.find(
+        (r) =>
+          r.room_number === room.room_number &&
+          r.is_active === true &&
+          r.id !== room.id,
+      );
+
+      if (conflict) {
+        setRoomErrors((prev) => ({
+          ...prev,
+          [room.id]:
+            "Another active room already exists with this room number.",
+        }));
+
+        setTimeout(() => {
+          setRoomErrors((prev) => {
+            const copy = { ...prev };
+            delete copy[room.id];
+            return copy;
+          });
+        }, 3000);
+        return;
+      }
+    }
+
     await updateRoom(room.id, { is_active: !room.is_active });
+
+    setRoomErrors((prev) => {
+      const copy = { ...prev };
+      delete copy[room.id];
+      return copy;
+    });
+
     loadRooms();
   };
+  const startEdit = (room) => {
+    setEditRoomId(room.id);
+    setEditRoomNumber(room.room_number);
+    setEditRoomName(room.room_name || "");
+  };
+
+  const saveEdit = async (room) => {
+    if (!editRoomNumber) {
+      setRoomErrors((prev) => ({
+        ...prev,
+        [room.id]: "Room number is required.",
+      }));
+
+      setTimeout(() => {
+        setRoomErrors((prev) => {
+          const copy = { ...prev };
+          delete copy[room.id];
+          return copy;
+        });
+      }, 2000);
+      return;
+    }
+
+    // 🔒 Conflict check only if room will be active
+    if (room.is_active) {
+      const conflict = rooms.find(
+        (r) =>
+          r.room_number === editRoomNumber &&
+          r.is_active === true &&
+          r.id !== room.id,
+      );
+
+      if (conflict) {
+        setRoomErrors((prev) => ({
+          ...prev,
+          [room.id]:
+            "Room number already exists. Please use a different room number.",
+        }));
+
+        setTimeout(() => {
+          setRoomErrors((prev) => {
+            const copy = { ...prev };
+            delete copy[room.id];
+            return copy;
+          });
+        }, 3000);
+        return;
+      }
+    }
+
+    await updateRoom(room.id, {
+      room_number: editRoomNumber,
+      room_name: editRoomName,
+    });
+
+    setRoomErrors((prev) => {
+      const copy = { ...prev };
+      delete copy[room.id];
+      return copy;
+    });
+
+    setEditRoomId(null);
+    loadRooms();
+  };
+
+  const cancelEdit = () => {
+    setEditRoomId(null);
+  };
+
   return (
     <main className="rooms-page">
       <div className="rooms-header">
@@ -70,6 +207,7 @@ function Rooms() {
       {/* Add Room Card */}
       <div className="rooms-card">
         <h3 className="rooms-card-title">Add New Room</h3>
+        {formError && <p className="rooms-error-text">{formError}</p>}
 
         <div className="rooms-form">
           <input
@@ -89,29 +227,78 @@ function Rooms() {
           </button>
         </div>
       </div>
-
       {/* Rooms List */}
       <div className="rooms-list">
-        {rooms.length === 0 ? (
+        {roomsLoading ? (
+          <p className="rooms-empty-text loading">Loading…</p>
+        ) : rooms.length === 0 ? (
           <p className="rooms-empty-text">No rooms added yet</p>
         ) : (
-          rooms.map((room) => (
-            <div key={room.id} className="rooms-item">
-              <div className="rooms-item-info">
-                <strong>Room {room.room_number}</strong>
-                <span>{room.room_name || "—"}</span>
-              </div>
+          rooms.map((room) => {
+            const hasError = !!roomErrors[room.id];
 
-              <label className="rooms-switch">
-                <input
-                  type="checkbox"
-                  checked={room.is_active}
-                  onChange={() => toggleRoom(room)}
-                />
-                <span className="rooms-slider"></span>
-              </label>
-            </div>
-          ))
+            return (
+              <div
+                key={room.id}
+                className={`rooms-item ${hasError ? "has-error" : ""}`}
+              >
+                {editRoomId === room.id ? (
+                  <div className="rooms-edit-box">
+                    <input
+                      className="rooms-input"
+                      value={editRoomNumber}
+                      onChange={(e) => setEditRoomNumber(e.target.value)}
+                    />
+                    <input
+                      className="rooms-input"
+                      value={editRoomName}
+                      onChange={(e) => setEditRoomName(e.target.value)}
+                    />
+                    <div className="rooms-edit-actions">
+                      <button
+                        className="rooms-btn small"
+                        onClick={() => saveEdit(room)}
+                      >
+                        Save
+                      </button>
+                      <button className="rooms-btn ghost" onClick={cancelEdit}>
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="rooms-item-info">
+                    <strong>Room {room.room_number}</strong>
+                    <span>{room.room_name || "—"}</span>
+                  </div>
+                )}
+
+                <div className="rooms-item-actions">
+                  <button
+                    className="rooms-edit-btn"
+                    onClick={() => startEdit(room)}
+                  >
+                    ✏️ Edit
+                  </button>
+
+                  <label className="rooms-switch">
+                    <input
+                      type="checkbox"
+                      checked={room.is_active}
+                      onChange={() => toggleRoom(room)}
+                    />
+                    <span className="rooms-slider"></span>
+                  </label>
+                </div>
+
+                {hasError && (
+                  <p className="rooms-error-text small">
+                    {roomErrors[room.id]}
+                  </p>
+                )}
+              </div>
+            );
+          })
         )}
       </div>
     </main>

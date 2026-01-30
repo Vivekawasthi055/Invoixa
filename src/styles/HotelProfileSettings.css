@@ -1,3 +1,4 @@
+/* ================= PAGE ================= */
 .settings-page {
   max-width: 1000px;
   margin: auto;
@@ -5,34 +6,136 @@
 }
 
 .settings-page-title {
-  font-size: 28px;
-  margin-bottom: 22px;
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #020617;
 }
 
-/* Cards */
+/* ================= CARD ================= */
 .settings-card {
   background: #ffffff;
-  padding: 22px;
-  border-radius: 16px;
-  margin-bottom: 26px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  padding: 26px;
+  border-radius: 18px;
+  margin-bottom: 28px;
+  box-shadow:
+    0 20px 40px rgba(2, 6, 23, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .settings-card.danger {
-  border: 1px solid #fee2e2;
+  border: 1px solid #fecaca;
+  background: #fffafa;
 }
 
 .settings-card-title {
-  margin-bottom: 16px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: #020617;
 }
 
-/* Rows */
+/* ================= PASSWORD FIELD ================= */
+.settings-password-field {
+  position: relative;
+  margin-bottom: 14px;
+}
+
+.settings-password-field .settings-input {
+  padding-right: 44px;
+}
+
+/* ================= INPUTS ================= */
+.settings-input,
+.settings-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
+  font-size: 14px;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.settings-input::placeholder {
+  color: #94a3b8;
+}
+
+.settings-input:focus,
+.settings-textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.settings-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* ================= PASSWORD TOGGLE ================= */
+.settings-password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #f1f5f9;
+  border: none;
+  border-radius: 10px;
+  width: 34px;
+  height: 34px;
+  cursor: pointer;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.settings-password-toggle:hover {
+  background: #e2e8f0;
+}
+
+/* ================= BUTTONS ================= */
+.settings-btn {
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 10px;
+  margin-top: 8px;
+  transition: all 0.25s ease;
+}
+
+.settings-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.35);
+}
+
+.settings-btn.secondary {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.settings-btn.secondary:hover {
+  background: #e2e8f0;
+  box-shadow: none;
+}
+
+.settings-btn.danger-btn {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+}
+
+/* ================= ROWS ================= */
 .settings-info-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 14px;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
 .settings-info-row.column {
@@ -45,68 +148,37 @@
   color: #64748b;
 }
 
-/* Inputs */
-.settings-input,
-.settings-textarea {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid #cbd5e1;
-  font-size: 14px;
-}
-
-.settings-textarea {
-  min-height: 90px;
-}
-
-/* Buttons */
-.settings-btn {
-  padding: 8px 16px;
-  border-radius: 10px;
-  border: none;
-  background: #2563eb;
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.settings-btn.secondary {
-  background: #e2e8f0;
-  color: #334155;
-}
-
-.settings-btn.danger-btn {
-  background: #dc2626;
-}
-
-/* Assets */
+/* ================= ASSETS ================= */
 .settings-asset-row {
   display: flex;
-  gap: 14px;
+  gap: 16px;
   align-items: center;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .settings-asset-row img {
-  height: 60px;
-  padding: 6px;
-  border-radius: 8px;
-  background: #f1f5f9;
+  height: 64px;
+  padding: 8px;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
 }
 
-/* Checkbox */
+/* ================= CHECKBOX ================= */
 .settings-checkbox {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: 10px;
+  margin-bottom: 14px;
+  font-size: 14px;
 }
 
-/* Modal */
+/* ================= MODAL ================= */
 .settings-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(2, 6, 23, 0.55);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -114,43 +186,58 @@
 }
 
 .settings-modal-box {
-  background: #fff;
-  padding: 24px;
-  border-radius: 16px;
-  max-width: 400px;
-  width: 90%;
+  background: #ffffff;
+  padding: 26px;
+  border-radius: 18px;
+  max-width: 420px;
+  width: 92%;
+  box-shadow: 0 30px 60px rgba(2, 6, 23, 0.35);
 }
 
-/* Text */
+/* ================= TEXT ================= */
 .settings-success {
+  background: #f0fdf4;
   color: #16a34a;
-  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  margin-top: 12px;
+  border: 1px solid #bbf7d0;
 }
 
 .settings-error {
+  background: #fef2f2;
   color: #dc2626;
-  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  margin-top: 12px;
+  border: 1px solid #fecaca;
 }
 
 .settings-muted-text {
   color: #64748b;
+  font-size: 13px;
 }
 
 .settings-loading-text {
   text-align: center;
-  padding: 50px;
+  padding: 60px;
   font-size: 16px;
 }
 
+/* ================= DIVIDER ================= */
 .settings-divider {
   border: none;
   height: 1px;
   background: #e5e7eb;
-  margin: 30px 0;
+  margin: 32px 0;
 }
 
-/* Responsive */
+/* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
+  .settings-page {
+    padding: 20px;
+  }
+
   .settings-info-row {
     flex-direction: column;
     align-items: flex-start;
@@ -159,5 +246,61 @@
   .settings-asset-row {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .settings-btn {
+    width: 100%;
+    margin-right: 0;
+  }
+}
+
+
+/* ================= UX POLISH (OPTIONAL) ================= */
+
+/* Better button grouping */
+.settings-card .settings-btn + .settings-btn {
+  margin-left: 8px;
+}
+
+/* Security section tighter spacing */
+.settings-card .settings-password-field {
+  margin-bottom: 12px;
+}
+
+/* Security buttons alignment */
+.settings-card .settings-btn {
+  min-width: 160px;
+}
+
+/* Logout button softer */
+.settings-page > .settings-btn.secondary {
+  margin-top: 24px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+}
+
+.settings-page > .settings-btn.secondary:hover {
+  background: #f1f5f9;
+}
+
+/* Modal headings polish */
+.settings-modal-box h4 {
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Modal paragraph readability */
+.settings-modal-box p {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+/* Mobile: buttons full width inside cards */
+@media (max-width: 640px) {
+  .settings-card .settings-btn {
+    width: 100%;
+    margin-left: 0;
   }
 }
