@@ -71,7 +71,7 @@ function FinalInvoice() {
 
     alert("Invoice deleted successfully");
 
-    window.location.href = "/dashboard/invoices/list";
+    window.location.href = "/hotel/invoices/list";
   };
 
   /* ================= LOAD INVOICE ================= */
@@ -146,6 +146,11 @@ function FinalInvoice() {
     : 0;
 
   const grandTotal = taxableAmount + gstAmount;
+  const gstType = invoice?.gst_type || "cgst_sgst";
+
+  const cgstAmount = gstType === "cgst_sgst" ? gstAmount / 2 : 0;
+  const sgstAmount = gstType === "cgst_sgst" ? gstAmount / 2 : 0;
+  const igstAmount = gstType === "igst" ? gstAmount : 0;
 
   if (loading)
     return (
@@ -173,7 +178,7 @@ function FinalInvoice() {
         <button
           className="final-inv-back-btn"
           onClick={() => {
-            window.location.href = "/dashboard/invoices/list";
+            window.location.href = "/hotel/invoices/list";
           }}
         >
           ← Back to Invoices
@@ -222,7 +227,6 @@ function FinalInvoice() {
                   .eq("id", invoice.id);
 
                 await loadInvoice();
-                alert("Invoice has been VOIDED");
               }}
             >
               🚫 Void Invoice
@@ -283,6 +287,17 @@ function FinalInvoice() {
           <p>
             <strong>Email:</strong> {invoice.guest_email || "N/A"}
           </p>
+          {invoice.guest_additional_name && (
+            <p>
+              <strong>Additional Name:</strong> {invoice.guest_additional_name}
+            </p>
+          )}
+
+          {invoice.guest_gstin && (
+            <p>
+              <strong>GSTIN:</strong> {invoice.guest_gstin}
+            </p>
+          )}
         </div>
       </div>
 
@@ -367,10 +382,23 @@ function FinalInvoice() {
                 <td>Taxable Amount</td>
                 <td className="right">₹{taxableAmount}</td>
               </tr>
-              <tr>
-                <td>GST ({invoice.gst_percentage}%)</td>
-                <td className="right">₹{gstAmount}</td>
-              </tr>
+              {gstType === "igst" ? (
+                <tr>
+                  <td>IGST ({invoice.gst_percentage}%)</td>
+                  <td className="right">₹{igstAmount}</td>
+                </tr>
+              ) : (
+                <>
+                  <tr>
+                    <td>CGST ({invoice.gst_percentage / 2}%)</td>
+                    <td className="right">₹{cgstAmount}</td>
+                  </tr>
+                  <tr>
+                    <td>SGST ({invoice.gst_percentage / 2}%)</td>
+                    <td className="right">₹{sgstAmount}</td>
+                  </tr>
+                </>
+              )}
             </>
           )}
 
@@ -422,7 +450,6 @@ function FinalInvoice() {
                 status: "Paid",
               });
               await loadInvoice();
-              alert("Invoice marked as PAID");
             }}
           >
             Save & Mark as Paid

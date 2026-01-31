@@ -17,8 +17,9 @@ export const createInvoice = async (payload) => {
       signature_url,
       has_gst,
       gst_number,
-      gst_percentage
-    `
+      gst_percentage,
+      gst_type
+    `,
     )
     .eq("id", payload.hotel_id)
     .single();
@@ -40,6 +41,8 @@ export const createInvoice = async (payload) => {
       has_gst: hotel.has_gst,
       gst_number: hotel.gst_number,
       gst_percentage: hotel.gst_percentage,
+
+      gst_type: hotel.gst_type || "cgst_sgst",
 
       invoice_number: payload.invoice_number,
 

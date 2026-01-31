@@ -211,7 +211,7 @@
     rgba(37, 99, 235, 0.15),
     transparent
   );
-  animation: shimmer 1.2s infinite;
+  animation: shimmer 1.7s infinite;
 }
 
 @keyframes shimmer {

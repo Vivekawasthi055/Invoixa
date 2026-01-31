@@ -367,3 +367,131 @@ label {
     justify-content: center;
   }
 }
+
+/* =====================================================
+   INVOICE DELETE WARNING
+===================================================== */
+.ci-warning-card {
+  background: linear-gradient(135deg, #fff7ed, #fffbeb);
+  border: 1px solid #fed7aa;
+  box-shadow: none;
+}
+
+.ci-warning-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #9a3412;
+  margin-bottom: 10px;
+}
+
+.ci-warning-text {
+  font-size: 14px;
+  color: #7c2d12;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.ci-warning-text b {
+  color: #9a3412;
+}
+
+/* Mobile polish */
+@media (max-width: 640px) {
+  .ci-warning-text {
+    font-size: 13px;
+  }
+}
+
+/* =====================================================
+   INVOICE DELETE WARNING (CLOSEABLE)
+===================================================== */
+.ci-warning-card {
+  position: relative;
+  background: linear-gradient(135deg, #fff7ed, #fffbeb);
+  border: 1px solid #fed7aa;
+  box-shadow: none;
+}
+
+/* Close (X) button */
+.ci-warning-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  font-weight: 700;
+  color: #9a3412;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.ci-warning-close:hover {
+  color: #7c2d12;
+  transform: scale(1.1);
+}
+
+/* Content */
+.ci-warning-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #9a3412;
+  margin-bottom: 10px;
+}
+
+.ci-warning-text {
+  font-size: 14px;
+  color: #7c2d12;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.ci-warning-text b {
+  color: #9a3412;
+}
+
+/* Mobile polish */
+@media (max-width: 640px) {
+  .ci-warning-text {
+    font-size: 13px;
+  }
+
+  .ci-warning-close {
+    top: 8px;
+    right: 10px;
+  }
+}
+/* =====================================================
+   FINAL SUBMISSION WARNING (BELOW SAVE BUTTON)
+===================================================== */
+.ci-final-warning {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+}
+
+.ci-final-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #9a3412;
+  margin-bottom: 6px;
+}
+
+.ci-final-text {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #7c2d12;
+  margin-bottom: 6px;
+}
+
+.ci-final-text b {
+  color: #9a3412;
+}
+
+@media (max-width: 640px) {
+  .ci-final-text {
+    font-size: 12.5px;
+  }
+}

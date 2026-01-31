@@ -2,11 +2,11 @@
 .settings-page {
   max-width: 1000px;
   margin: auto;
-  padding: 28px;
+  padding: 28px 20px 40px;
 }
 
 .settings-page-title {
-  font-size: 30px;
+  font-size: 28px;
   font-weight: 700;
   margin-bottom: 24px;
   color: #020617;
@@ -35,14 +35,29 @@
   color: #020617;
 }
 
-/* ================= PASSWORD FIELD ================= */
-.settings-password-field {
-  position: relative;
-  margin-bottom: 14px;
+/* ================= ROWS ================= */
+.settings-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
-.settings-password-field .settings-input {
-  padding-right: 44px;
+.settings-info-row.column {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.settings-info-row span {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.settings-info-row strong,
+.settings-info-row p {
+  font-size: 14px;
+  color: #020617;
 }
 
 /* ================= INPUTS ================= */
@@ -73,10 +88,20 @@
   resize: vertical;
 }
 
+/* ================= PASSWORD FIELD ================= */
+.settings-password-field {
+  position: relative;
+  margin-bottom: 14px;
+}
+
+.settings-password-field .settings-input {
+  padding-right: 46px;
+}
+
 /* ================= PASSWORD TOGGLE ================= */
 .settings-password-toggle {
   position: absolute;
-  right: 10px;
+  right: 8px;
   top: 50%;
   transform: translateY(-50%);
   background: #f1f5f9;
@@ -89,7 +114,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s ease;
 }
 
 .settings-password-toggle:hover {
@@ -105,8 +129,7 @@
   color: #ffffff;
   font-weight: 600;
   cursor: pointer;
-  margin-right: 10px;
-  margin-top: 8px;
+  margin-top: 10px;
   transition: all 0.25s ease;
 }
 
@@ -129,39 +152,9 @@
   background: linear-gradient(135deg, #dc2626, #b91c1c);
 }
 
-/* ================= ROWS ================= */
-.settings-info-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
-.settings-info-row.column {
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.settings-info-row span {
-  font-size: 14px;
-  color: #64748b;
-}
-
-/* ================= ASSETS ================= */
-.settings-asset-row {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.settings-asset-row img {
-  height: 64px;
-  padding: 8px;
-  border-radius: 12px;
-  background: #f8fafc;
-  border: 1px solid #e5e7eb;
+/* button spacing inside cards */
+.settings-card .settings-btn + .settings-btn {
+  margin-left: 8px;
 }
 
 /* ================= CHECKBOX ================= */
@@ -171,6 +164,69 @@
   gap: 10px;
   margin-bottom: 14px;
   font-size: 14px;
+}
+
+/* ================= GST ================= */
+.settings-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.gst-label-with-tooltip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  position: relative;
+}
+
+/* tooltip icon */
+.gst-tooltip-wrapper {
+  position: relative;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* tooltip box */
+.gst-tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  transform: translateX(-50%);
+  background: #1f2937;
+  color: #ffffff;
+  margin-left: 50px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  min-width: 200px;
+  max-width: 280px;
+  white-space: normal;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 20;
+}
+
+/* arrow */
+.gst-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 25%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: #1f2937 transparent transparent transparent;
+}
+
+.gst-tooltip-wrapper:hover .gst-tooltip {
+  opacity: 1;
 }
 
 /* ================= MODAL ================= */
@@ -187,14 +243,26 @@
 
 .settings-modal-box {
   background: #ffffff;
-  padding: 26px;
+  padding: 24px;
   border-radius: 18px;
   max-width: 420px;
   width: 92%;
   box-shadow: 0 30px 60px rgba(2, 6, 23, 0.35);
 }
 
-/* ================= TEXT ================= */
+.settings-modal-box h4 {
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.settings-modal-box p {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+/* ================= TEXT FEEDBACK ================= */
 .settings-success {
   background: #f0fdf4;
   color: #16a34a;
@@ -218,10 +286,39 @@
   font-size: 13px;
 }
 
-.settings-loading-text {
-  text-align: center;
-  padding: 60px;
-  font-size: 16px;
+/* ================= TOAST ================= */
+.settings-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 500;
+  z-index: 9999;
+  animation: fadeInOut 2s ease forwards;
+}
+
+.settings-toast.success {
+  background: #16a34a;
+  color: #ffffff;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 /* ================= DIVIDER ================= */
@@ -232,10 +329,54 @@
   margin: 32px 0;
 }
 
+/* ================= LOGOUT SECTION ================= */
+.settings-logout {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px dashed #e5e7eb;
+
+  display: flex;
+  justify-content: center;
+}
+
+/* Logout button special positioning & feel */
+.settings-logout .settings-btn.secondary {
+  min-width: 180px;
+  padding: 12px 26px;
+  font-weight: 600;
+
+  border: 1px solid #e5e7eb;
+  background: #f8fafc;
+  color: #334155;
+
+  transition: all 0.25s ease;
+}
+
+.settings-logout .settings-btn.secondary:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+  transform: translateY(-1px);
+}
+
+/* Mobile friendly */
+@media (max-width: 640px) {
+  .settings-logout {
+    padding-top: 20px;
+  }
+
+  .settings-logout .settings-btn.secondary {
+    width: 100%;
+  }
+}
+
 /* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
   .settings-page {
-    padding: 20px;
+    padding: 20px 14px 32px;
+  }
+
+  .settings-page-title {
+    font-size: 24px;
   }
 
   .settings-info-row {
@@ -243,64 +384,31 @@
     align-items: flex-start;
   }
 
-  .settings-asset-row {
-    flex-direction: column;
-    align-items: flex-start;
+  .settings-card {
+    padding: 20px;
   }
 
-  .settings-btn {
-    width: 100%;
-    margin-right: 0;
-  }
-}
-
-
-/* ================= UX POLISH (OPTIONAL) ================= */
-
-/* Better button grouping */
-.settings-card .settings-btn + .settings-btn {
-  margin-left: 8px;
-}
-
-/* Security section tighter spacing */
-.settings-card .settings-password-field {
-  margin-bottom: 12px;
-}
-
-/* Security buttons alignment */
-.settings-card .settings-btn {
-  min-width: 160px;
-}
-
-/* Logout button softer */
-.settings-page > .settings-btn.secondary {
-  margin-top: 24px;
-  background: #f8fafc;
-  border: 1px solid #e5e7eb;
-}
-
-.settings-page > .settings-btn.secondary:hover {
-  background: #f1f5f9;
-}
-
-/* Modal headings polish */
-.settings-modal-box h4 {
-  margin-bottom: 12px;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-/* Modal paragraph readability */
-.settings-modal-box p {
-  font-size: 14px;
-  color: #475569;
-  line-height: 1.5;
-}
-
-/* Mobile: buttons full width inside cards */
-@media (max-width: 640px) {
   .settings-card .settings-btn {
     width: 100%;
+  }
+
+  .settings-card .settings-btn + .settings-btn {
     margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .settings-page-title {
+    font-size: 22px;
+  }
+
+  .settings-card-title {
+    font-size: 16px;
+  }
+
+  .gst-tooltip {
+    max-width: 180px;
+    max-width: 90vw;
+    font-size: 11px;
   }
 }

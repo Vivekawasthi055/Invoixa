@@ -8,6 +8,7 @@ function Rooms() {
   const { user } = useAuth();
   const [rooms, setRooms] = useState([]);
   const [roomsLoading, setRoomsLoading] = useState(true);
+  const [roomsRefreshing, setRoomsRefreshing] = useState(false);
 
   const [roomNumber, setRoomNumber] = useState("");
   const [roomName, setRoomName] = useState("");
@@ -18,8 +19,12 @@ function Rooms() {
   const [formError, setFormError] = useState("");
   const [roomErrors, setRoomErrors] = useState({});
 
-  const loadRooms = async () => {
-    setRoomsLoading(true); // ✅ ADD (start)
+  const loadRooms = async (showLoader = false) => {
+    if (showLoader) {
+      setRoomsLoading(true); // full loader
+    } else {
+      setRoomsRefreshing(true); // silent refresh
+    }
 
     const { data: hotel } = await supabase
       .from("hotels")
@@ -30,11 +35,12 @@ function Rooms() {
     const { data } = await getRooms(hotel.hotel_code, false);
     setRooms(data || []);
 
-    setRoomsLoading(false); // ✅ ADD (end)
+    setRoomsLoading(false);
+    setRoomsRefreshing(false);
   };
 
   useEffect(() => {
-    loadRooms();
+    loadRooms(true); // ✅ ONLY FIRST LOAD
   }, []);
 
   const handleAdd = async () => {
@@ -227,10 +233,12 @@ function Rooms() {
           </button>
         </div>
       </div>
+      {/* {roomsRefreshing && <p className="rooms-refresh-text">Updating…</p>} */}
+
       {/* Rooms List */}
       <div className="rooms-list">
         {roomsLoading ? (
-          <p className="rooms-empty-text loading">Loading…</p>
+          <p className="rooms-empty-text loading">Loading Rooms…</p>
         ) : rooms.length === 0 ? (
           <p className="rooms-empty-text">No rooms added yet</p>
         ) : (

@@ -9,6 +9,7 @@ function AllInvoices() {
   const { user } = useAuth();
   const [hotel, setHotel] = useState(null);
   const [invoices, setInvoices] = useState([]);
+  const [invoicesLoading, setInvoicesLoading] = useState(true);
 
   const [filters, setFilters] = useState({
     invoice_number: "",
@@ -38,11 +39,15 @@ function AllInvoices() {
   }, [hotel]);
 
   const loadInvoices = async () => {
+    setInvoicesLoading(true); // ✅ START loading
+
     const { data } = await searchInvoices({
       hotel_code: hotel.hotel_code,
       ...filters,
     });
+
     setInvoices(data || []);
+    setInvoicesLoading(false); // ✅ END loading
   };
 
   const handleChange = (e) => {
@@ -181,7 +186,13 @@ function AllInvoices() {
             </tr>
           </thead>
           <tbody>
-            {invoices.length === 0 ? (
+            {invoicesLoading ? (
+              <tr>
+                <td colSpan="6" className="allinvoices-empty-row loading">
+                  Loading Invoices…
+                </td>
+              </tr>
+            ) : invoices.length === 0 ? (
               <tr>
                 <td colSpan="6" className="allinvoices-empty-row">
                   No invoices found

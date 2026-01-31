@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../../services/authService";
 import Logo from "../../components/common/Logo";
 import Signature from "../../components/common/Signature";
-
 import "../../styles/HotelProfileSettings.css";
 
 const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
@@ -16,6 +15,7 @@ function HotelProfileSettings() {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showDeletePassword, setShowDeletePassword] = useState(false);
 
   /* ================= PROFILE DATA ================= */
 
@@ -25,6 +25,7 @@ function HotelProfileSettings() {
     phone: "",
     address: "",
     has_gst: false,
+    gst_type: "cgst_sgst",
     gst_number: "",
     gst_percentage: "",
     logo_url: "",
@@ -91,6 +92,7 @@ function HotelProfileSettings() {
         has_gst: !!profile.gst_number,
         gst_number: profile.gst_number || "",
         gst_percentage: profile.gst_percentage || "",
+        gst_type: profile.gst_type || "cgst_sgst",
         logo_url: profile.logo_url || "",
         signature_url: profile.signature_url || "",
       };
@@ -231,11 +233,16 @@ function HotelProfileSettings() {
       .update({ delete_requested: true })
       .eq("id", user.id);
 
-    setDeleteMsg("Delete request sent to admin.");
+    setShowDeleteConfirm(false);
+    setShowDeleteStep1(false);
+    setDeletePassword("");
+
+    setMsg("Delete request sent to admin");
 
     setTimeout(() => {
-      setDeleteMsg("");
+      setMsg("");
     }, 2000);
+
     setShowDeleteConfirm(false);
   };
 
@@ -426,6 +433,46 @@ function HotelProfileSettings() {
                     setForm({ ...form, gst_percentage: e.target.value })
                   }
                 />
+                <div className="settings-radio-group">
+                  <label className="gst-label-with-tooltip">
+                    <input
+                      type="radio"
+                      name="gst_type"
+                      value="cgst_sgst"
+                      checked={form.gst_type === "cgst_sgst"}
+                      onChange={(e) =>
+                        setForm({ ...form, gst_type: e.target.value })
+                      }
+                    />
+                    CGST + SGST (Default)
+                    <span className="gst-tooltip-wrapper">
+                      ℹ️
+                      <span className="gst-tooltip">
+                        Same state transaction ke liye applicable.
+                      </span>
+                    </span>
+                  </label>
+
+                  <label className="gst-label-with-tooltip">
+                    <input
+                      type="radio"
+                      name="gst_type"
+                      value="igst"
+                      checked={form.gst_type === "igst"}
+                      onChange={(e) =>
+                        setForm({ ...form, gst_type: e.target.value })
+                      }
+                    />
+                    IGST
+                    <span className="gst-tooltip-wrapper">
+                      ℹ️
+                      <span className="gst-tooltip">
+                        Inter-state (different state) transaction ke liye
+                        applicable.
+                      </span>
+                    </span>
+                  </label>
+                </div>
               </>
             )}
 
@@ -436,6 +483,7 @@ function HotelProfileSettings() {
                   has_gst: form.has_gst,
                   gst_number: form.has_gst ? form.gst_number : null,
                   gst_percentage: form.has_gst ? form.gst_percentage : null,
+                  gst_type: form.has_gst ? form.gst_type : null,
                 })
               }
             >
@@ -450,6 +498,7 @@ function HotelProfileSettings() {
                   has_gst: originalForm.has_gst,
                   gst_number: originalForm.gst_number,
                   gst_percentage: originalForm.gst_percentage,
+                  gst_type: originalForm.gst_type,
                 }));
                 setEditGST(false);
               }}
@@ -554,12 +603,24 @@ function HotelProfileSettings() {
               {!showDeleteConfirm ? (
                 <>
                   <h4>Confirm Your Password</h4>
-                  <input
-                    className="settings-input"
-                    type="password"
-                    placeholder="Enter Current Password"
-                    onChange={(e) => setDeletePassword(e.target.value)}
-                  />
+                  <div className="settings-password-field">
+                    <input
+                      className="settings-input"
+                      type={showDeletePassword ? "text" : "password"}
+                      placeholder="Enter Current Password"
+                      value={deletePassword}
+                      onChange={(e) => setDeletePassword(e.target.value)}
+                    />
+
+                    <button
+                      type="button"
+                      className="settings-password-toggle"
+                      onClick={() => setShowDeletePassword((p) => !p)}
+                    >
+                      {showDeletePassword ? "🙈" : "👁️"}
+                    </button>
+                  </div>
+
                   <button
                     className="settings-btn"
                     onClick={verifyDeletePassword}
@@ -603,18 +664,17 @@ function HotelProfileSettings() {
                   </button>
                 </>
               )}
-
-              {deleteMsg && <p className="settings-error">{deleteMsg}</p>}
             </div>
           </div>
         )}
       </section>
 
-      {msg && <p className="settings-success">{msg}</p>}
-
-      <button className="settings-btn secondary" onClick={logoutUser}>
-        Logout
-      </button>
+      {msg && <div className="settings-toast success">{msg}</div>}
+      <div className="settings-logout">
+        <button className="settings-btn secondary" onClick={logoutUser}>
+          Logout
+        </button>
+      </div>
     </main>
   );
 }

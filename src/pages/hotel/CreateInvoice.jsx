@@ -18,6 +18,10 @@ function CreateInvoice() {
   const [guestPhone, setGuestPhone] = useState("");
   const [guestEmail, setGuestEmail] = useState("");
   const [canProceed, setCanProceed] = useState(false);
+  const [showAdditionalGuest, setShowAdditionalGuest] = useState(false);
+  const [additionalGuestName, setAdditionalGuestName] = useState("");
+  const [guestGSTIN, setGuestGSTIN] = useState("");
+  const [showDeleteRule, setShowDeleteRule] = useState(true);
 
   const navigate = useNavigate();
 
@@ -68,6 +72,7 @@ function CreateInvoice() {
       // 🔒 GST SNAPSHOT
       has_gst: hotel.has_gst,
       gst_percentage: hotel.gst_percentage,
+      gst_type: hotel.gst_type || "cgst_sgst",
     });
 
     if (error) {
@@ -96,6 +101,9 @@ function CreateInvoice() {
       guest_name: guestName, // ✅ FIX: object format
       guest_phone: guestPhone, // ✅ FIX
       guest_email: guestEmail, // ✅ FIX
+
+      guest_additional_name: additionalGuestName || null,
+      guest_gstin: guestGSTIN || null,
     });
 
     navigate(`/hotel/invoices/${invoice.id}`); // unchanged
@@ -154,6 +162,33 @@ function CreateInvoice() {
             </div>
           </section>
 
+          {invoice && showDeleteRule && (
+            <section className="ci-card ci-warning-card">
+              <button
+                className="ci-warning-close"
+                onClick={() => setShowDeleteRule(false)}
+                aria-label="Close"
+              >
+                ✕
+              </button>
+
+              <p className="ci-final-title">⚠️ Final Submission Warning</p>
+
+              <p className="ci-final-text">
+                <strong>English:</strong> Once you click <b>Save & Next</b>,
+                this invoice will be locked for editing. Please carefully verify
+                guest details, rooms, dates, rates, and taxes before proceeding.
+              </p>
+
+              <p className="ci-final-text">
+                <strong>हिंदी:</strong> <b>Save & Next</b> पर क्लिक करने के बाद
+                यह इनवॉइस एडिट के लिए लॉक हो जाएगा। आगे बढ़ने से पहले कृपया
+                मेहमान की जानकारी, कमरे, तारीखें, रेट और टैक्स अच्छी तरह जाँच
+                लें।
+              </p>
+            </section>
+          )}
+
           {/* ================= GUEST DETAILS ================= */}
           <section className="ci-card">
             <h4 className="ci-section-title">Guest Details</h4>
@@ -186,6 +221,36 @@ function CreateInvoice() {
                 />
               </div>
             </div>
+            <label className="ci-checkbox">
+              <input
+                type="checkbox"
+                checked={showAdditionalGuest}
+                onChange={(e) => setShowAdditionalGuest(e.target.checked)}
+              />
+              <span>Add Additional Guest / GST Details</span>
+            </label>
+
+            {showAdditionalGuest && (
+              <div className="ci-form-grid">
+                <div>
+                  <label>Additional Name (optional)</label>
+                  <input
+                    placeholder="Additional Guest / Company Name"
+                    value={additionalGuestName}
+                    onChange={(e) => setAdditionalGuestName(e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <label>GSTIN (optional)</label>
+                  <input
+                    placeholder="GSTIN"
+                    value={guestGSTIN}
+                    onChange={(e) => setGuestGSTIN(e.target.value)}
+                  />
+                </div>
+              </div>
+            )}
           </section>
 
           {/* ================= ROOMS + FOOD ================= */}
@@ -203,10 +268,6 @@ function CreateInvoice() {
             >
               Save & Next →
             </button>
-
-            <p className="ci-note">
-              ⚠️ Note: You can't edit the invoice after clicking Save & Next
-            </p>
           </section>
         </>
       )}
