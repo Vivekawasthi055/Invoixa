@@ -10,6 +10,8 @@ import InvoiceRooms from "./InvoiceRooms";
 import "../../styles/CreateInvoice.css";
 
 function CreateInvoice() {
+  const DRAFT_INVOICE_KEY = "invoixa_draft_invoice_id";
+
   const { user } = useAuth();
   const [hotel, setHotel] = useState(null);
   const [invoice, setInvoice] = useState(null);
@@ -40,6 +42,30 @@ function CreateInvoice() {
 
     if (user) loadHotel();
   }, [user]);
+
+  // ==================================
+
+  useEffect(() => {
+    const resumeDraftInvoice = async () => {
+      const savedInvoiceId = localStorage.getItem(DRAFT_INVOICE_KEY);
+      if (!savedInvoiceId) return;
+
+      const { data } = await supabase
+        .from("invoices")
+        .select("*")
+        .eq("id", savedInvoiceId)
+        .eq("status", "Draft")
+        .single();
+
+      if (data) {
+        setInvoice(data);
+      } else {
+        localStorage.removeItem(DRAFT_INVOICE_KEY);
+      }
+    };
+
+    if (hotel) resumeDraftInvoice();
+  }, [hotel]);
 
   /* ================= CREATE INVOICE ================= */
 
@@ -81,6 +107,7 @@ function CreateInvoice() {
     }
 
     setInvoice(data);
+    localStorage.setItem(DRAFT_INVOICE_KEY, data.id);
     setGuestName("");
     setGuestPhone("");
     setGuestEmail("");
@@ -107,6 +134,7 @@ function CreateInvoice() {
     });
 
     navigate(`/hotel/invoices/${invoice.id}`); // unchanged
+    localStorage.removeItem(DRAFT_INVOICE_KEY);
   };
 
   if (!hotel)
@@ -122,11 +150,53 @@ function CreateInvoice() {
   return (
     <main className="ci-main">
       <h2 className="ci-page-title">Create New Invoice</h2>
-
       {!invoice && (
-        <button className="ci-create-btn" onClick={handleCreateInvoice}>
-          + Create Invoice
-        </button>
+        <section className="ci-precreate">
+          <button className="ci-create-btn" onClick={handleCreateInvoice}>
+            + Create Invoice
+          </button>
+
+          {showDeleteRule && (
+            <div className="ci-precreate-info">
+              <button
+                className="ci-warning-close"
+                onClick={() => setShowDeleteRule(false)}
+                aria-label="Close"
+              >
+                ✕
+              </button>
+
+              <div className="ci-info-block">
+                <p className="ci-info-title">⚠️ Invoice Deletion Rule</p>
+                <p className="ci-info-text">
+                  <strong>English:</strong> This invoice can be deleted only
+                  while it is in <b>Draft</b> state. Once marked as <b>Paid</b>{" "}
+                  or <b>Void</b>, it can never be deleted.
+                </p>
+                <p className="ci-info-text">
+                  <strong>हिंदी:</strong> यह इनवॉइस केवल <b>Draft</b> स्थिति में
+                  ही डिलीट किया जा सकता है। <b>Paid</b> या <b>Void</b> होने के
+                  बाद यह कभी डिलीट नहीं होगा।
+                </p>
+              </div>
+
+              <div className="ci-info-divider"></div>
+
+              <div className="ci-info-block">
+                <p className="ci-info-title">⚠️ Final Submission Warning</p>
+                <p className="ci-info-text">
+                  <strong>English:</strong> After clicking <b>Save & Next</b>,
+                  the invoice will be locked for editing. Please verify all
+                  details carefully.
+                </p>
+                <p className="ci-info-text">
+                  <strong>हिंदी:</strong> <b>Save & Next</b> के बाद इनवॉइस एडिट
+                  के लिए लॉक हो जाएगा। आगे बढ़ने से पहले सभी विवरण जाँच लें।
+                </p>
+              </div>
+            </div>
+          )}
+        </section>
       )}
 
       {invoice && (
@@ -161,33 +231,6 @@ function CreateInvoice() {
               </p>
             </div>
           </section>
-
-          {invoice && showDeleteRule && (
-            <section className="ci-card ci-warning-card">
-              <button
-                className="ci-warning-close"
-                onClick={() => setShowDeleteRule(false)}
-                aria-label="Close"
-              >
-                ✕
-              </button>
-
-              <p className="ci-final-title">⚠️ Final Submission Warning</p>
-
-              <p className="ci-final-text">
-                <strong>English:</strong> Once you click <b>Save & Next</b>,
-                this invoice will be locked for editing. Please carefully verify
-                guest details, rooms, dates, rates, and taxes before proceeding.
-              </p>
-
-              <p className="ci-final-text">
-                <strong>हिंदी:</strong> <b>Save & Next</b> पर क्लिक करने के बाद
-                यह इनवॉइस एडिट के लिए लॉक हो जाएगा। आगे बढ़ने से पहले कृपया
-                मेहमान की जानकारी, कमरे, तारीखें, रेट और टैक्स अच्छी तरह जाँच
-                लें।
-              </p>
-            </section>
-          )}
 
           {/* ================= GUEST DETAILS ================= */}
           <section className="ci-card">
@@ -227,7 +270,7 @@ function CreateInvoice() {
                 checked={showAdditionalGuest}
                 onChange={(e) => setShowAdditionalGuest(e.target.checked)}
               />
-              <span>Add Additional Guest / GST Details</span>
+              <span>Add Additional Guest / Company / GST Details</span>
             </label>
 
             {showAdditionalGuest && (
@@ -235,7 +278,7 @@ function CreateInvoice() {
                 <div>
                   <label>Additional Name (optional)</label>
                   <input
-                    placeholder="Additional Guest / Company Name"
+                    placeholder="Guest / Company Name"
                     value={additionalGuestName}
                     onChange={(e) => setAdditionalGuestName(e.target.value)}
                   />

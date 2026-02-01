@@ -106,15 +106,19 @@
   margin-bottom: 10px;
   font-size: 15px;
 }
-
 .final-inv-guest > div {
   display: flex;
-  justify-content: space-between;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 14px 24px; /* row gap | column gap */
   font-size: 14px;
   background: #f8fafc;
   padding: 14px 16px;
   border-radius: 12px;
+}
+
+.final-inv-guest > div p {
+  margin: 0;
+  white-space: nowrap;
 }
 
 /* ================= ROOMS ================= */
@@ -318,26 +322,92 @@ hr {
   font-size: 13px;
   color: #64748b;
 }
-
-/* ================= RESPONSIVE ================= */
+/* ================= RESPONSIVE FIXES ================= */
 
 @media (max-width: 640px) {
+  /* MAIN CONTAINER */
   .final-inv-main {
-    padding: 18px;
-    margin: 20px 10px;
+    padding: 16px;
+    margin: 16px 8px;
   }
 
-  .final-inv-header-row,
-  .final-inv-guest > div {
+  /* TOP ACTIONS */
+  .final-inv-top-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .final-inv-top-actions button {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .final-inv-top-actions > div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* TITLE */
+  .final-inv-title {
+    font-size: 24px;
+    margin: 20px 0 14px;
+  }
+
+  /* HEADER & GUEST */
+  .final-inv-header-row {
     flex-direction: column;
     gap: 6px;
   }
-
-  .final-inv-title {
-    font-size: 24px;
+  .final-inv-guest > div {
+    display: flex;
+    flex-wrap: wrap; /* 👈 VERY IMPORTANT */
+    gap: 10px 16px;
+    padding: 14px;
   }
 
+  .final-inv-guest > div p {
+    white-space: normal; /* 👈 mobile pe wrap allow */
+  }
+
+  .final-inv-room td,
+  .final-inv-totals td {
+    font-size: 13px;
+    padding: 10px 8px;
+  }
+
+  /* NIGHT RATES */
+  .final-inv-night-rates {
+    font-size: 11px;
+  }
+
+  /* PAYMENT */
+  .final-inv-payment-option {
+    font-size: 13px;
+  }
+
+  .final-inv-paid-btn {
+    width: 100%;
+    margin-top: 12px;
+  }
+
+  .final-inv-draft-btn {
+    width: 100%;
+  }
+
+  /* WATERMARK */
+  .final-inv-draft-watermark,
   .final-inv-void-watermark {
     font-size: 80px;
+    top: 50%;
+  }
+
+  /* SIGNATURE */
+  .final-inv-signature {
+    text-align: center;
+  }
+
+  .final-inv-signature img {
+    margin: 10px auto 0;
   }
 }

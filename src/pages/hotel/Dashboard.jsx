@@ -16,7 +16,6 @@ function Dashboard() {
 
   useEffect(() => {
     const init = async () => {
-      // ✅ profile check
       const { data: profile } = await getProfile(user.id);
 
       if (!profile?.profile_completed) {
@@ -24,7 +23,6 @@ function Dashboard() {
         return;
       }
 
-      // ✅ fetch hotel data
       const { data: hotel } = await supabase
         .from("hotels")
         .select("hotel_name, hotel_code, logo_url")
@@ -47,16 +45,15 @@ function Dashboard() {
     <main className="db-page">
       {/* Header */}
       <div className="db-header">
-        <h1>Hotel Dashboard</h1>
-        <p>Manage invoices, rooms & hotel settings from one place</p>
+        <h1>Welcome back 👋</h1>
+        <p>Manage your hotel, invoices & rooms from one place</p>
       </div>
 
-      {/* ✅ Hotel Info (DB header ke just neeche) */}
+      {/* Hotel Info */}
       <div className="db-hotel-header">
         {loadingHotel ? (
           <>
             <div className="db-hotel-logo-skeleton" />
-
             <div className="db-hotel-text-skeleton">
               <div className="db-hotel-name-skeleton" />
               <div className="db-hotel-code-skeleton" />
@@ -70,7 +67,7 @@ function Dashboard() {
 
             <div className="db-hotel-text">
               <strong className="db-hotel-name">{hotelName}</strong>
-              <div className="db-hotel-code">Hotel Code: {hotelCode}</div>
+              <span className="db-hotel-code">Hotel Code: {hotelCode}</span>
             </div>
           </>
         )}
@@ -98,6 +95,15 @@ function Dashboard() {
           <p>Hotel details, GST & preferences</p>
         </Link>
       </div>
+
+      {/* User Manual */}
+      <Link to="/hotel/usermanual" className="db-card user">
+        <h4>📜 User Manual</h4>
+        <p>
+          Step-by-step guide to create invoices, manage rooms, GST & hotel
+          settings with ease.
+        </p>
+      </Link>
     </main>
   );
 }

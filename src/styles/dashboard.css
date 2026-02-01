@@ -7,6 +7,8 @@
   padding: 32px 16px;
   max-width: 1200px;
   margin: 0 auto;
+  font-family: "Inter", system-ui, sans-serif;
+  background: #f9fafb;
 }
 
 /* ===============================
@@ -14,7 +16,7 @@
 ================================= */
 
 .db-header {
-  margin-bottom: 28px;
+  margin-bottom: 32px;
 }
 
 .db-header h1 {
@@ -30,78 +32,79 @@
 }
 
 /* ===============================
-   🏷 HOTEL HEADER
+   🏨 HOTEL HEADER (CARD STYLE)
 ================================= */
 
 .db-hotel-header {
-  margin-bottom: 28px;
+  margin-bottom: 32px;
+  padding: 18px 20px;
   display: flex;
-  gap: 14px;
   align-items: center;
+  gap: 16px;
+  background: #f8fafc;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
 }
 
-/* ===== Logo ===== */
+/* Logo */
 .db-hotel-logo {
-  width: 90px;
+  width: 72px;
+  height: 72px;
   object-fit: contain;
-  border-radius: 8px;
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 6px;
 }
 
-/* ===== Text ===== */
+/* Text */
 .db-hotel-text {
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .db-hotel-name {
   font-size: 18px;
+  font-weight: 600;
+  color: #0f172a;
 }
 
 .db-hotel-code {
-  font-size: 14px;
-  opacity: 0.7;
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 2px;
 }
 
-/* ===== Skeletons ===== */
-.db-hotel-logo-skeleton {
-  width: 56px;
-  height: 56px;
-  background: #e5e7eb;
-  border-radius: 8px;
-}
+/* ===============================
+   🏨 SKELETONS
+================================= */
 
-.db-hotel-text-skeleton {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.db-hotel-name-skeleton {
-  width: 220px;
-  height: 18px;
-  background: #e5e7eb;
-  border-radius: 4px;
-}
-
-.db-hotel-code-skeleton {
-  width: 80px;
-  height: 12px;
-  background: #e5e7eb;
-  border-radius: 4px;
-}
-
-/* SHIMMER EFFECT */
-
-/* ===== Shimmer Skeleton Effect ===== */
 .db-hotel-logo-skeleton,
 .db-hotel-name-skeleton,
 .db-hotel-code-skeleton {
   position: relative;
   overflow: hidden;
   background: #e5e7eb;
+  border-radius: 6px;
 }
 
-/* Shimmer overlay */
+.db-hotel-logo-skeleton {
+  width: 72px;
+  height: 72px;
+}
+
+.db-hotel-name-skeleton {
+  width: 180px;
+  height: 18px;
+  margin-bottom: 6px;
+}
+
+.db-hotel-code-skeleton {
+  width: 100px;
+  height: 12px;
+}
+
+/* Shimmer */
 .db-hotel-logo-skeleton::after,
 .db-hotel-name-skeleton::after,
 .db-hotel-code-skeleton::after {
@@ -150,17 +153,22 @@
   text-decoration: none;
   color: #0f172a;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: all 0.2s ease;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.db-card h3 {
+.db-card:focus-visible {
+  outline: 3px solid #93c5fd;
+  outline-offset: 3px;
+}
+
+.db-card h3,
+.db-card h4 {
   font-size: 18px;
   font-weight: 600;
+  color: inherit;
 }
 
 .db-card p {
@@ -169,7 +177,6 @@
   line-height: 1.5;
 }
 
-/* Hover */
 .db-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.12);
@@ -189,20 +196,84 @@
 }
 
 /* ===============================
+   📜 USER MANUAL CARD
+================================= */
+
+.db-card.user {
+  margin: 50px auto 0;
+  max-width: 440px;
+  text-align: center;
+  padding: 26px 28px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #f8fafc, #eef2ff);
+  border: 1px dashed #c7d2fe;
+  box-shadow: 0 14px 34px rgba(79, 70, 229, 0.08);
+  transition: all 0.25s ease;
+}
+
+.db-card.user h4 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.db-card.user p {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.db-card.user:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 42px rgba(79, 70, 229, 0.18);
+  border-color: #818cf8;
+}
+
+/* ===============================
    📱 MOBILE
 ================================= */
 
+@media (max-width: 1024px) {
+  .db-page {
+    padding: 28px 16px;
+  }
+
+  .db-header h1 {
+    font-size: 28px;
+  }
+
+  
+}
+
 @media (max-width: 768px) {
+  .db-page {
+    padding: 24px 12px;
+  }
+
   .db-header h1 {
     font-size: 24px;
   }
 
-  .db-page {
-    padding: 24px 14px;
-  }
-
   .db-card {
     padding: 20px;
+  }
+
+  .db-card.user {
+    padding: 20px 22px;
+    max-width: 100%;
+  }
+
+  .db-hotel-logo {
+    width: 56px;
+    height: 56px;
+  }
+
+  .db-hotel-name {
+    font-size: 16px;
+  }
+
+  .db-hotel-code {
+    font-size: 12px;
   }
 }
 
@@ -210,7 +281,7 @@
    🖥 LARGE SCREENS
 ================================= */
 
-@media (min-width: 1024px) {
+@media (min-width: 1440px) {
   .db-page {
     padding-top: 40px;
   }

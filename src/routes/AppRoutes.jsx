@@ -30,6 +30,7 @@ import CreateInvoice from "../pages/hotel/CreateInvoice";
 import AllInvoices from "../pages/hotel/AllInvoices";
 import FinalInvoice from "../pages/hotel/FinalInvoice";
 import CompleteProfile from "../pages/hotel/CompleteProfile";
+import UserManual from "../pages/hotel/UserManual";
 
 import RoleRedirect from "../components/common/RoleRedirect";
 
@@ -121,6 +122,16 @@ function AppRoutes() {
               <ProtectedRoute role="hotel">
                 <Header />
                 <HotelProfileSettings />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/hotel/usermanual"
+            element={
+              <ProtectedRoute role="hotel">
+                <Header />
+                <UserManual />
               </ProtectedRoute>
             }
           />

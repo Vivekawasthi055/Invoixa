@@ -1,0 +1,125 @@
+.um-main {
+  max-width: 960px;
+  margin: 40px auto;
+  padding: 32px 24px;
+  font-family: "Inter", sans-serif;
+  color: #1f2937;
+  background: #f9fafb;
+  border-radius: 18px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08);
+}
+
+/* TITLE */
+.um-title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #2563eb, #1e40af);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.um-intro {
+  text-align: center;
+  font-size: 1.05rem;
+  color: #475569;
+  line-height: 1.8;
+  margin-bottom: 45px;
+}
+
+/* SECTIONS */
+.um-section {
+  background: #ffffff;
+  padding: 24px 28px;
+  margin-bottom: 36px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease;
+}
+
+.um-section:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+}
+
+/* SECTION TITLE */
+.um-section-title {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: #1e40af;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.um-section p {
+  margin-bottom: 10px;
+}
+
+/* BULLET ICONS */
+.um-bullet {
+  font-size: 1.2rem;
+}
+
+/* LISTS */
+.um-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.um-list li {
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 12px;
+  padding-left: 32px;
+  position: relative;
+}
+
+.um-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #2563eb;
+  font-size: 1.2rem;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .um-main {
+    padding: 28px 20px;
+  }
+  .um-section {
+    padding: 20px 22px;
+  }
+}
+
+@media (max-width: 768px) {
+  .um-title {
+    font-size: 2.2rem;
+  }
+  .um-section-title {
+    font-size: 1.5rem;
+  }
+  .um-list li {
+    font-size: 0.95rem;
+    padding-left: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .um-main {
+    padding: 20px 16px;
+  }
+  .um-title {
+    font-size: 1.8rem;
+  }
+  .um-section-title {
+    font-size: 1.3rem;
+  }
+  .um-list li {
+    font-size: 0.9rem;
+    padding-left: 24px;
+  }
+}

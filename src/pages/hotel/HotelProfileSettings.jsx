@@ -395,7 +395,9 @@ function HotelProfileSettings() {
           <>
             <p className="settings-muted-text">
               {form.has_gst
-                ? `GST Enabled • ${form.gst_number} • ${form.gst_percentage}%`
+                ? `GST Enabled • ${form.gst_number} • ${form.gst_percentage}% • ${
+                    form.gst_type === "cgst_sgst" ? "CGST + SGST" : "IGST"
+                  }`
                 : "GST Not Enabled"}
             </p>
             <button className="settings-btn" onClick={() => setEditGST(true)}>
