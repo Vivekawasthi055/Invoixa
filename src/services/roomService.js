@@ -8,11 +8,17 @@ export const getRooms = async (hotelCode, activeOnly = true) => {
   return await query.order("room_number");
 };
 
-export const addRoom = async ({ room_number, room_name, hotel_code }) => {
+export const addRoom = async ({
+  room_number,
+  room_name,
+  hotel_code,
+  hotel_id,
+}) => {
   return await supabase.from("rooms").insert({
     room_number,
     room_name,
     hotel_code,
+    hotel_id,
     is_active: true,
   });
 };

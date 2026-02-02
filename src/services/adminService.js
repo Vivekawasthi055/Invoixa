@@ -60,3 +60,21 @@ export async function toggleHotelStatus({ hotel_id, is_active }) {
     return { error: { message: err.message } };
   }
 }
+
+/* ==================================
+   DELETE HOTEL INVOICE/ROOMS DATA
+===================================== */
+export async function clearHotelCompleteData(hotel_id) {
+  try {
+    const { error } = await supabase.rpc("admin_clear_hotel_complete_data", {
+      p_hotel_id: hotel_id,
+    });
+
+    if (error) throw error;
+
+    return { success: true };
+  } catch (err) {
+    console.error("CLEAR HOTEL DATA ERROR:", err);
+    return { error: { message: err.message } };
+  }
+}

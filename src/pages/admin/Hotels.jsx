@@ -1,20 +1,52 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { getAllHotels, toggleHotelStatus } from "../../services/adminService";
+import {
+  getAllHotels,
+  toggleHotelStatus,
+  clearHotelCompleteData,
+} from "../../services/adminService";
 import "../../styles/hotels.css"; // ✅ UI only
 
 function Hotels() {
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchName, setSearchName] = useState("");
+  const [searchCode, setSearchCode] = useState("");
+  const [filteredHotels, setFilteredHotels] = useState([]);
 
   useEffect(() => {
     async function fetchHotels() {
       const { data } = await getAllHotels();
       if (data) setHotels(data);
+      setFilteredHotels(data);
       setLoading(false);
     }
     fetchHotels();
   }, []);
+
+  const handleSearch = () => {
+    let result = hotels;
+
+    if (searchName.trim()) {
+      result = result.filter((h) =>
+        h.hotel_name?.toLowerCase().includes(searchName.trim().toLowerCase()),
+      );
+    }
+
+    if (searchCode.trim()) {
+      result = result.filter((h) =>
+        h.hotel_code?.toLowerCase().includes(searchCode.trim().toLowerCase()),
+      );
+    }
+
+    setFilteredHotels(result);
+  };
+
+  const handleClear = () => {
+    setSearchName("");
+    setSearchCode("");
+    setFilteredHotels(hotels);
+  };
 
   const handleToggle = async (hotel) => {
     await toggleHotelStatus({
@@ -24,10 +56,28 @@ function Hotels() {
 
     setHotels((prev) =>
       prev.map((h) =>
-        h.id === hotel.id ? { ...h, is_active: !h.is_active } : h
-      )
+        h.id === hotel.id ? { ...h, is_active: !h.is_active } : h,
+      ),
     );
   };
+
+  const handleClearHotelData = async (hotel) => {
+    const confirm = window.confirm(
+      `⚠️ WARNING!\n\nThis will permanently DELETE all data of hotel:\n${hotel.hotel_name}\n\nInvoices, Rooms, Food, Rates etc.\n\nAre you sure?`,
+    );
+
+    if (!confirm) return;
+
+    const { error } = await clearHotelCompleteData(hotel.id);
+
+    if (error) {
+      alert("Delete failed: " + error.message);
+      return;
+    }
+
+    alert("Hotel data cleared successfully");
+  };
+
   return (
     <>
       <Helmet>
@@ -41,6 +91,41 @@ function Hotels() {
           <p className="admin-hotels-subtitle">
             Manage registered hotels & access status
           </p>
+        </div>
+
+        <div className="admin-hotels-search">
+          <h2 className="admin-hotels-search-title">Search Hotel</h2>
+
+          <label htmlFor="search-hotel-code">
+            Hotel Code
+            <input
+              id="search-hotel-code"
+              name="hotel_code"
+              type="text"
+              placeholder="Search by Hotel Code"
+              value={searchCode}
+              onChange={(e) => setSearchCode(e.target.value)}
+              autoComplete="off"
+            />
+          </label>
+
+          <label htmlFor="search-hotel-name">
+            Hotel Name
+            <input
+              id="search-hotel-name"
+              name="hotel_name"
+              type="text"
+              placeholder="Search by Hotel Name"
+              value={searchName}
+              onChange={(e) => setSearchName(e.target.value)}
+              autoComplete="off"
+            />
+          </label>
+
+          <button onClick={handleSearch}>Search</button>
+          <button onClick={handleClear} className="outline">
+            Clear
+          </button>
         </div>
 
         {loading ? (
@@ -58,11 +143,12 @@ function Hotels() {
                   <th>Delete Req</th>
                   <th>Created</th>
                   <th>Action</th>
+                  <th>Danger Zone</th>
                 </tr>
               </thead>
 
               <tbody>
-                {hotels.map((hotel) => (
+                {filteredHotels.map((hotel) => (
                   <tr key={hotel.id}>
                     <td className="admin-hotels-mono">{hotel.hotel_code}</td>
                     <td>
@@ -101,12 +187,20 @@ function Hotels() {
                         {hotel.is_active ? "Disable" : "Enable"}
                       </button>
                     </td>
+                    <td>
+                      <button
+                        className="admin-hotels-action danger-outline"
+                        onClick={() => handleClearHotelData(hotel)}
+                      >
+                        Clear Hotel Data
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
 
-            {hotels.length === 0 && (
+            {filteredHotels.length === 0 && (
               <p className="admin-hotels-empty">No hotels found</p>
             )}
           </div>

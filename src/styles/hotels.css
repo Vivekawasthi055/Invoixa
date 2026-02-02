@@ -1,26 +1,112 @@
 /* ===============================
-   🏨 ADMIN HOTELS PAGE
+   🏨 ADMIN HOTELS PAGE – UPDATED
 ================================ */
 
 .admin-hotels-page {
   padding: 30px;
-  max-width: 1300px;
+  max-width: 1400px;
   margin: auto;
+  font-family: "Inter", sans-serif;
+  color: #1f2937;
+  background: #f9fafb;
 }
 
 /* Header */
 .admin-hotels-header {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .admin-hotels-title {
-  font-size: 28px;
-  margin-bottom: 4px;
+  font-size: 38px;
+  font-weight: 800;
+  color: #0f172a;
+  text-align: center;
 }
 
 .admin-hotels-subtitle {
+  text-align: center;
   font-size: 14px;
   color: #64748b;
+  margin-bottom: 30px;
+}
+
+/* ===============================
+   🔍 SEARCH AREA
+================================ */
+
+.admin-hotels-search {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+  margin-bottom: 24px;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.06);
+}
+
+.admin-hotels-search-title {
+  flex-basis: 100%;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e40af;
+  margin-bottom: 12px;
+}
+
+.admin-hotels-search label {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: #475569;
+  flex: 1;
+}
+
+.admin-hotels-search input {
+  margin-top: 6px;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  transition:
+    border 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.admin-hotels-search input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.admin-hotels-search button {
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  background: #2563eb;
+  color: #ffffff;
+  transition:
+    background 0.2s ease,
+    transform 0.1s ease;
+}
+
+.admin-hotels-search button:hover {
+  background: #1e40af;
+  transform: translateY(-1px);
+}
+
+.admin-hotels-search button.outline {
+  background: #ffffff;
+  border: 1px solid #2563eb;
+  color: #2563eb;
+}
+
+.admin-hotels-search button.outline:hover {
+  background: #2563eb;
+  color: #ffffff;
 }
 
 /* Loading */
@@ -40,17 +126,20 @@
   background: #ffffff;
   border-radius: 16px;
   overflow-x: auto;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
 }
 
 .admin-hotels-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
+  min-width: 900px;
 }
 
 .admin-hotels-table thead {
   background: #f1f5f9;
+  font-weight: 600;
+  color: #1e40af;
 }
 
 .admin-hotels-table th,
@@ -62,6 +151,7 @@
 
 .admin-hotels-table tbody tr {
   border-top: 1px solid #e2e8f0;
+  transition: background 0.2s ease;
 }
 
 .admin-hotels-table tbody tr:hover {
@@ -73,10 +163,13 @@
 ================================ */
 
 .admin-hotels-badge {
-  padding: 4px 10px;
+  padding: 4px 12px;
   font-size: 12px;
   border-radius: 999px;
   font-weight: 600;
+  display: inline-block;
+  text-align: center;
+  min-width: 50px;
 }
 
 .admin-hotels-badge.active {
@@ -105,6 +198,7 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .admin-hotels-action.danger {
@@ -112,9 +206,31 @@
   color: #ffffff;
 }
 
+.admin-hotels-action.danger:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
+}
+
 .admin-hotels-action.success {
   background: #22c55e;
   color: #ffffff;
+}
+
+.admin-hotels-action.success:hover {
+  background: #15803d;
+  transform: translateY(-1px);
+}
+
+.admin-hotels-action.danger-outline {
+  background: transparent;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+}
+
+.admin-hotels-action.danger-outline:hover {
+  background: #ef4444;
+  color: #ffffff;
+  transform: translateY(-1px);
 }
 
 /* ===============================
@@ -137,18 +253,53 @@
    📱 RESPONSIVE
 ================================ */
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .admin-hotels-page {
-    padding: 20px;
+    padding: 24px 20px;
   }
-
   .admin-hotels-title {
-    font-size: 24px;
+    font-size: 35px;
   }
-
   .admin-hotels-table th,
   .admin-hotels-table td {
-    padding: 12px;
+    padding: 12px 10px;
     font-size: 13px;
+  }
+  .admin-hotels-search {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .admin-hotels-search label {
+    width: 100%;
+  }
+  .admin-hotels-search button {
+    width: 100%;
+    margin-top: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-hotels-page {
+    padding: 20px 16px;
+  }
+  .admin-hotels-title {
+    font-size: 30px;
+  }
+  .admin-hotels-table {
+    min-width: 700px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-hotels-title {
+    font-size: 20px;
+  }
+  .admin-hotels-table {
+    min-width: 600px;
+  }
+  .admin-hotels-table th,
+  .admin-hotels-table td {
+    padding: 10px 8px;
+    font-size: 12px;
   }
 }

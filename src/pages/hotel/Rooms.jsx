@@ -71,7 +71,7 @@ function Rooms() {
 
     const { data: hotel, error } = await supabase
       .from("hotels")
-      .select("hotel_code, hotel_name")
+      .select("id, hotel_code, hotel_name")
       .eq("user_id", user.id)
       .single();
 
@@ -83,6 +83,7 @@ function Rooms() {
 
     await addRoom({
       hotel_code: hotel.hotel_code,
+      hotel_id: hotel.id,
       hotel_name: hotel.hotel_name,
       room_number: roomNumber,
       room_name: roomName,
