@@ -67,6 +67,15 @@
   transform: translateY(-1px);
 }
 
+.info-btn {
+  background: #00c62b92;
+  margin-top: 200px;
+}
+
+.info-btn:hover {
+  background: #00c62b60;
+}
+
 /* RESPONSIVE */
 @media (max-width: 600px) {
   .adm-title {

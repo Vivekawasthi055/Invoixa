@@ -10,7 +10,13 @@ const Navbar = () => {
       <div className="nav-container">
         {/* Logo */}
         <div className="nav-logo">
-          <Link to="/">Invoixa</Link>
+          <Link to="/">
+            <img
+              src="../public/logo.png"
+              alt="Invoixa Logo"
+              className="nav-logo-img"
+            />
+          </Link>
         </div>
 
         {/* Desktop Links */}

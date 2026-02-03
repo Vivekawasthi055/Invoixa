@@ -20,7 +20,20 @@ function AdminDashboard() {
           <Link to="/admin/hotels" className="adm-btn adm-secondary-btn">
             Hotels List
           </Link>
+
+          <Link
+            to="/admin/profilesettings"
+            className="adm-btn adm-secondary-btn"
+          >
+            Profile & Settings
+          </Link>
         </div>
+        <Link
+          to="/admin/websiteinfo"
+          className="adm-btn adm-secondary-btn info-btn"
+        >
+          Website Info
+        </Link>
       </main>
     </>
   );

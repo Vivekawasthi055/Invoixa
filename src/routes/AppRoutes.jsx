@@ -21,6 +21,8 @@ import NotFound from "../components/common/NotFound";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import CreateHotel from "../pages/admin/CreateHotel";
 import Hotels from "../pages/admin/Hotels";
+import AdminProfileSettings from "../pages/admin/AdminProfileSettings";
+import WebsiteInfo from "../pages/admin/WebsiteInfo";
 
 /* Hotel Pages */
 import Dashboard from "../pages/hotel/Dashboard";
@@ -33,16 +35,13 @@ import CompleteProfile from "../pages/hotel/CompleteProfile";
 import UserManual from "../pages/hotel/UserManual";
 
 import RoleRedirect from "../components/common/RoleRedirect";
+import ScrollToTop from "../components/common/ScrollToTop";
 
 function AppRoutes() {
   return (
     <HelmetProvider>
       <BrowserRouter>
-        {/* ❌ IMPORTANT CHANGE:
-            Header ko yahan se hata diya gaya
-            kyunki ab Header public pages par nahi dikhana
-        */}
-
+        <ScrollToTop />
         <Routes>
           {/* 🌍 PUBLIC ROUTES */}
           {/* ✅ Navbar + Footer sirf in routes par dikhenge */}
@@ -164,6 +163,24 @@ function AppRoutes() {
               <ProtectedRoute role="admin">
                 <Header />
                 <Hotels />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/profilesettings"
+            element={
+              <ProtectedRoute role="admin">
+                <Header />
+                <AdminProfileSettings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/websiteinfo"
+            element={
+              <ProtectedRoute role="admin">
+                <Header />
+                <WebsiteInfo />
               </ProtectedRoute>
             }
           />

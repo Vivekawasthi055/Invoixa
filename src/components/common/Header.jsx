@@ -20,6 +20,13 @@ function Header() {
 
     loadProfile();
   }, [user]);
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) setMenuOpen(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   if (!user || !role) return null;
 
@@ -29,13 +36,21 @@ function Header() {
         {/* Logo */}
         {role == "hotel" && (
           <Link to="/hotel/dashboard">
-            <h2 className="hdr-logo">Invoixa</h2>
+            <img
+              src="../public/logo.png"
+              alt="Invoixa Logo"
+              className="hdr-logo"
+            />
           </Link>
         )}
 
         {role == "admin" && (
           <Link to="/admin/dashboard">
-            <h2 className="hdr-logo">Invoixa</h2>
+            <img
+              src="../public/logo.png"
+              alt="Invoixa Logo"
+              className="hdr-logo"
+            />
           </Link>
         )}
 
@@ -56,6 +71,8 @@ function Header() {
               <NavLink to="/admin/dashboard">Dashboard</NavLink>
               <NavLink to="/admin/create-hotel">Create Hotel</NavLink>
               <NavLink to="/admin/hotels">Hotels</NavLink>
+              <NavLink to="/admin/profilesettings">Profile & Settings</NavLink>
+              <NavLink to="/admin/websiteinfo">Website Info</NavLink>
             </>
           )}
         </nav>
@@ -112,9 +129,9 @@ function Header() {
 
         {role === "admin" && (
           <>
-            <Link to="/admin/dashboard" onClick={() => setMenuOpen(false)}>
+            <NavLink to="/admin/dashboard" onClick={() => setMenuOpen(false)}>
               Dashboard
-            </Link>
+            </NavLink>
             <NavLink
               to="/admin/create-hotel"
               onClick={() => setMenuOpen(false)}
@@ -124,12 +141,17 @@ function Header() {
             <NavLink to="/admin/hotels" onClick={() => setMenuOpen(false)}>
               Hotels
             </NavLink>
+            <NavLink
+              to="/admin/profilesettings"
+              onClick={() => setMenuOpen(false)}
+            >
+              Profile & Settings
+            </NavLink>
+            <NavLink to="/admin/websiteinfo" onClick={() => setMenuOpen(false)}>
+              Website Info
+            </NavLink>
           </>
         )}
-
-        <button onClick={logoutUser} className="hdr-logout mobile">
-          Logout
-        </button>
       </div>
     </header>
   );

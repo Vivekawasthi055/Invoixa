@@ -6,6 +6,7 @@
   z-index: 1000;
   background: #ffffff;
   border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
 .hdr-container {
@@ -15,39 +16,46 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
 }
 
-/* Logo */
+/* ================= LOGO ================= */
+
 .hdr-logo {
-  font-size: 22px;
-  font-weight: 700;
-  color: #2563eb;
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  display: block;
 }
 
-a {
-  text-decoration: none;
+.hdr-container a {
+  display: flex;
+  align-items: center;
 }
 
-/* Desktop Links */
+/* ================= DESKTOP LINKS ================= */
+
 .hdr-links {
   display: flex;
   gap: 26px;
 }
 
 .hdr-links a {
-  text-decoration: none;
   font-size: 14px;
   font-weight: 500;
   color: #374151;
   position: relative;
-}
-
-.hdr-links a.active {
-  color: #2563eb;
+  text-decoration: none;
+  padding: 6px 0;
 }
 
 .hdr-links a:hover {
   color: #2563eb;
+}
+
+.hdr-links a.active {
+  color: #2563eb;
+  font-weight: 600;
 }
 
 .hdr-links a.active::after {
@@ -61,14 +69,15 @@ a {
   border-radius: 4px;
 }
 
-/* Actions */
+/* ================= ACTIONS ================= */
+
 .hdr-actions {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-/* Logout */
+/* Logout Button */
 .hdr-logout {
   padding: 8px 14px;
   font-size: 13px;
@@ -76,11 +85,13 @@ a {
   border: 1px solid #d1d5db;
   background: #ffffff;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .hdr-logout:hover {
   border-color: #ef4444;
   color: #ef4444;
+  background: #fff5f5;
 }
 
 /* ================= HAMBURGER ================= */
@@ -90,17 +101,23 @@ a {
   flex-direction: column;
   justify-content: center;
   gap: 5px;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   background: #f8fafc;
   border-radius: 10px;
-  border: none;
+  border: 1px solid #e5e7eb;
   cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.hdr-hamburger:hover {
+  background: #eef2ff;
 }
 
 .hdr-hamburger span {
   width: 22px;
   height: 2px;
+  margin-left: 7.5px;
   background: #111827;
   transition: all 0.3s ease;
 }
@@ -127,12 +144,13 @@ a {
   border-top: 1px solid #e5e7eb;
   display: flex;
   flex-direction: column;
-  padding: 12px 20px;
+  padding: 14px 20px;
   gap: 6px;
   transform: translateY(-10px);
   opacity: 0;
   pointer-events: none;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 }
 
 .hdr-mobile-menu.show {
@@ -143,10 +161,15 @@ a {
 
 .hdr-mobile-menu a {
   padding: 12px;
-  border-radius: 8px;
-  text-decoration: none;
+  border-radius: 10px;
   color: #374151;
   font-size: 15px;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.hdr-mobile-menu a:hover {
+  background: #f1f5f9;
 }
 
 .hdr-mobile-menu a.active {
@@ -156,7 +179,7 @@ a {
 }
 
 .hdr-logout.mobile {
-  margin-top: 10px;
+  margin-top: 12px;
   width: 100%;
 }
 
@@ -169,5 +192,9 @@ a {
 
   .hdr-hamburger {
     display: flex;
+  }
+
+  .hdr-logo {
+    height: 32px;
   }
 }
