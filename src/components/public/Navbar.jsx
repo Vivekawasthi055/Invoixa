@@ -11,11 +11,7 @@ const Navbar = () => {
         {/* Logo */}
         <div className="nav-logo">
           <Link to="/">
-            <img
-              src="../public/logo.png"
-              alt="Invoixa Logo"
-              className="nav-logo-img"
-            />
+            <img src="/logo.png" alt="Invoixa Logo" className="nav-logo-img" />
           </Link>
         </div>
 

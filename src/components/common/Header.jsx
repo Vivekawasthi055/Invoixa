@@ -36,21 +36,13 @@ function Header() {
         {/* Logo */}
         {role == "hotel" && (
           <Link to="/hotel/dashboard">
-            <img
-              src="../public/logo.png"
-              alt="Invoixa Logo"
-              className="hdr-logo"
-            />
+            <img src="/logo.png" alt="Invoixa Logo" className="hdr-logo" />
           </Link>
         )}
 
         {role == "admin" && (
           <Link to="/admin/dashboard">
-            <img
-              src="../public/logo.png"
-              alt="Invoixa Logo"
-              className="hdr-logo"
-            />
+            <img src="/logo.png" alt="Invoixa Logo" className="hdr-logo" />
           </Link>
         )}
 

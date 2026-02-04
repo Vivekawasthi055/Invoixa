@@ -13,7 +13,7 @@ export const logoutUser = async () => {
 
 export const forgotPassword = async (email) => {
   return await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: "http://localhost:5173/reset-password",
+    redirectTo: `${window.location.origin}/reset-password`,
   });
 };
 
@@ -25,4 +25,18 @@ export const onAuthChange = (callback) => {
   return supabase.auth.onAuthStateChange((_event, session) => {
     callback(session?.user || null);
   });
+};
+
+export const checkEmailRegistered = async (email) => {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("email", email)
+    .single();
+
+  if (error || !data) {
+    return { exists: false };
+  }
+
+  return { exists: true };
 };

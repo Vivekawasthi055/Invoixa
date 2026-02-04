@@ -140,11 +140,7 @@ function AdminProfileSettings() {
       <section className="admin-settings-card">
         <h3>Website Brand Logo</h3>
 
-        <img
-          src="../../../public/logo.PNG"
-          alt="Invoixa Logo"
-          className="website-logo"
-        />
+        <img src="/logo.png" alt="Invoixa Logo" className="website-logo" />
       </section>
       {/* ================= SECURITY ================= */}
       <section className="admin-settings-card">

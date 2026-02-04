@@ -1,6 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { forgotPassword } from "../../services/authService";
+import {
+  forgotPassword,
+  checkEmailRegistered,
+} from "../../services/authService";
+
 import "../../styles/login.css";
 
 function ForgotPassword() {
@@ -9,18 +13,43 @@ function ForgotPassword() {
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // ⏳ resend cooldown
+  const [cooldown, setCooldown] = useState(0);
+
+  // ⏱️ timer logic
+  useEffect(() => {
+    if (cooldown === 0) return;
+
+    const interval = setInterval(() => {
+      setCooldown((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [cooldown]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
     setErrorMsg("");
 
+    // 🔍 Step 1: check email exists
+    const { exists } = await checkEmailRegistered(email);
+
+    if (!exists) {
+      setErrorMsg("Email not registered. Please check your email address.");
+      setLoading(false);
+      return;
+    }
+
+    // 📩 Step 2: send reset link
     const { error } = await forgotPassword(email);
 
     if (error) {
-      setErrorMsg(error.message);
+      setErrorMsg("Failed to send reset link. Please try again.");
     } else {
-      setMessage("Password reset link sent to your email.");
+      setMessage("Password reset link sent to your registered email.");
+      setCooldown(60); // ⏳ start 60 sec lock
     }
 
     setLoading(false);
@@ -48,8 +77,16 @@ function ForgotPassword() {
               required
             />
 
-            <button type="submit" disabled={loading} className="primary-btn">
-              {loading ? "Sending..." : "Send Reset Link"}
+            <button
+              type="submit"
+              disabled={loading || cooldown > 0}
+              className="primary-btn"
+            >
+              {cooldown > 0
+                ? `Resend in ${cooldown}s`
+                : loading
+                  ? "Sending..."
+                  : "Send Reset Link"}
             </button>
 
             {message && <p className="success-text">{message}</p>}
