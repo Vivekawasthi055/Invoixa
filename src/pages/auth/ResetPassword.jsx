@@ -11,7 +11,10 @@ function ResetPassword() {
   const [loading, setLoading] = useState(true);
   const [validSession, setValidSession] = useState(false);
 
-  // 🔥 IMPORTANT: read session from URL
+  // ✅ NEW: inline messages
+  const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) {
@@ -23,14 +26,18 @@ function ResetPassword() {
 
   const handleReset = async (e) => {
     e.preventDefault();
+    setErrorMsg("");
+    setSuccessMsg("");
 
     if (!PASSWORD_REGEX.test(password)) {
-      alert("Password must be at least 8 chars with letter & number");
+      setErrorMsg(
+        "Password must be at least 8 characters with 1 letter & 1 number.",
+      );
       return;
     }
 
     if (password !== confirm) {
-      alert("Passwords do not match");
+      setErrorMsg("Passwords do not match.");
       return;
     }
 
@@ -41,12 +48,14 @@ function ResetPassword() {
     setLoading(false);
 
     if (error) {
-      alert(error.message);
+      setErrorMsg(error.message);
       return;
     }
 
-    alert("Password updated successfully. Please login.");
-    window.location.href = "/login";
+    setSuccessMsg("Password updated successfully. Redirecting to login...");
+    setTimeout(() => {
+      window.location.href = "/login";
+    }, 2000);
   };
 
   if (loading)
@@ -62,9 +71,20 @@ function ResetPassword() {
 
   if (!validSession) {
     return (
-      <p style={{ textAlign: "center", color: "red" }}>
-        Invalid or expired reset link
-      </p>
+      <div className="auth-expired-wrapper">
+        <p className="auth-expired-text">
+          ⚠️ This reset link has already been used or expired.
+          <br />
+          Please request a new password reset.
+        </p>
+
+        <button
+          className="auth-expired-btn"
+          onClick={() => (window.location.href = "/forgot-password")}
+        >
+          Request new reset link
+        </button>
+      </div>
     );
   }
 
@@ -95,9 +115,14 @@ function ResetPassword() {
               onChange={(e) => setConfirm(e.target.value)}
               required
             />
+
             <p className="password-hint">
               Minimum 8 characters • 1 letter • 1 number
             </p>
+
+            {/* ✅ INLINE MESSAGES */}
+            {errorMsg && <p className="auth-error">{errorMsg}</p>}
+            {successMsg && <p className="auth-success">{successMsg}</p>}
 
             <button type="submit" disabled={loading} className="primary-btn">
               {loading ? "Updating..." : "Update Password"}
