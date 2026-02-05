@@ -5,7 +5,7 @@ import {
   toggleHotelStatus,
   clearHotelCompleteData,
 } from "../../services/adminService";
-import "../../styles/hotels.css"; // ✅ UI only
+import "./styles/hotels.css"; // ✅ UI only
 
 function Hotels() {
   const [hotels, setHotels] = useState([]);

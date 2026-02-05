@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
-import "../../styles/AdminDashboard.css";
+import "./styles/AdminDashboard.css";
 
 function AdminDashboard() {
   return (

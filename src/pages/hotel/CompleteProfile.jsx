@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../../services/supabaseClient";
 import Logo from "../../components/common/Logo";
 import Signature from "../../components/common/Signature";
-import "../../styles/completeProfile.css";
+import "./styles/completeProfile.css";
 
 const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 

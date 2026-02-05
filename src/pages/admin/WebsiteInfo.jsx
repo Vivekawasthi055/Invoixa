@@ -1,5 +1,5 @@
 import React from "react";
-import "../../styles/WebsiteInfo.css"; // We'll make a separate CSS file for styling
+import "./styles/WebsiteInfo.css"; // We'll make a separate CSS file for styling
 
 function WebsiteInfo() {
   return (

@@ -11,11 +11,13 @@ import Contact from "../pages/public/Contact";
 import Login from "../pages/auth/Login";
 import ForgotPassword from "../pages/auth/ForgotPassword";
 import ResetPassword from "../pages/auth/ResetPassword";
+import NotFound from "../pages/public/NotFound";
 
 /* Protected / Common */
 import ProtectedRoute from "../components/common/ProtectedRoute";
-import Header from "../components/common/Header"; // Dashboard/Admin header
-import NotFound from "../components/common/NotFound";
+import Header from "../components/common/Header";
+import RoleRedirect from "../components/common/RoleRedirect";
+import ScrollToTop from "../components/common/ScrollToTop";
 
 /* Admin Pages */
 import AdminDashboard from "../pages/admin/AdminDashboard";
@@ -28,14 +30,11 @@ import WebsiteInfo from "../pages/admin/WebsiteInfo";
 import Dashboard from "../pages/hotel/Dashboard";
 import HotelProfileSettings from "../pages/hotel/HotelProfileSettings";
 import Rooms from "../pages/hotel/Rooms";
-import CreateInvoice from "../pages/hotel/CreateInvoice";
-import AllInvoices from "../pages/hotel/AllInvoices";
-import FinalInvoice from "../pages/hotel/FinalInvoice";
+import CreateInvoice from "../pages/hotel/invoices/CreateInvoice";
+import AllInvoices from "../pages/hotel/invoices/AllInvoices";
+import FinalInvoice from "../pages/hotel/invoices/FinalInvoice";
 import CompleteProfile from "../pages/hotel/CompleteProfile";
 import UserManual from "../pages/hotel/UserManual";
-
-import RoleRedirect from "../components/common/RoleRedirect";
-import ScrollToTop from "../components/common/ScrollToTop";
 
 function AppRoutes() {
   return (

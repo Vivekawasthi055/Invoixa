@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../components/common/AuthContext";
 import { getRooms, addRoom, updateRoom } from "../../services/roomService";
 import { supabase } from "../../services/supabaseClient";
-import "../../styles/rooms.css";
+import "./styles/rooms.css";
 
 function Rooms() {
   const { user } = useAuth();

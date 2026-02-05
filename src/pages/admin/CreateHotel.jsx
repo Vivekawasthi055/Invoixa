@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { createHotel } from "../../services/adminService";
-import "../../styles/CreateHotel.css";
+import "./styles/CreateHotel.css";
 
 function CreateHotel() {
   const [email, setEmail] = useState("");

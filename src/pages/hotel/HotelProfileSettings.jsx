@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../../services/authService";
 import Logo from "../../components/common/Logo";
 import Signature from "../../components/common/Signature";
-import "../../styles/HotelProfileSettings.css";
+import "./styles/HotelProfileSettings.css";
 
 const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 

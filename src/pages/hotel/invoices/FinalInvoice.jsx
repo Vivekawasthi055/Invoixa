@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { supabase } from "../../services/supabaseClient";
-import { finalizeInvoice } from "../../services/invoiceService";
-import "../../styles/FinalInvoice.css";
+import { supabase } from "../../../services/supabaseClient";
+import { finalizeInvoice } from "../../../services/invoiceService";
+import "./styles/FinalInvoice.css";
 
 function FinalInvoice() {
   const { id } = useParams();

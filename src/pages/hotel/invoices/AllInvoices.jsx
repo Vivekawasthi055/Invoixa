@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { searchInvoices } from "../../services/invoiceService";
-import { useAuth } from "../../components/common/AuthContext";
-import { supabase } from "../../services/supabaseClient";
+import { searchInvoices } from "../../../services/invoiceService";
+import { useAuth } from "../../../components/common/AuthContext";
+import { supabase } from "../../../services/supabaseClient";
 import { Link } from "react-router-dom";
-import "../../styles/allInvoices.css";
+import "./styles/allInvoices.css";
 
 function AllInvoices() {
   const { user } = useAuth();

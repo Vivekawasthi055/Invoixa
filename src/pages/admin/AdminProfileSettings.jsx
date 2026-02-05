@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../services/supabaseClient";
 import { logoutUser } from "../../services/authService";
-import "../../styles/AdminProfileSettings.css";
+import "./styles/AdminProfileSettings.css";
 
 const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 

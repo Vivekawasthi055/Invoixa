@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../services/authService";
-import "../../styles/login.css";
+import "./auth.css";
 
 function Login() {
   const [email, setEmail] = useState("");

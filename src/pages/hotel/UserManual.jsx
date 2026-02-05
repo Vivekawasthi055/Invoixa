@@ -1,4 +1,4 @@
-import "../../styles/UserManual.css";
+import "./styles/UserManual.css";
 
 function UserManual() {
   return (

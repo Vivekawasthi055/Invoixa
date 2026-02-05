@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { getRooms } from "../../services/roomService";
-import { supabase } from "../../services/supabaseClient";
-import "../../styles/CreateInvoice.css";
+import { getRooms } from "../../../services/roomService";
+import { supabase } from "../../../services/supabaseClient";
+import "./styles/CreateInvoice.css";
 
 import {
   addInvoiceRoom,
   addInvoiceRoomRates,
   getInvoiceRooms,
-} from "../../services/invoiceRoomService";
+} from "../../../services/invoiceRoomService";
 import InvoiceRoomFood from "./InvoiceRoomFood";
 
 function InvoiceRooms({ invoice, onValidationChange }) {

@@ -5,7 +5,7 @@ import {
   checkEmailRegistered,
 } from "../../services/authService";
 
-import "../../styles/login.css";
+import "./auth.css";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");

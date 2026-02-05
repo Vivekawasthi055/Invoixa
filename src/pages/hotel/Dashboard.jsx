@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../components/common/AuthContext";
 import { getProfile } from "../../services/profileService";
 import { supabase } from "../../services/supabaseClient";
-import "../../styles/dashboard.css";
+import "./styles/HotelDashboard.css";
 
 function Dashboard() {
   const { user } = useAuth();

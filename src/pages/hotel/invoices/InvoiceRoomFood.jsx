@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../../services/supabaseClient";
-import { addInvoiceFoodServices } from "../../services/invoiceFoodService";
-import "../../styles/CreateInvoice.css";
+import { supabase } from "../../../services/supabaseClient";
+import { addInvoiceFoodServices } from "../../../services/invoiceFoodService";
+import "./styles/CreateInvoice.css";
 
 function InvoiceRoomFood({ room, resetTrigger, onFoodValidationChange }) {
   const [food, setFood] = useState({});
