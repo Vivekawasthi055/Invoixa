@@ -4,12 +4,11 @@ import "./styles/About.css";
 function About() {
   return (
     <>
-      {/* ✅ SEO */}
       <Helmet>
-        <title>About Invoixa – Smart & Simple Invoice Software</title>
+        <title>About Invoixa – Smart Hotel Billing & Invoice Software</title>
         <meta
           name="description"
-          content="Learn about Invoixa, a modern invoicing and billing platform designed to simplify hotel and business billing."
+          content="Invoixa is a modern hotel billing and invoicing platform designed to simplify room, food and service billing."
         />
       </Helmet>
 
@@ -18,39 +17,67 @@ function About() {
         <section className="about-page-hero">
           <h1>About Invoixa</h1>
           <p>
-            Invoixa is built to simplify invoicing and billing for hotels and
-            modern businesses — without complexity.
+            Invoixa is a modern hotel billing and invoicing platform created to
+            remove complexity from everyday billing operations and help
+            businesses work faster and smarter.
           </p>
         </section>
 
         {/* ================= CONTENT ================= */}
         <section className="about-page-content">
           <div className="about-page-card">
-            <h2>Why Invoixa?</h2>
+            <h2>Why Invoixa Exists</h2>
             <p>
-              Many hotels and businesses still rely on manual billing or
-              complicated software. Invoixa was created to remove this
-              complexity and provide a clean, fast and reliable invoicing
-              experience.
+              Many hotels still depend on manual registers or outdated billing
+              software that is slow and confusing. Invoixa was built to replace
+              that with a clean, simple and efficient system anyone can use
+              without training.
             </p>
           </div>
 
           <div className="about-page-card">
-            <h2>What We Offer</h2>
+            <h2>What Invoixa Solves</h2>
             <ul>
-              <li>✔ Simple and fast invoice generation</li>
-              <li>✔ Food, room and service billing support</li>
-              <li>✔ Clean and professional invoice layout</li>
-              <li>✔ Secure and reliable platform</li>
+              <li>✔ Room-wise and stay-based billing</li>
+              <li>✔ Food and additional service charges</li>
+              <li>✔ Clear and professional invoice structure</li>
+              <li>✔ Faster checkout and fewer billing errors</li>
             </ul>
+          </div>
+
+          <div className="about-page-card">
+            <h2>Who It’s For</h2>
+            <p>
+              Invoixa is designed for hotels, lodges, guest houses and hospitality
+              businesses that want a reliable billing system without unnecessary
+              features or complexity.
+            </p>
+          </div>
+
+          <div className="about-page-card">
+            <h2>Our Approach</h2>
+            <p>
+              We focus on real-world hotel workflows. Every screen and feature is
+              designed to reduce clicks, save time and make billing stress-free
+              for staff and managers.
+            </p>
+          </div>
+
+          <div className="about-page-card">
+            <h2>Security & Reliability</h2>
+            <p>
+              Invoixa is built on modern cloud infrastructure with secure data
+              handling practices, ensuring your billing information remains safe
+              and accessible when you need it.
+            </p>
           </div>
 
           <div className="about-page-card">
             <h2>Our Vision</h2>
             <p>
-              Our vision is to empower hotels and businesses with a billing
-              system that is easy to use, scalable and future-ready — so you can
-              focus on running your business, not managing invoices.
+              Our vision is to become a trusted billing partner for hospitality
+              businesses by delivering a system that is simple today, scalable
+              tomorrow and reliable for years to come.
             </p>
           </div>
         </section>

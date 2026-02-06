@@ -225,3 +225,33 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ================= TRUST SECTION ================= */
+
+.home-trust {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 70px 20px;
+  text-align: center;
+}
+
+.home-trust h2 {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #0f172a;
+}
+
+.home-trust p {
+  font-size: 15px;
+  color: #475569;
+  line-height: 1.8;
+}
+
+/* ================= RESPONSIVE ADD-ON ================= */
+
+@media (max-width: 600px) {
+  .home-trust h2 {
+    font-size: 24px;
+  }
+}
