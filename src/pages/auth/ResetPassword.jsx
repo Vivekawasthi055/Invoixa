@@ -33,11 +33,16 @@ function ResetPassword() {
       setErrorMsg(
         "Password must be at least 8 characters with 1 letter & 1 number.",
       );
+
+      // ⏳ auto hide after 3 sec
+      setTimeout(() => setErrorMsg(""), 5000);
       return;
     }
 
     if (password !== confirm) {
       setErrorMsg("Passwords do not match.");
+      // ⏳ auto hide after 3 sec
+      setTimeout(() => setErrorMsg(""), 3000);
       return;
     }
 
@@ -120,13 +125,13 @@ function ResetPassword() {
               Minimum 8 characters • 1 letter • 1 number
             </p>
 
-            {/* ✅ INLINE MESSAGES */}
-            {errorMsg && <p className="auth-error">{errorMsg}</p>}
-            {successMsg && <p className="auth-success">{successMsg}</p>}
-
             <button type="submit" disabled={loading} className="primary-btn">
               {loading ? "Updating..." : "Update Password"}
             </button>
+
+            {/* ✅ INLINE MESSAGES */}
+            {errorMsg && <p className="error-text">{errorMsg}</p>}
+            {successMsg && <p className="success-text">{successMsg}</p>}
           </form>
         </div>
       </main>

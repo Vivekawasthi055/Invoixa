@@ -38,6 +38,10 @@ function ForgotPassword() {
 
     if (!exists) {
       setErrorMsg("Email not registered. Please check your email address.");
+
+      // ⏳ auto hide after 2 sec
+      setTimeout(() => setErrorMsg(""), 5000);
+
       setLoading(false);
       return;
     }
@@ -47,8 +51,15 @@ function ForgotPassword() {
 
     if (error) {
       setErrorMsg("Failed to send reset link. Please try again.");
+
+      // ⏳ auto hide after 3 sec
+      setTimeout(() => setErrorMsg(""), 5000);
     } else {
       setMessage("Password reset link sent to your registered email.");
+
+      // ⏳ auto hide after 3 sec
+      setTimeout(() => setMessage(""), 5000);
+
       setCooldown(60); // ⏳ start 60 sec lock
     }
 
