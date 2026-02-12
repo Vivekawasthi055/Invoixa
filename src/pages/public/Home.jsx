@@ -6,20 +6,25 @@ function Home() {
   return (
     <>
       <Helmet>
-        <title>Invoixa – Smart Hotel Billing & Invoice Software</title>
+        <title>
+          Hotel Billing Software for Hotels & Resorts | Invoixa Invoice System
+        </title>
+
         <meta
           name="description"
-          content="Invoixa helps hotels manage room, food and service billing with fast, secure and professional invoicing."
+          content="Invoixa is a smart hotel billing software for hotels, resorts and guest houses. Manage room charges, food billing, GST invoices and hotel services easily with secure cloud-based invoice management."
         />
+        <link rel="canonical" href="https://invoixa.qzz.io/" />
       </Helmet>
 
       <main className="home-page">
         {/* ================= HERO ================= */}
         <section className="home-hero">
           <div className="home-hero-content">
+            <div className="home-badge">Built for Modern Hotels</div>
             <h1>
-              Smart Hotel Invoicing <br />
-              <span>Without the Hassle</span>
+              Hotel Billing Software for Hotels & Resorts <br />
+              <span>Simple, Fast & GST-Ready</span>
             </h1>
 
             <p>
@@ -102,6 +107,20 @@ function Home() {
             </div>
           </div>
         </section>
+        <section className="home-seo-content">
+          <h2>Why Choose Invoixa Hotel Billing Software?</h2>
+          <p>
+            Managing hotel invoices manually can lead to errors and slow
+            operations. Invoixa simplifies hotel billing by automating room
+            calculations, applying GST taxes correctly and generating
+            professional invoices instantly.
+          </p>
+          <p>
+            Whether you run a small lodge or a multi-property resort, our hotel
+            billing system helps you streamline operations, improve accuracy and
+            save valuable time.
+          </p>
+        </section>
 
         {/* ================= TRUST ================= */}
         <section className="home-trust">
@@ -110,6 +129,27 @@ function Home() {
             Invoixa is designed by understanding real hotel workflows — not just
             accounting theory. Simple screens, fewer clicks and clear data help
             staff work faster and owners stay in control.
+          </p>
+        </section>
+        <section className="home-faq">
+          <h2>Frequently Asked Questions</h2>
+
+          <h3>What is hotel billing software?</h3>
+          <p>
+            Hotel billing software helps hotels manage room charges, food
+            services, taxes and invoice generation automatically.
+          </p>
+
+          <h3>Does Invoixa support GST billing?</h3>
+          <p>
+            Yes, Invoixa generates GST-ready invoices suitable for hotels and
+            resorts in India.
+          </p>
+
+          <h3>Can small hotels use Invoixa?</h3>
+          <p>
+            Absolutely. Invoixa is built for guest houses, lodges, boutique
+            hotels and large resorts.
           </p>
         </section>
 
