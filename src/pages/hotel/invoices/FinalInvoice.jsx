@@ -473,8 +473,8 @@ function FinalInvoice() {
           onClick={() => {
             setShowDraftPopup(true);
             setTimeout(() => {
-              window.location.href = "/dashboard/invoices/list";
-            }, 2500);
+              window.location.href = "/hotel/invoices/list";
+            }, 1500);
           }}
         >
           📝 Leave as Draft / Unpaid
