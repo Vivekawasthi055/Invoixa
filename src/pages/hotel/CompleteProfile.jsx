@@ -18,6 +18,9 @@ function CompleteProfile() {
   const [signatureUrl, setSignatureUrl] = useState(null);
   const [formError, setFormError] = useState("");
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const [form, setForm] = useState({
     hotel_name: "",
     email: "",
@@ -49,7 +52,7 @@ function CompleteProfile() {
         .single();
 
       if (profile?.profile_completed) {
-        navigate("/dashboard", { replace: true });
+        navigate("/hotel/dashboard", { replace: true });
         return;
       }
 
@@ -137,7 +140,7 @@ function CompleteProfile() {
       })
       .eq("id", user.id);
 
-    navigate("/dashboard");
+    navigate("/hotel/dashboard");
   };
 
   /* ================= LOADING ================= */
@@ -287,22 +290,40 @@ function CompleteProfile() {
             <h3>🔐 Secure Your Account</h3>
 
             <h3 className="cp-section-title">New Password</h3>
-            <input
-              type="password"
-              name="password"
-              placeholder="Create new password"
-              onChange={handleChange}
-              required
-            />
+            <div className="cp-password-field">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Create new password"
+                onChange={handleChange}
+                required
+              />
+              <button
+                type="button"
+                className="cp-password-toggle"
+                onClick={() => setShowPassword((p) => !p)}
+              >
+                {showPassword ? "🙈" : "👁️"}
+              </button>
+            </div>
 
             <h3 className="cp-section-title">Confirm Password</h3>
-            <input
-              type="password"
-              name="confirm_password"
-              placeholder="Confirm password"
-              onChange={handleChange}
-              required
-            />
+            <div className="cp-password-field">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirm_password"
+                placeholder="Confirm password"
+                onChange={handleChange}
+                required
+              />
+              <button
+                type="button"
+                className="cp-password-toggle"
+                onClick={() => setShowConfirmPassword((p) => !p)}
+              >
+                {showConfirmPassword ? "🙈" : "👁️"}
+              </button>
+            </div>
             {formError && <p className="rooms-error-text">{formError}</p>}
             <p className="cp-password-hint">
               • Minimum 8 characters <br />• At least 1 letter and 1 number

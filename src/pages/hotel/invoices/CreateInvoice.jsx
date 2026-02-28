@@ -238,7 +238,7 @@ function CreateInvoice() {
 
             <div className="ci-form-grid">
               <div>
-                <label>Guest Name</label>
+                <label>Guest Name *</label>
                 <input
                   placeholder="Guest Name *"
                   value={guestName}
@@ -247,7 +247,7 @@ function CreateInvoice() {
               </div>
 
               <div>
-                <label>Guest Phone</label>
+                <label>Guest Phone *</label>
                 <input
                   placeholder="Guest Phone *"
                   value={guestPhone}
